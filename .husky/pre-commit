@@ -1,1 +1,1 @@
-pnpm eslint . --fix && git add -A
+pnpm eslint . --fix
