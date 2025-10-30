@@ -4,6 +4,8 @@
 # Node modules
 node_modules/
 
+.vscode
+
 # Distribution/build folders
 dist/
 build/

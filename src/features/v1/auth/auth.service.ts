@@ -5,10 +5,11 @@ import { DrizzleQueryError, eq } from 'drizzle-orm';
 
 import { SPOTFIY_TOKEN_URI, STRAVA_TOKEN_URI } from '@/config/constants';
 import { db } from '@/db';
-import { athlete, token } from '@/db/schema';
+import { athlete } from '@/db/schema';
 import { SpotifyAuthResponse, StravaAuthResponse } from '@/types/auth.type';
-import { encrypt } from '@/utils/crypt.utils';
 import { incrementDateBySeconds } from '@/utils/date.utils';
+
+import { saveToken } from '../token/token.service';
 
 dotenv.config();
 
@@ -86,19 +87,19 @@ export const saveProfile = async (
       })
       .returning();
 
-    await db.insert(token).values({
+    saveToken({
       athleteId: stravaProfile.id,
       expiresAt: expiresAt,
       provider: 'strava',
       type: 'access',
-      value: encrypt(access_token),
+      value: access_token,
     });
 
-    await db.insert(token).values({
+    saveToken({
       athleteId: stravaProfile.id,
       provider: 'strava',
       type: 'refresh',
-      value: encrypt(refresh_token),
+      value: refresh_token,
     });
 
     return {
@@ -147,19 +148,19 @@ export const syncWithSpotify = async (
 
     const expiresAt = incrementDateBySeconds(expires_in);
 
-    await db.insert(token).values({
+    saveToken({
       athleteId: id,
       provider: 'spotify',
       type: 'refresh',
-      value: encrypt(refresh_token),
+      value: refresh_token,
     });
 
-    await db.insert(token).values({
+    saveToken({
       athleteId: id,
       expiresAt: expiresAt,
       provider: 'spotify',
       type: 'access',
-      value: encrypt(access_token),
+      value: access_token,
     });
 
     return {
