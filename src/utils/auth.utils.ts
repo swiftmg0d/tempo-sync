@@ -22,7 +22,7 @@ export const getAuthUrl = (type: AuthType) => {
       `response_type=code&client_id=${CLIENT_ID}&scope=${SCOPE}&redirect_uri=${REDIRECT_URI}&state=${state}`,
     strava:
       STRAVA_AUTH_URI +
-      `client_id=${STRAVA_CLIENT_ID}&response_type=code&redirect_uri=${REDIRECT_URI_STRAVA}&approval_prompt=force&scope=read`,
+      `client_id=${STRAVA_CLIENT_ID}&response_type=code&redirect_uri=${REDIRECT_URI_STRAVA}&approval_prompt=force&scope=activity:read_all`,
   };
 
   return authUrls[type];
