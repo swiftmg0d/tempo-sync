@@ -26,6 +26,7 @@
     "@types/express-session": "^1.18.2",
     "@types/morgan": "^1.9.10",
     "@types/node": "^24.7.0",
+    "@types/pg": "^8.15.6",
     "dotenv": "^17.2.3",
     "drizzle-kit": "^0.31.5",
     "eslint": "^9.37.0",
@@ -54,7 +55,8 @@
     "drizzle-orm": "^0.44.6",
     "express": "^5.1.0",
     "express-session": "^1.18.2",
-    "helmet": "^8.1.0"
+    "helmet": "^8.1.0",
+    "pg": "^8.16.3"
   },
   "tsup": {
     "entry": [

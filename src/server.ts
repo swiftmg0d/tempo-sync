@@ -23,7 +23,7 @@ app.use(configureSession());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 
-app.use('/v1', routes);
+app.use('/v1/api', routes);
 
 app.get(['/*x', '/'], () => {
   throw new RouteNotFoundError(

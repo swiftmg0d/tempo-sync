@@ -1,3 +1,5 @@
+import { Router } from 'express';
+
 export interface Athlete {
   city: string;
   country: string;
@@ -7,6 +9,11 @@ export interface Athlete {
 }
 
 export type AuthType = 'spotify' | 'strava';
+
+export interface Routes {
+  path: string;
+  route: Router;
+}
 
 export interface SpotifyAuthResponse extends TokenResponse {
   scope: string;
