@@ -9,8 +9,11 @@ import {
 
 import { athlete } from '.';
 
-export const tokenTypeEnum = pgEnum('type', ['refresh', 'access']);
-export const tokenProviderEnum = pgEnum('provider', ['strava', 'spotify']);
+export const tokenTypeEnum = pgEnum('token_type', ['refresh', 'access']);
+export const tokenProviderEnum = pgEnum('token_provider', [
+  'strava',
+  'spotify',
+]);
 
 export const token = pgTable('token', {
   athleteId: integer('athlete_id').references(() => athlete.id, {

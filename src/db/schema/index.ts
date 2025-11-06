@@ -1,6 +1,7 @@
 import { athlete } from '@/db/schema/athlete.table';
 import { token } from '@/db/schema/token.table';
 
-type TokenType = typeof token.$inferInsert;
+type TokenInsertType = typeof token.$inferInsert;
+type TokenSelectType = typeof token.$inferSelect;
 
-export { athlete, token, TokenType };
+export { athlete, token, TokenInsertType, TokenSelectType };
