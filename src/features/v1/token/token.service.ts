@@ -5,6 +5,7 @@ import { and, eq } from 'drizzle-orm';
 import { STRAVA_TOKEN_URI } from '@/config/constants';
 import { db } from '@/db';
 import { token, TokenInsertType } from '@/db/schema';
+import { DatabaseError, FetchError } from '@/errors';
 import { TokenResponse } from '@/types/auth.type';
 import { decrypt, encrypt } from '@/utils/crypt.utils';
 import { incrementDateBySeconds } from '@/utils/date.utils';
@@ -14,15 +15,24 @@ dotenv.config();
 const { STRAVA_CLIENT_ID, STRAVA_CLIENT_SECRET } = process.env;
 
 export const saveToken = async (tokenData: TokenInsertType) => {
-  const { athleteId, expiresAt, provider, type, value } = tokenData;
+  try {
+    const { athleteId, expiresAt, provider, type, value } = tokenData;
 
-  await db.insert(token).values({
-    athleteId: athleteId,
-    expiresAt: expiresAt,
-    provider: provider,
-    type: type,
-    value: encrypt(value),
-  });
+    await db.insert(token).values({
+      athleteId: athleteId,
+      expiresAt: expiresAt,
+      provider: provider,
+      type: type,
+      value: encrypt(value),
+    });
+    return {
+      message: 'Successfully saved the token!',
+      success: true,
+    };
+  } catch (e) {
+    console.error(e);
+    throw new DatabaseError('Failed to save token');
+  }
 };
 
 export const updateTokenById = async (data: {
@@ -46,10 +56,7 @@ export const updateTokenById = async (data: {
     };
   } catch (e) {
     console.error(e);
-    return {
-      message: 'Failed to update the token!',
-      success: false,
-    };
+    throw new DatabaseError('Failed to update the token!');
   }
 };
 
@@ -60,17 +67,10 @@ export const findTokensByProvider = async (provider: 'spotify' | 'strava') => {
       .from(token)
       .where(and(eq(token.provider, provider)));
 
-    return {
-      result: tokens,
-      success: true,
-    };
+    return tokens;
   } catch (e) {
     console.error(e);
-    return {
-      message: 'Failed to fetch tokens!',
-      result: [],
-      success: false,
-    };
+    throw new DatabaseError('Failed to retrieve tokens by provider');
   }
 };
 
@@ -86,48 +86,23 @@ const refreshStravaToken = async (value: string) => {
       },
     );
 
-    return {
-      message: 'Token is successfully refreshed!',
-      result: data,
-      success: true,
-    };
+    return data;
   } catch (e) {
     console.error(e);
-    return {
-      message: 'Failed to refresh token securely!',
-      result: {},
-      success: false,
-    };
+    throw new FetchError('Failed to refresh token securely!');
   }
 };
 
 export const verifyToken = async (tokenType: 'spotify' | 'strava') => {
-  const { message, result, success } = await findTokensByProvider(tokenType);
+  const tokens = await findTokensByProvider(tokenType);
 
-  if (!success) {
-    console.error(message);
-    return {
-      message,
-      success,
-    };
-  }
-
-  const accesshToken = result.find((token) => token.type === 'access');
-  const refreshToken = result.find((token) => token.type === 'refresh');
+  const accesshToken = tokens.find((token) => token.type === 'access');
+  const refreshToken = tokens.find((token) => token.type === 'refresh');
 
   if (accesshToken?.expiresAt != null && refreshToken?.value) {
     if (accesshToken.expiresAt < new Date()) {
-      const { message, result, success } = await refreshStravaToken(
-        refreshToken.value,
-      );
+      const result = await refreshStravaToken(refreshToken.value);
 
-      if (!success) {
-        console.error(message);
-        return {
-          message,
-          success,
-        };
-      }
       const { access_token, expires_in, refresh_token } =
         result as TokenResponse;
 
@@ -144,16 +119,19 @@ export const verifyToken = async (tokenType: 'spotify' | 'strava') => {
 
       return {
         message: 'Tokens succesfully verified!',
+        result: encrypt(access_token),
         success: true,
       };
     }
     return {
       message: 'Tokens already verified!',
+      result: accesshToken.value,
       success: true,
     };
   }
   return {
     message: 'Tokens verification failed!',
+    result: null,
     success: false,
   };
 };

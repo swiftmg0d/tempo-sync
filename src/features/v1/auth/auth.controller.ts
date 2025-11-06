@@ -9,8 +9,6 @@ declare module 'express-session' {
   }
 }
 
-import { DatabaseError } from '@/errors/database.error';
-
 import {
   fetchSpotifyAccessToken,
   fetchStravaAcessToken,
@@ -46,11 +44,9 @@ export const stravaCallback = async (req: Request, res: Response) => {
 
   const response = await fetchStravaAcessToken(code.toString());
 
-  const { id, message, redirect, success } = await saveProfile(response);
+  const { id, redirect } = await saveProfile(response);
 
-  if (redirect) res.send('Redirected change later');
-
-  if (!success) throw new DatabaseError(message, 500);
+  if (redirect) res.send('Redirected change later'); // TODO: Change it latter on with real redirection
 
   req.session.stravaId = id;
 

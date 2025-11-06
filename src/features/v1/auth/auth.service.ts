@@ -1,4 +1,4 @@
-import { DatabaseError } from '@neondatabase/serverless';
+import { DatabaseError as DbError } from '@neondatabase/serverless';
 import axios from 'axios';
 import dotenv from 'dotenv';
 import { DrizzleQueryError, eq } from 'drizzle-orm';
@@ -6,6 +6,7 @@ import { DrizzleQueryError, eq } from 'drizzle-orm';
 import { SPOTFIY_TOKEN_URI, STRAVA_TOKEN_URI } from '@/config/constants';
 import { db } from '@/db';
 import { athlete } from '@/db/schema';
+import { DatabaseError, FetchError } from '@/errors';
 import { SpotifyAuthResponse, StravaAuthResponse } from '@/types/auth.type';
 import { incrementDateBySeconds } from '@/utils/date.utils';
 
@@ -24,42 +25,52 @@ const {
 export const fetchSpotifyAccessToken = async (
   code: string,
 ): Promise<SpotifyAuthResponse> => {
-  const authHeader = Buffer.from(CLIENT_ID + ':' + CLIENT_SECRET).toString(
-    'base64',
-  );
+  try {
+    const authHeader = Buffer.from(CLIENT_ID + ':' + CLIENT_SECRET).toString(
+      'base64',
+    );
 
-  const response = await axios.post<unknown, { data: SpotifyAuthResponse }>(
-    SPOTFIY_TOKEN_URI,
-    {
-      code: code,
-      grant_type: 'authorization_code',
-      redirect_uri: REDIRECT_URI,
-    },
-    {
-      headers: {
-        Authorization: 'Basic ' + authHeader,
-        'content-type': 'application/x-www-form-urlencoded',
+    const response = await axios.post<unknown, { data: SpotifyAuthResponse }>(
+      SPOTFIY_TOKEN_URI,
+      {
+        code: code,
+        grant_type: 'authorization_code',
+        redirect_uri: REDIRECT_URI,
       },
-    },
-  );
+      {
+        headers: {
+          Authorization: 'Basic ' + authHeader,
+          'content-type': 'application/x-www-form-urlencoded',
+        },
+      },
+    );
 
-  return response.data;
+    return response.data;
+  } catch (e) {
+    console.error(e);
+    throw new FetchError('Failed to fetch Spotify access token');
+  }
 };
 
 export const fetchStravaAcessToken = async (
   code: string,
 ): Promise<StravaAuthResponse> => {
-  const response = await axios.post<unknown, { data: StravaAuthResponse }>(
-    STRAVA_TOKEN_URI,
-    {
-      client_id: STRAVA_CLIENT_ID,
-      client_secret: STRAVA_CLIENT_SECRET,
-      code: code,
-      grant_type: 'authorization_code',
-    },
-  );
+  try {
+    const response = await axios.post<unknown, { data: StravaAuthResponse }>(
+      STRAVA_TOKEN_URI,
+      {
+        client_id: STRAVA_CLIENT_ID,
+        client_secret: STRAVA_CLIENT_SECRET,
+        code: code,
+        grant_type: 'authorization_code',
+      },
+    );
 
-  return response.data;
+    return response.data;
+  } catch (e) {
+    console.error(e);
+    throw new FetchError('Failed to fetch Strava access token');
+  }
 };
 
 export const saveProfile = async (
@@ -109,7 +120,7 @@ export const saveProfile = async (
     };
   } catch (e) {
     if (e instanceof DrizzleQueryError) {
-      const cause = e.cause as DatabaseError;
+      const cause = e.cause as DbError;
 
       if (cause.code === '23505') {
         console.error(e);
@@ -122,11 +133,7 @@ export const saveProfile = async (
       }
     }
     console.error(e);
-
-    return {
-      message: 'Failed to save profile!',
-      success: false,
-    };
+    throw new DatabaseError('Failed to save the profile!');
   }
 };
 
@@ -170,9 +177,6 @@ export const syncWithSpotify = async (
   } catch (e) {
     console.error(e);
 
-    return {
-      message: 'Failed to sync with Spotify!',
-      success: true,
-    };
+    throw new DatabaseError('Failed to sync with Spotify!');
   }
 };
