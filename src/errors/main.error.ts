@@ -1,4 +1,4 @@
-export class DatabaseError extends Error {
+export class MainError extends Error {
   statusCode: number;
   constructor(message: string, statusCode = 500) {
     super(message);

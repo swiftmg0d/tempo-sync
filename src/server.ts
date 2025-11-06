@@ -7,7 +7,7 @@ import morgan from 'morgan';
 
 import routes from '@/features/v1/index';
 
-import { RouteNotFoundError } from './errors/route-not-found.error';
+import { RouteNotFoundError } from './errors';
 import { errorHandler } from './middleware/error-handler.middleware';
 import { configureSession } from './middleware/session.middleware';
 
