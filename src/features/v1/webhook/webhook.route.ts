@@ -1,11 +1,25 @@
 import { Router } from 'express';
+import { Request } from 'express';
 
+import { WebhookRequestBody } from '@/types/request.type';
+
+import { verifyToken } from '../token/token.service';
 const router = Router();
 
-router.post('/', async (req, res) => {
-  console.log(req.body);
-  res.json('Recived').status(200);
-});
+router.post(
+  '/',
+  async (req: Request<unknown, unknown, WebhookRequestBody>, res) => {
+    console.log(req.body);
+
+    const { message, success } = await verifyToken('strava');
+
+    console.log(message, success);
+    res.json({
+      message,
+      success,
+    });
+  },
+);
 
 router.get('/', (req, res) => {
   const VERIFY_TOKEN = 'STRAVA';
