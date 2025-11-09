@@ -1,9 +1,13 @@
 import { DatabaseError as DbError } from '@neondatabase/serverless';
-import axios from 'axios';
 import dotenv from 'dotenv';
 import { DrizzleQueryError, eq } from 'drizzle-orm';
 
-import { SPOTFIY_TOKEN_URI, STRAVA_TOKEN_URI } from '@/config/constants';
+import { spotifyAPI, stravaAPI } from '@/config/axios';
+import {
+  SPOTFIY_TOKEN_URI,
+  SPOTIFY_AUTH_HEADER,
+  STRAVA_TOKEN_URI,
+} from '@/config/constants';
 import { db } from '@/db';
 import { athlete } from '@/db/schema';
 import { DatabaseError, FetchError } from '@/errors';
@@ -14,38 +18,23 @@ import { saveToken } from '../token/token.service';
 
 dotenv.config();
 
-const {
-  CLIENT_ID,
-  CLIENT_SECRET,
-  REDIRECT_URI,
-  STRAVA_CLIENT_ID,
-  STRAVA_CLIENT_SECRET,
-} = process.env;
+const { REDIRECT_URI, STRAVA_CLIENT_ID, STRAVA_CLIENT_SECRET } = process.env;
 
 export const fetchSpotifyAccessToken = async (
   code: string,
 ): Promise<SpotifyAuthResponse> => {
   try {
-    const authHeader = Buffer.from(CLIENT_ID + ':' + CLIENT_SECRET).toString(
-      'base64',
-    );
+    const params = new URLSearchParams();
+    params.append('code', code);
+    params.append('grant_type', 'authorization_code');
+    params.append('redirect_uri', REDIRECT_URI!);
 
-    const response = await axios.post<unknown, { data: SpotifyAuthResponse }>(
-      SPOTFIY_TOKEN_URI,
-      {
-        code: code,
-        grant_type: 'authorization_code',
-        redirect_uri: REDIRECT_URI,
-      },
-      {
-        headers: {
-          Authorization: 'Basic ' + authHeader,
-          'content-type': 'application/x-www-form-urlencoded',
-        },
-      },
-    );
+    const { data } = await spotifyAPI({
+      baseURL: SPOTFIY_TOKEN_URI,
+      headers: { Authorization: SPOTIFY_AUTH_HEADER },
+    }).post<unknown, { data: SpotifyAuthResponse }>('', params);
 
-    return response.data;
+    return data;
   } catch (e) {
     console.error(e);
     throw new FetchError('Failed to fetch Spotify access token');
@@ -56,17 +45,18 @@ export const fetchStravaAcessToken = async (
   code: string,
 ): Promise<StravaAuthResponse> => {
   try {
-    const response = await axios.post<unknown, { data: StravaAuthResponse }>(
-      STRAVA_TOKEN_URI,
-      {
-        client_id: STRAVA_CLIENT_ID,
-        client_secret: STRAVA_CLIENT_SECRET,
-        code: code,
-        grant_type: 'authorization_code',
-      },
-    );
+    const params = new URLSearchParams();
+    params.append('client_id', STRAVA_CLIENT_ID!);
+    params.append('client_secret', STRAVA_CLIENT_SECRET!);
+    params.append('code', code!);
+    params.append('grant_type', 'authorization_code');
 
-    return response.data;
+    const { data } = await stravaAPI({ baseURL: STRAVA_TOKEN_URI }).post<
+      unknown,
+      { data: StravaAuthResponse }
+    >('', params);
+
+    return data;
   } catch (e) {
     console.error(e);
     throw new FetchError('Failed to fetch Strava access token');

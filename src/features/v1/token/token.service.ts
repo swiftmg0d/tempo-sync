@@ -1,8 +1,12 @@
-import axios from 'axios';
 import dotenv from 'dotenv';
 import { and, eq } from 'drizzle-orm';
 
-import { STRAVA_TOKEN_URI } from '@/config/constants';
+import { spotifyAPI, stravaAPI } from '@/config/axios';
+import {
+  SPOTFIY_TOKEN_URI,
+  SPOTIFY_AUTH_HEADER,
+  STRAVA_TOKEN_URI,
+} from '@/config/constants';
 import { db } from '@/db';
 import { token, TokenInsertType } from '@/db/schema';
 import { DatabaseError, FetchError } from '@/errors';
@@ -12,7 +16,7 @@ import { incrementDateBySeconds } from '@/utils/date.utils';
 
 dotenv.config();
 
-const { STRAVA_CLIENT_ID, STRAVA_CLIENT_SECRET } = process.env;
+const { CLIENT_ID, STRAVA_CLIENT_ID, STRAVA_CLIENT_SECRET } = process.env;
 
 export const saveToken = async (tokenData: TokenInsertType) => {
   try {
@@ -74,17 +78,45 @@ export const findTokensByProvider = async (provider: 'spotify' | 'strava') => {
   }
 };
 
+const refreshAccessToken = async (
+  tokenType: 'spotify' | 'strava',
+  value: string,
+) => {
+  if (tokenType == 'strava') return await refreshStravaToken(value);
+
+  return await refreshSpotifyToken(value);
+};
+
+const refreshSpotifyToken = async (value: string) => {
+  try {
+    const params = new URLSearchParams();
+    params.append('grant_type', 'refresh_token');
+    params.append('refresh_token', decrypt(value));
+    params.append('client_id', CLIENT_ID!);
+
+    const { data } = await spotifyAPI({
+      baseURL: SPOTFIY_TOKEN_URI,
+      headers: { Authorization: SPOTIFY_AUTH_HEADER },
+    }).post<TokenResponse>('', params);
+
+    return data;
+  } catch (e) {
+    console.error(e);
+    throw new FetchError('Failed to refresh token securely!');
+  }
+};
+
 const refreshStravaToken = async (value: string) => {
   try {
-    const { data } = await axios.post<unknown, { data: TokenResponse }>(
-      STRAVA_TOKEN_URI,
-      {
-        client_id: STRAVA_CLIENT_ID,
-        client_secret: STRAVA_CLIENT_SECRET,
-        grant_type: 'refresh_token',
-        refresh_token: decrypt(value),
-      },
-    );
+    const params = new URLSearchParams();
+    params.append('client_id', STRAVA_CLIENT_ID!);
+    params.append('client_secret', STRAVA_CLIENT_SECRET!);
+    params.append('grant_type', 'refresh_token');
+    params.append('refresh_token', decrypt(value));
+
+    const { data } = await stravaAPI({
+      baseURL: STRAVA_TOKEN_URI,
+    }).post<TokenResponse>('', params);
 
     return data;
   } catch (e) {
@@ -101,7 +133,7 @@ export const verifyToken = async (tokenType: 'spotify' | 'strava') => {
 
   if (accesshToken?.expiresAt != null && refreshToken?.value) {
     if (accesshToken.expiresAt < new Date()) {
-      const result = await refreshStravaToken(refreshToken.value);
+      const result = await refreshAccessToken(tokenType, refreshToken.value);
 
       const { access_token, expires_in, refresh_token } =
         result as TokenResponse;
@@ -112,10 +144,12 @@ export const verifyToken = async (tokenType: 'spotify' | 'strava') => {
         value: encrypt(access_token),
       });
 
-      updateTokenById({
-        ...refreshToken,
-        value: encrypt(refresh_token),
-      });
+      if (refresh_token) {
+        updateTokenById({
+          ...refreshToken,
+          value: encrypt(refresh_token),
+        });
+      }
 
       return {
         message: 'Tokens succesfully verified!',
@@ -124,14 +158,13 @@ export const verifyToken = async (tokenType: 'spotify' | 'strava') => {
       };
     }
     return {
-      message: 'Tokens already verified!',
+      message: 'Token already verified!',
       result: accesshToken.value,
       success: true,
     };
   }
-  return {
-    message: 'Tokens verification failed!',
-    result: null,
-    success: false,
-  };
+
+  throw new DatabaseError(
+    'Failed to verify token - missing access or refresh token',
+  );
 };

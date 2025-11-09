@@ -3,7 +3,7 @@ import { Request } from 'express';
 
 import { WebhookRequestBody } from '@/types/request.type';
 
-import { fetchActivity } from '../activity/activity.service';
+import { fetchActivity, saveActivity } from '../activity/activity.service';
 import { verifyToken } from '../token/token.service';
 const router = Router();
 
@@ -12,19 +12,33 @@ router.post(
   async (req: Request<unknown, unknown, WebhookRequestBody>, res) => {
     console.log('STRAVA RESPOND:', req.body);
 
-    const { message, result, success } = await verifyToken('strava');
-
-    if (!result) throw new Error(message);
+    const { result } = await verifyToken('strava');
 
     const activityId = req.body.object_id;
 
-    const response = await fetchActivity(result, activityId);
+    const athleteId = req.body.owner_id;
 
-    console.log('res', response);
+    // try {
+    //   const res = await stravaAPI({ token: decrypt(result) }).get(
+    //     `/activities/${activityId}`
+    //   );
+
+    //   console.log(res.data);
+    // } catch (e) {
+    //   console.error(e);
+    // }
+
+    const activity = await fetchActivity(result, activityId);
+
+    console.log(activity);
+
+    const { message, success } = await saveActivity(activity, athleteId);
+
+    console.debug(`Status : ${success} - ${message}`);
 
     res.json({
-      message,
-      success,
+      // message,
+      // success,
     });
   },
 );
