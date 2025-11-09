@@ -50,6 +50,7 @@
     "@neondatabase/serverless": "^1.0.2",
     "axios": "^1.12.2",
     "body-parser": "^2.2.0",
+    "camelcase": "^8.0.0",
     "cookie-parser": "^1.4.7",
     "cors": "^2.8.5",
     "crypto-js": "^4.2.0",
