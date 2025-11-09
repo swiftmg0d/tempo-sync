@@ -1,6 +1,7 @@
 import { relations } from 'drizzle-orm';
 import { integer, pgTable, varchar } from 'drizzle-orm/pg-core';
 
+import { activity } from './activity.table';
 import { token } from './token.table';
 
 export const athlete = pgTable('athlete', {
@@ -13,5 +14,6 @@ export const athlete = pgTable('athlete', {
 });
 
 export const athleteRelations = relations(athlete, ({ many }) => ({
+  activities: many(activity),
   tokens: many(token),
 }));

@@ -1,11 +1,5 @@
 import { relations } from 'drizzle-orm';
-import {
-  integer,
-  pgEnum,
-  pgTable,
-  timestamp,
-  varchar,
-} from 'drizzle-orm/pg-core';
+import { integer, pgEnum, pgTable, text, timestamp } from 'drizzle-orm/pg-core';
 
 import { athlete } from '.';
 
@@ -23,7 +17,7 @@ export const token = pgTable('token', {
   id: integer().primaryKey().generatedAlwaysAsIdentity(),
   provider: tokenProviderEnum().notNull(),
   type: tokenTypeEnum().notNull(),
-  value: varchar({ length: 500 }).notNull(),
+  value: text().notNull(),
 });
 
 export const tokenRelations = relations(token, ({ one }) => ({
