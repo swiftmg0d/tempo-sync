@@ -7,7 +7,6 @@ export const apiKeyMiddleware = (
 ) => {
   const apiKey = req.headers['x-api-key'];
 
-  console.log(process.env.CLIENT_ID);
   if (apiKey && apiKey === process.env.X_API_KEY) next();
 
   return res.status(403).json({ message: 'Forbidden: Invalid API Key' });
