@@ -7,7 +7,7 @@ import {
   SPOTFIY_TOKEN_URI,
   SPOTIFY_AUTH_HEADER,
   STRAVA_TOKEN_URI,
-} from '@/config/constants';
+} from '@/constants';
 import { db } from '@/db';
 import { athlete } from '@/db/schema';
 import { DatabaseError, FetchError } from '@/errors';

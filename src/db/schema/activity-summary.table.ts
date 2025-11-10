@@ -36,7 +36,7 @@ export const activitySummaryRelations = relations(
   activitySummary,
   ({ one }) => ({
     activity: one(activity, {
-      fields: [activitySummary.id],
+      fields: [activitySummary.activityId],
       references: [activity.id],
     }),
   }),

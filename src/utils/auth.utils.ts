@@ -1,6 +1,6 @@
 import dotenv from 'dotenv';
 
-import { SPOTIFY_AUTH_URI, STRAVA_AUTH_URI } from '@/config/constants';
+import { SPOTIFY_AUTH_URI, STRAVA_AUTH_URI } from '@/constants';
 import { AuthType } from '@/types/auth.type';
 
 dotenv.config();
