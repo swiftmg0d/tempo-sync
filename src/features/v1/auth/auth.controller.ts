@@ -1,4 +1,3 @@
-import dotenv from 'dotenv';
 import { Request, Response } from 'express';
 
 import { getAuthUrl } from '@/utils/auth.utils';
@@ -15,8 +14,6 @@ import {
   saveProfile,
   syncWithSpotify,
 } from './auth.service';
-
-dotenv.config();
 
 export const login = (_req: Request, res: Response) => {
   res.redirect(getAuthUrl('strava'));

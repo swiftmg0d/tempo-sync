@@ -1,12 +1,16 @@
 import { DatabaseError as DbError } from '@neondatabase/serverless';
-import dotenv from 'dotenv';
 import { DrizzleQueryError, eq } from 'drizzle-orm';
 
 import { spotifyAPI, stravaAPI } from '@/config/axios';
 import {
-  SPOTFIY_TOKEN_URI,
+  REDIRECT_URI,
+  STRAVA_CLIENT_ID,
+  STRAVA_CLIENT_SECRET,
+} from '@/config/env';
+import {
+  SPOTFIY_TOKEN_URL,
   SPOTIFY_AUTH_HEADER,
-  STRAVA_TOKEN_URI,
+  STRAVA_TOKEN_URL,
 } from '@/constants';
 import { db } from '@/db';
 import { athlete } from '@/db/schema';
@@ -15,10 +19,6 @@ import { SpotifyAuthResponse, StravaAuthResponse } from '@/types/auth.type';
 import { incrementDateBySeconds } from '@/utils/date.utils';
 
 import { saveToken } from '../token/token.service';
-
-dotenv.config();
-
-const { REDIRECT_URI, STRAVA_CLIENT_ID, STRAVA_CLIENT_SECRET } = process.env;
 
 export const fetchSpotifyAccessToken = async (
   code: string,
@@ -30,7 +30,7 @@ export const fetchSpotifyAccessToken = async (
     params.append('redirect_uri', REDIRECT_URI!);
 
     const { data } = await spotifyAPI({
-      baseURL: SPOTFIY_TOKEN_URI,
+      baseURL: SPOTFIY_TOKEN_URL,
       headers: { Authorization: SPOTIFY_AUTH_HEADER },
     }).post<unknown, { data: SpotifyAuthResponse }>('', params);
 
@@ -51,7 +51,7 @@ export const fetchStravaAcessToken = async (
     params.append('code', code!);
     params.append('grant_type', 'authorization_code');
 
-    const { data } = await stravaAPI({ baseURL: STRAVA_TOKEN_URI }).post<
+    const { data } = await stravaAPI({ baseURL: STRAVA_TOKEN_URL }).post<
       unknown,
       { data: StravaAuthResponse }
     >('', params);

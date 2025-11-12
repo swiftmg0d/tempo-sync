@@ -1,6 +1,7 @@
 import axios, { AxiosInstance } from 'axios';
 
 import { SpotifyAPIProperties } from '@/interfaces/axios.interface';
+import { decrypt } from '@/utils/crypt.utils';
 
 export function createCustomAPI(url: string) {
   const customAPI = ({
@@ -19,7 +20,7 @@ export function createCustomAPI(url: string) {
 
     api.interceptors.request.use((config) => {
       if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
+        config.headers.Authorization = `Bearer ${decrypt(token)}`;
       }
       return config;
     });

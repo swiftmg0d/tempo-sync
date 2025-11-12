@@ -9,3 +9,5 @@ node_modules/
 # Distribution/build folders
 dist/
 build/
+
+.DS_Store

@@ -1,11 +1,15 @@
-import dotenv from 'dotenv';
 import { and, eq } from 'drizzle-orm';
 
 import { spotifyAPI, stravaAPI } from '@/config/axios';
 import {
-  SPOTFIY_TOKEN_URI,
+  CLIENT_ID,
+  STRAVA_CLIENT_ID,
+  STRAVA_CLIENT_SECRET,
+} from '@/config/env';
+import {
+  SPOTFIY_TOKEN_URL,
   SPOTIFY_AUTH_HEADER,
-  STRAVA_TOKEN_URI,
+  STRAVA_TOKEN_URL,
 } from '@/constants';
 import { db } from '@/db';
 import { token, TokenInsertType } from '@/db/schema';
@@ -13,10 +17,6 @@ import { DatabaseError, FetchError } from '@/errors';
 import { TokenResponse } from '@/types/auth.type';
 import { decrypt, encrypt } from '@/utils/crypt.utils';
 import { incrementDateBySeconds } from '@/utils/date.utils';
-
-dotenv.config();
-
-const { CLIENT_ID, STRAVA_CLIENT_ID, STRAVA_CLIENT_SECRET } = process.env;
 
 export const saveToken = async (tokenData: TokenInsertType) => {
   try {
@@ -95,7 +95,7 @@ const refreshSpotifyToken = async (value: string) => {
     params.append('client_id', CLIENT_ID!);
 
     const { data } = await spotifyAPI({
-      baseURL: SPOTFIY_TOKEN_URI,
+      baseURL: SPOTFIY_TOKEN_URL,
       headers: { Authorization: SPOTIFY_AUTH_HEADER },
     }).post<TokenResponse>('', params);
 
@@ -115,7 +115,7 @@ const refreshStravaToken = async (value: string) => {
     params.append('refresh_token', decrypt(value));
 
     const { data } = await stravaAPI({
-      baseURL: STRAVA_TOKEN_URI,
+      baseURL: STRAVA_TOKEN_URL,
     }).post<TokenResponse>('', params);
 
     return data;
