@@ -44,6 +44,7 @@ export interface StravaActivity {
   average_cadence: number;
   average_heartrate: number;
   average_speed: number;
+  description: string;
   best_efforts: Effort[];
   device_name: string;
   distance: number;
@@ -183,3 +184,25 @@ interface SplitCamal {
 type SplitMetric = Split;
 
 type SplitStandard = Split;
+
+export type streamKeys =
+  | 'time'
+  | 'distance'
+  | 'latlng'
+  | 'altitude'
+  | 'velocity_smooth'
+  | 'heartrate'
+  | 'cadence'
+  | 'watts'
+  | 'temp'
+  | 'moving'
+  | 'grade_smooth';
+
+export type ActivityStream = {
+  [K in streamKeys]?: {
+    data: number[];
+    series_type: 'distance' | 'time';
+    original_size: number;
+    resolution: 'high' | 'medium' | 'high';
+  };
+};
