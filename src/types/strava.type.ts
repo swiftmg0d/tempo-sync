@@ -1,3 +1,15 @@
+export type ActivityStream = Partial<
+  Record<
+    streamKeys,
+    {
+      data: number[];
+      original_size: number;
+      resolution: 'high' | 'high' | 'medium';
+      series_type: 'distance' | 'time';
+    }
+  >
+>;
+
 export interface EffortCamal {
   elapsedTime: number;
   endIndex: number;
@@ -44,8 +56,8 @@ export interface StravaActivity {
   average_cadence: number;
   average_heartrate: number;
   average_speed: number;
-  description: string;
   best_efforts: Effort[];
+  description: string;
   device_name: string;
   distance: number;
   elapsed_time: number;
@@ -99,6 +111,19 @@ export interface StravaActivityCamal {
   totalElevationGain: number;
   type: string;
 }
+
+export type streamKeys =
+  | 'altitude'
+  | 'cadence'
+  | 'distance'
+  | 'grade_smooth'
+  | 'heartrate'
+  | 'latlng'
+  | 'moving'
+  | 'temp'
+  | 'time'
+  | 'velocity_smooth'
+  | 'watts';
 
 interface ActivityMap {
   id: string;
@@ -184,25 +209,3 @@ interface SplitCamal {
 type SplitMetric = Split;
 
 type SplitStandard = Split;
-
-export type streamKeys =
-  | 'time'
-  | 'distance'
-  | 'latlng'
-  | 'altitude'
-  | 'velocity_smooth'
-  | 'heartrate'
-  | 'cadence'
-  | 'watts'
-  | 'temp'
-  | 'moving'
-  | 'grade_smooth';
-
-export type ActivityStream = {
-  [K in streamKeys]?: {
-    data: number[];
-    series_type: 'distance' | 'time';
-    original_size: number;
-    resolution: 'high' | 'medium' | 'high';
-  };
-};

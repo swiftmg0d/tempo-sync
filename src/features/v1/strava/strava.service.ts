@@ -1,31 +1,12 @@
-import { stravaAPI } from '@/config/axios';
 import { db } from '@/db';
 import { activityMap } from '@/db/schema/activity-map.table';
 import { activitySummary } from '@/db/schema/activity-summary.table';
 import { activity } from '@/db/schema/activity.table';
-import { DatabaseError, FetchError } from '@/errors';
-import { StravaActivity, StravaActivityCamal } from '@/types/activity.type';
+import { DatabaseError } from '@/errors';
+import { StravaActivity, StravaActivityCamal } from '@/types/strava.type';
 import { convertToCamelCase } from '@/utils/case.utils';
-import { decrypt } from '@/utils/crypt.utils';
 
 import { findAthleteByStravaId } from '../athlete/athlete.service';
-
-export const fetchActivity = async (
-  accessToken: string,
-  activityId: number,
-) => {
-  try {
-    const response = await stravaAPI({ token: decrypt(accessToken) }).get<
-      unknown,
-      { data: StravaActivity }
-    >(`/activities/${activityId}`);
-
-    return response.data;
-  } catch (e) {
-    console.error(e);
-    throw new FetchError('Failed to retrieve activity from Strava');
-  }
-};
 
 export const saveActivity = async (
   stravaActivity: StravaActivity,

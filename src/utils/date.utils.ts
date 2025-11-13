@@ -1,6 +1,8 @@
-export function incrementDateBySeconds(seconds: number) {
-  const expiresAt = new Date();
-  expiresAt.setUTCSeconds(expiresAt.getSeconds() + seconds);
+export function incrementDateBySeconds(
+  seconds: number,
+  date: Date = new Date(),
+) {
+  date.setUTCSeconds(date.getSeconds() + seconds);
 
-  return expiresAt;
+  return date;
 }

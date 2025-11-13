@@ -8,12 +8,8 @@ declare module 'express-session' {
   }
 }
 
-import {
-  fetchSpotifyAccessToken,
-  fetchStravaAcessToken,
-  saveProfile,
-  syncWithSpotify,
-} from './auth.service';
+import { fetchSpotifyAccessToken, fetchStravaAcessToken } from './auth.api';
+import { saveProfile, syncWithSpotify } from './auth.service';
 
 export const login = (_req: Request, res: Response) => {
   res.redirect(getAuthUrl('strava'));

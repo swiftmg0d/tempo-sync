@@ -14,6 +14,6 @@ export const athlete = pgTable('athlete', {
 });
 
 export const athleteRelations = relations(athlete, ({ many }) => ({
-  activities: many(activity),
-  tokens: many(token),
+  activities: many(activity, { relationName: 'activities' }),
+  tokens: many(token, { relationName: 'tokens' }),
 }));

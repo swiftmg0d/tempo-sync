@@ -1,22 +1,13 @@
 import { and, eq } from 'drizzle-orm';
 
-import { spotifyAPI, stravaAPI } from '@/config/axios';
-import {
-  CLIENT_ID,
-  STRAVA_CLIENT_ID,
-  STRAVA_CLIENT_SECRET,
-} from '@/config/env';
-import {
-  SPOTFIY_TOKEN_URL,
-  SPOTIFY_AUTH_HEADER,
-  STRAVA_TOKEN_URL,
-} from '@/constants';
 import { db } from '@/db';
 import { token, TokenInsertType } from '@/db/schema';
-import { DatabaseError, FetchError } from '@/errors';
+import { DatabaseError } from '@/errors';
 import { TokenResponse } from '@/types/auth.type';
-import { decrypt, encrypt } from '@/utils/crypt.utils';
+import { encrypt } from '@/utils/crypt.utils';
 import { incrementDateBySeconds } from '@/utils/date.utils';
+
+import { refreshAccessToken } from './token.api';
 
 export const saveToken = async (tokenData: TokenInsertType) => {
   try {
@@ -75,53 +66,6 @@ export const findTokensByProvider = async (provider: 'spotify' | 'strava') => {
   } catch (e) {
     console.error(e);
     throw new DatabaseError('Failed to retrieve tokens by provider');
-  }
-};
-
-const refreshAccessToken = async (
-  tokenType: 'spotify' | 'strava',
-  value: string,
-) => {
-  if (tokenType == 'strava') return await refreshStravaToken(value);
-
-  return await refreshSpotifyToken(value);
-};
-
-const refreshSpotifyToken = async (value: string) => {
-  try {
-    const params = new URLSearchParams();
-    params.append('grant_type', 'refresh_token');
-    params.append('refresh_token', decrypt(value));
-    params.append('client_id', CLIENT_ID!);
-
-    const { data } = await spotifyAPI({
-      baseURL: SPOTFIY_TOKEN_URL,
-      headers: { Authorization: SPOTIFY_AUTH_HEADER },
-    }).post<TokenResponse>('', params);
-
-    return data;
-  } catch (e) {
-    console.error(e);
-    throw new FetchError('Failed to refresh token securely!');
-  }
-};
-
-const refreshStravaToken = async (value: string) => {
-  try {
-    const params = new URLSearchParams();
-    params.append('client_id', STRAVA_CLIENT_ID!);
-    params.append('client_secret', STRAVA_CLIENT_SECRET!);
-    params.append('grant_type', 'refresh_token');
-    params.append('refresh_token', decrypt(value));
-
-    const { data } = await stravaAPI({
-      baseURL: STRAVA_TOKEN_URL,
-    }).post<TokenResponse>('', params);
-
-    return data;
-  } catch (e) {
-    console.error(e);
-    throw new FetchError('Failed to refresh token securely!');
   }
 };
 

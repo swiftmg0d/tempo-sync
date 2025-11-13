@@ -15,7 +15,7 @@ import {
   LapCamal,
   SplitMetricCamal,
   SplitStandardCamal,
-} from '@/types/activity.type';
+} from '@/types/strava.type';
 
 import { activitySummary } from './activity-summary.table';
 import { athlete } from './athlete.table';
