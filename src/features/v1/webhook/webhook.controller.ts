@@ -46,6 +46,7 @@ export const stravaWebhookResponse = async (
   res: Response,
 ) => {
   const aspectType = req.body.aspect_type;
+  console.log('Received webhook:', req.body);
 
   if (aspectType !== 'create') {
     return res.status(200).send({
@@ -78,10 +79,15 @@ export const stravaWebhookResponse = async (
     heartRateData,
     'heartbeatSongAnalysis',
   );
-  const activityInsight = await generetePrompt<LLMActivityInsightResponse>(
-    activity,
-    'stravaInsight',
-  );
+
+  let activityInsight = undefined;
+
+  if (updatedActivity.map.polyline !== '') {
+    activityInsight = await generetePrompt<LLMActivityInsightResponse>(
+      updatedActivity,
+      'stravaInsight',
+    );
+  }
 
   const response = await saveActivity(
     updatedActivity,

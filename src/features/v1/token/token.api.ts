@@ -49,7 +49,7 @@ export const refreshAccessToken = async (
 export const refreshStravaToken = async (value: string) => {
   try {
     const params = new URLSearchParams();
-    params.append('client_id1', STRAVA_CLIENT_ID!);
+    params.append('client_id', STRAVA_CLIENT_ID!);
     params.append('client_secret', STRAVA_CLIENT_SECRET!);
     params.append('grant_type', 'refresh_token');
     params.append('refresh_token', decrypt(value));

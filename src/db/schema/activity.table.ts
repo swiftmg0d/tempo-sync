@@ -27,7 +27,6 @@ import { athlete } from './athlete.table';
 export const activity = pgTable('activity', {
   activityId: bigint('activity_id', { mode: 'bigint' }).unique().notNull(),
   athleteId: bigint('athlete_id', { mode: 'bigint' })
-    .unique()
     .notNull()
     .references(() => athlete.id, { onDelete: 'cascade' }),
   bestEfforts: json('best_efforts').$type<EffortCamal[]>(),

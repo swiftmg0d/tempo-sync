@@ -1,4 +1,3 @@
-import { FetchError } from '@/errors';
 import { StravaActivity } from '@/types/strava.type';
 import { incrementDateBySeconds } from '@/utils/date.utils';
 import {
@@ -62,8 +61,7 @@ export const getHeartRateForEachSongFromActivity = async (
 
   const dataHR = streams.heartrate;
 
-  if (!dataHR)
-    throw new FetchError('No heart rate data available for this activity', 404);
+  if (!dataHR) return [];
 
   const heartRateTimeRanges = calculateHeartRateTimeRanges(
     calculateSongDurationIntervals(songs, endActivityDate),
