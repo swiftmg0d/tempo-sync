@@ -1,6 +1,7 @@
 import dotenv from 'dotenv';
+import dotenvExpand from 'dotenv-expand';
 
-dotenv.config({});
+dotenvExpand.expand(dotenv.config({}));
 
 export const {
   CLIENT_ID,
@@ -10,12 +11,14 @@ export const {
   KEY,
   NODE_ENV,
   PORT,
-  REDIRECT_URI,
-  REDIRECT_URI_STRAVA,
+  REDIRECT_URL,
+  REDIRECT_URL_STRAVA,
   SCOPE,
   SESSION_SECRET,
   STRAVA_CLIENT_ID,
   STRAVA_CLIENT_SECRET,
   STRAVA_SCOPE,
+  VERIFY_TOKEN,
+  WEBHOOK_CALLBACK_URL,
   X_API_KEY,
 } = process.env;
