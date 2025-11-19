@@ -3,6 +3,10 @@ import { activityMap } from '@/db/schema/activity-map.table';
 import { activitySummary } from '@/db/schema/activity-summary.table';
 import { activity } from '@/db/schema/activity.table';
 import { DatabaseError } from '@/errors';
+import {
+  LLMActivityInsightResponse,
+  LLMHeartbeatSongsAnalysis,
+} from '@/types/llm.type';
 import { StravaActivity, StravaActivityCamal } from '@/types/strava.type';
 import { convertToCamelCase } from '@/utils/case.utils';
 
@@ -11,6 +15,8 @@ import { findAthleteByStravaId } from '../athlete/athlete.service';
 export const saveActivity = async (
   stravaActivity: StravaActivity,
   stravaId: number,
+  llmHeartBeatSongsAnalaysis?: LLMHeartbeatSongsAnalysis,
+  llmActivityInsight?: LLMActivityInsightResponse,
 ) => {
   try {
     const converted = convertToCamelCase<StravaActivity, StravaActivityCamal>(
@@ -29,6 +35,8 @@ export const saveActivity = async (
         distance: converted.distance,
         gear: converted.gear,
         laps: converted.laps,
+        llmActivityInsight,
+        llmHeartBeatSongsAnalaysis,
         name: converted.name,
         splitsMetric: converted.splitsMetric,
         splitsStandard: converted.splitsStandard,
@@ -39,7 +47,7 @@ export const saveActivity = async (
       .returning({ id: activity.id });
 
     await db.insert(activityMap).values({
-      acitvityId: id,
+      activityId: id,
       mapId: converted.map.id,
       polyline: converted.map.polyline,
       summaryPolyline: converted.map.summaryPolyline,

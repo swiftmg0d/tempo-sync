@@ -1,9 +1,18 @@
 import { PlayHistorySong } from '@/types/track.type';
 
-export const calculateSongDurationIntervals = (songs: PlayHistorySong[]) => {
+export const calculateSongDurationIntervals = (
+  songs: PlayHistorySong[],
+  endActivityDate: Date,
+) => {
   const songDurationIntervals = [...songs]
     .map((song, i) => {
-      if (i == songs.length - 1) return;
+      if (i == songs.length - 1) {
+        return Math.floor(
+          Math.abs(
+            new Date(song.played_at).getTime() - endActivityDate.getTime(),
+          ) / 1000,
+        );
+      }
 
       return Math.floor(
         Math.abs(

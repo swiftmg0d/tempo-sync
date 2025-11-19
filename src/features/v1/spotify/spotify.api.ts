@@ -1,3 +1,5 @@
+import { AxiosError } from 'axios';
+
 import { spotifyAPI, stravaAPI } from '@/config/axios';
 import { RECENTLY_PLAYED_SONGS } from '@/constants/api/spotify';
 import { FetchError } from '@/errors';
@@ -21,8 +23,13 @@ export const fetchRecentlyPlayedSongs = async ({
 
     return data;
   } catch (e) {
-    console.error(e);
-    throw new FetchError('Failed to fetch recently played songs!');
+    let statusCode = undefined;
+    if (e instanceof AxiosError) {
+      console.error('Error response: \n', e.response?.data);
+      statusCode = e.status;
+    }
+
+    throw new FetchError('FFailed to fetch recently played songs!', statusCode);
   }
 };
 
@@ -44,7 +51,12 @@ export const fetchActivityStream = async (
 
     return data;
   } catch (e) {
-    console.error(e);
-    throw new FetchError('Failed to fetch activity stream!');
+    let statusCode = undefined;
+    if (e instanceof AxiosError) {
+      console.error('Error response: \n', e.response?.data);
+      statusCode = e.status;
+    }
+
+    throw new FetchError('Failed to fetch activity stream!', statusCode);
   }
 };

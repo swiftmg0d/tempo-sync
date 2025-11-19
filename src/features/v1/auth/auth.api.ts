@@ -1,6 +1,8 @@
+import { AxiosError } from 'axios';
+
 import { spotifyAPI, stravaAPI } from '@/config/axios';
 import {
-  REDIRECT_URI,
+  REDIRECT_URL,
   STRAVA_CLIENT_ID,
   STRAVA_CLIENT_SECRET,
 } from '@/config/env';
@@ -19,7 +21,7 @@ export const fetchSpotifyAccessToken = async (
     const params = new URLSearchParams();
     params.append('code', code);
     params.append('grant_type', 'authorization_code');
-    params.append('redirect_uri', REDIRECT_URI!);
+    params.append('redirect_uri', REDIRECT_URL!);
 
     const { data } = await spotifyAPI({
       baseURL: SPOTFIY_TOKEN_URL,
@@ -28,8 +30,13 @@ export const fetchSpotifyAccessToken = async (
 
     return data;
   } catch (e) {
-    console.error(e);
-    throw new FetchError('Failed to fetch Spotify access token');
+    let statusCode = undefined;
+    if (e instanceof AxiosError) {
+      console.error('Error response: \n', e.response?.data);
+      statusCode = e.status;
+    }
+
+    throw new FetchError('Failed to fetch Spotify access token', statusCode);
   }
 };
 
@@ -50,7 +57,11 @@ export const fetchStravaAcessToken = async (
 
     return data;
   } catch (e) {
-    console.error(e);
-    throw new FetchError('Failed to fetch Strava access token');
+    let statusCode = undefined;
+    if (e instanceof AxiosError) {
+      console.error('Error response: \n', e.response?.data);
+      statusCode = e.status;
+    }
+    throw new FetchError('Failed to fetch Strava access token', statusCode);
   }
 };

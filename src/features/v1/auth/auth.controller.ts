@@ -27,7 +27,7 @@ export const spotifyCallback = async (req: Request, res: Response) => {
 
   await syncWithSpotify(response, stravaId);
 
-  res.send('oke');
+  res.send('Successfully synced with Spotify!');
 };
 
 export const stravaCallback = async (req: Request, res: Response) => {
@@ -39,7 +39,9 @@ export const stravaCallback = async (req: Request, res: Response) => {
 
   const { id, redirect } = await saveProfile(response);
 
-  if (redirect) res.send('Redirected change later'); // TODO: Change it latter on with real redirection
+  if (redirect) {
+    return res.json({ message: 'Already logged in', success: true });
+  }
 
   req.session.stravaId = id;
 

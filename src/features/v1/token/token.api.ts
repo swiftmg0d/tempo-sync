@@ -1,3 +1,5 @@
+import { AxiosError } from 'axios';
+
 import { spotifyAPI, stravaAPI } from '@/config/axios';
 import {
   CLIENT_ID,
@@ -27,8 +29,11 @@ export const refreshSpotifyToken = async (value: string) => {
 
     return data;
   } catch (e) {
-    console.error(e);
-    throw new FetchError('Failed to refresh token securely!');
+    const statusCode = undefined;
+    if (e instanceof AxiosError) {
+      console.error('Error response: \n', e.response?.data);
+    }
+    throw new FetchError('Failed to refresh token securely', statusCode);
   }
 };
 
@@ -44,7 +49,7 @@ export const refreshAccessToken = async (
 export const refreshStravaToken = async (value: string) => {
   try {
     const params = new URLSearchParams();
-    params.append('client_id', STRAVA_CLIENT_ID!);
+    params.append('client_id1', STRAVA_CLIENT_ID!);
     params.append('client_secret', STRAVA_CLIENT_SECRET!);
     params.append('grant_type', 'refresh_token');
     params.append('refresh_token', decrypt(value));
@@ -55,7 +60,10 @@ export const refreshStravaToken = async (value: string) => {
 
     return data;
   } catch (e) {
-    console.error(e);
-    throw new FetchError('Failed to refresh token securely!');
+    const statusCode = undefined;
+    if (e instanceof AxiosError) {
+      console.error('Error response: \n', e.response?.data);
+    }
+    throw new FetchError('Failed to refresh token securely', statusCode);
   }
 };
