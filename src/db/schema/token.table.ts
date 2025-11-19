@@ -24,5 +24,6 @@ export const tokenRelations = relations(token, ({ one }) => ({
   athlete: one(athlete, {
     fields: [token.athleteId],
     references: [athlete.id],
+    relationName: 'athlete-token',
   }),
 }));

@@ -7,3 +7,5 @@ export const STRAVA_TOKEN_URL = 'https://www.strava.com/oauth/token';
 export const STRAVA_API_URL = 'https://www.strava.com/api/v3';
 export const SPOTIFY_API_URL = 'https://api.spotify.com/v1';
 export const SPOTIFY_AUTH_HEADER = `Basic ${Buffer.from(CLIENT_ID + ':' + CLIENT_SECRET).toString('base64')}`;
+export const STRAVA_WEBHOOK_URL =
+  'https://www.strava.com/api/v3/push_subscriptions';

@@ -4,7 +4,7 @@ import { bigint, integer, pgTable, text, varchar } from 'drizzle-orm/pg-core';
 import { activity } from '@/db/schema/activity.table';
 
 export const activityMap = pgTable('activity_map', {
-  acitvityId: bigint('activity_id', { mode: 'bigint' }).references(
+  activityId: bigint('activity_id', { mode: 'bigint' }).references(
     () => activity.id,
     {
       onDelete: 'cascade',
@@ -18,7 +18,8 @@ export const activityMap = pgTable('activity_map', {
 
 export const activityMapRelations = relations(activityMap, ({ one }) => ({
   activity: one(activity, {
-    fields: [activityMap.acitvityId],
+    fields: [activityMap.activityId],
     references: [activity.id],
+    relationName: 'activity-map',
   }),
 }));

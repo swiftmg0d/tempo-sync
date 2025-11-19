@@ -38,6 +38,7 @@ export const activitySummaryRelations = relations(
     activity: one(activity, {
       fields: [activitySummary.activityId],
       references: [activity.id],
+      relationName: 'activity-summary',
     }),
   }),
 );
