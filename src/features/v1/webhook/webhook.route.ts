@@ -12,7 +12,7 @@ const router = Router();
 
 router.post('/register', registerWebhook);
 router.get('/view', viewWebhook);
-router.delete('/delete', deleteWebhook);
+router.delete('/delete/:id', deleteWebhook);
 router.post('/', stravaWebhookResponse);
 router.get('/', verifyStravaWebhook);
 
