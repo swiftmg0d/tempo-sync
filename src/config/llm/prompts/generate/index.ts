@@ -3,11 +3,13 @@ import { PromptError } from '@/errors';
 
 interface GeneretePromptProperties {
   systemPrompt: string;
+  temperature?: number;
   userPrompt: string;
 }
 
-export const generatePrompt = async ({
+export const genereteChat = async ({
   systemPrompt,
+  temperature = 0.7,
   userPrompt,
 }: GeneretePromptProperties) => {
   try {
@@ -19,7 +21,8 @@ export const generatePrompt = async ({
           role: 'user',
         },
       ],
-      model: model,
+      model,
+      temperature,
     });
     return {
       result: response.choices[0].message.content?.trim() || '',

@@ -23,7 +23,9 @@ const USER_PROMPT_ACTIVITY_INSIGHT = (json: unknown) => {
     { "title": "Personalized Recommendations", "description": "..." },
     { "title": "Rating", "description": "X/10" }
     ]
-    Only output valid JSON text without any additional markdow e.g (\`\`\`json at the start or \`\`\` at the end ) or text.   
+
+
+    Remember: Output only the JSON object with no markdown formatting. e.g (\`\`\`json at the start or \`\`\` at the end ) or text
     `;
 };
 
