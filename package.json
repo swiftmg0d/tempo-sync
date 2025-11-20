@@ -78,7 +78,6 @@
     "target": "es2020",
     "sourcemap": true,
     "clean": true,
-    "dts": true,
     "splitting": false,
     "skipNodeModulesBundle": true
   }
