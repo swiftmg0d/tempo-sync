@@ -166,3 +166,4 @@ dist
 !.env.example
 .wrangler/
 wrangler.local.jsonc
+.vscode
