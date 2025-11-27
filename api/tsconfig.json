@@ -20,8 +20,8 @@
 		"noEmit": true,
 		"isolatedModules": true,
 		"allowSyntheticDefaultImports": true,
-		"types": ["./worker-configuration.d.ts"]
+		"types": ["./worker-configuration.d.ts", "node"]
 	},
 	"exclude": ["test"],
-	"include": ["worker-configuration.d.ts", "src/**/*.ts"]
+	"include": ["worker-configuration.d.ts", "src/**/*.ts", "drizzle.config.ts"]
 }

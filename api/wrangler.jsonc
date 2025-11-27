@@ -8,17 +8,10 @@
 	"main": "src/index.ts",
 	"compatibility_date": "2025-11-27",
 	"observability": {
-		"enabled": true
+		"enabled": true,
 	},
-	"compatibility_flags": [
-		"nodejs_compat"
-	],
-	"hyperdrive": [
-		{
-			"binding": "HYPERDRIVE",
-			"id": "446281c986034f378e13834dcd13a34d",
-		}
-	],
+	"compatibility_flags": ["nodejs_compat"],
+
 	/**
 	 * Smart Placement
 	 * Docs: https://developers.cloudflare.com/workers/configuration/smart-placement/#smart-placement

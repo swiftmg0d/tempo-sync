@@ -4,13 +4,14 @@
 	"private": true,
 	"scripts": {
 		"deploy": "wrangler deploy",
-		"dev": "wrangler dev --port 3000",
+		"dev": "wrangler dev --config wrangler.local.jsonc --port 3000",
 		"start": "wrangler dev",
 		"test": "vitest",
 		"cf-typegen": "wrangler types",
 		"prepare": "husky",
 		"db:push": "pnpm drizzle-kit push",
-		"db:studio": "pnpm drizzle-kit studio"
+		"db:studio": "pnpm drizzle-kit studio",
+		"lint": "eslint . --fix"
 	},
 	"devDependencies": {
 		"@cloudflare/vitest-pool-workers": "^0.8.19",
