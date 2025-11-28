@@ -9,6 +9,7 @@ import routes from '@/features/v1';
 
 import { RouteNotFoundError } from './errors';
 import { errorHandler } from './middleware/error-handler.middleware';
+import proxyAuth from './middleware/proxy-auth.middleware';
 
 const app: Express = express();
 
@@ -25,6 +26,10 @@ app.use('/v1/api', routes);
 
 app.get('/health', (_req, res) => {
 	res.json({ message: 'TempoSyncApi running on Cloudflare Workers!' });
+});
+
+app.get('/v1/api/test', proxyAuth, (req, res) => {
+	res.json({ message: 'Testing proxy is runingg' });
 });
 
 app.get(['/*x', '/'], () => {

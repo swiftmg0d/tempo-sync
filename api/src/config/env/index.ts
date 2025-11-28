@@ -1,6 +1,7 @@
 import { env } from 'cloudflare:workers';
 
 export const {
+	API_SECRET,
 	CLIENT_ID,
 	CLIENT_SECRET,
 	COOKIE_SECRET,
