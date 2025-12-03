@@ -3,7 +3,6 @@ import { env } from 'cloudflare:workers';
 import { Hono } from 'hono';
 
 import { CorsConfiguration } from './middleware/cors-configuration.middleware';
-import { loggerMiddleware } from './middleware/logger.middleware';
 import { turnstileValidation } from './middleware/turnstile-validation.middleware';
 
 interface Env {
@@ -12,7 +11,7 @@ interface Env {
 
 const app = new Hono<{ Bindings: Env }>();
 
-app.use('*', CorsConfiguration(), loggerMiddleware);
+app.use('*', CorsConfiguration());
 
 app.all('/api/**', OriginAccess, turnstileValidation, async (c) => {
 	const newPath = c.req.path.replace(/^\/api/, '/v1/api');
