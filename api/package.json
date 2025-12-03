@@ -4,14 +4,17 @@
 	"private": true,
 	"scripts": {
 		"deploy": "wrangler deploy",
-		"dev": "wrangler dev --config wrangler.local.jsonc --port 3000",
+		"dev": "wrangler dev --config wrangler.local.jsonc --ip 0.0.0.0 --port 3000",
 		"start": "wrangler dev",
 		"test": "vitest",
 		"cf-typegen": "wrangler types",
 		"prepare": "husky",
 		"db:push": "pnpm drizzle-kit push",
 		"db:studio": "pnpm drizzle-kit studio",
-		"lint": "eslint . --fix"
+		"lint": "eslint . --fix",
+		"docker:build": "docker build -t tempo-sync-api -f .Dockerfile .",
+		"docker:run": "docker run -p 3000:3000 --env-file .env tempo-sync-api",
+		"docker:dev": "pnpm docker:build && pnpm docker:run"
 	},
 	"devDependencies": {
 		"@cloudflare/vitest-pool-workers": "^0.8.19",

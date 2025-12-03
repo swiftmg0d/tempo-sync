@@ -4,10 +4,13 @@
 	"private": true,
 	"scripts": {
 		"deploy": "wrangler deploy",
-		"dev": "wrangler dev",
+		"dev": "wrangler dev --ip 0.0.0.0 --port 8787",
 		"start": "wrangler dev",
 		"test": "vitest",
-		"cf-typegen": "wrangler types"
+		"cf-typegen": "wrangler types",
+		"docker:build": "docker build -t tempo-sync-proxy -f .Dockerfile .",
+		"docker:run": "docker run -p 8787:8787 --env-file .env tempo-sync-proxy",
+		"docker:dev": "pnpm docker:build && pnpm docker:run"
 	},
 	"devDependencies": {
 		"@cloudflare/vitest-pool-workers": "^0.8.19",
