@@ -15,4 +15,4 @@ RUN wrangler types
 
 EXPOSE 8787
 
-CMD ["pnpm", "wrangler", "dev", "--ip", "0.0.0.0", "--port", "8787"]
+CMD ["pnpm", "dev"]
