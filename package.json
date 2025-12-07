@@ -1,0 +1,13 @@
+{
+  "name": "tempo-sync",
+  "version": "1.0.0",
+  "description": "",
+  "scripts": {
+    "start": "docker compose up -d --build",
+    "stop":"docker compose down"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.22.0"
+}
