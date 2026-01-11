@@ -13,7 +13,7 @@ const app = new Hono<{ Bindings: Env }>();
 
 app.use('*', CorsConfiguration());
 
-app.all('/api/**', OriginAccess, turnstileValidation, async (c) => {
+app.all('/api/**', OriginAccess, async (c) => {
 	const newPath = c.req.path.replace(/^\/api/, '/v1/api');
 	const url = new URL(newPath + new URL(c.req.url).search, c.req.url);
 

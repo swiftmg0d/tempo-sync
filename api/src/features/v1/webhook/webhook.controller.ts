@@ -34,10 +34,17 @@ export const verifyStravaWebhook = (req: Request, res: Response) => {
 };
 
 export const stravaWebhookResponse = async (req: Request<unknown, unknown, WebhookRequestBody>, res: Response) => {
-	const aspectType = req.body.aspect_type;
+	// const aspectType = req.body.aspect_type;
 	console.log('Received webhook:', req.body);
 
-	if (aspectType !== 'create') {
+	// if (aspectType !== 'create') {
+	// 	return res.status(200).send({
+	// 		message: "This webhook only handles 'create' events for activity sync",
+	// 	});
+	// }
+
+	if (!req.body.updates.title.includes('TEST')) {
+		console.log('Not allowed');
 		return res.status(200).send({
 			message: "This webhook only handles 'create' events for activity sync",
 		});

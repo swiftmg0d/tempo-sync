@@ -4,18 +4,20 @@ import { bigint, boolean, decimal, integer, pgTable } from 'drizzle-orm/pg-core'
 import { activity } from './activity.table';
 
 export const activitySummary = pgTable('activity_summary', {
-	activityId: bigint('activity_id', { mode: 'bigint' }).references(() => activity.id, {
+	activityId: bigint('activity_id', { mode: 'number' }).references(() => activity.id, {
 		onDelete: 'cascade',
 	}),
 	averageCadence: decimal('average_cadence', { mode: 'number' }),
 	averageHeartrate: decimal('average_heartrate', { mode: 'number' }),
 	averageSpeed: decimal('average_speed', { mode: 'number' }).notNull(),
+	calories: decimal('calories', { mode: 'number' }),
+	distance: decimal('distance', { mode: 'number' }).notNull(),
 	elapsedTime: integer('elapsed_time').notNull(),
 	elevHigh: decimal('elev_high', { mode: 'number' }),
 	elevLow: decimal('elev_low', { mode: 'number' }),
 	endLatlng: decimal('end_latlng', { mode: 'number' }).array(),
 	hasHeartrate: boolean('has_heartrate').notNull(),
-	id: bigint({ mode: 'bigint' }).primaryKey().generatedAlwaysAsIdentity(),
+	id: bigint({ mode: 'number' }).primaryKey().generatedAlwaysAsIdentity(),
 	maxHeartrate: decimal('max_heartrate', { mode: 'number' }),
 	maxSpeed: decimal('max_speed', { mode: 'number' }),
 	movingTime: integer('moving_time').notNull(),

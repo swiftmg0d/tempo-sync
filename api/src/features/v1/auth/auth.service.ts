@@ -18,7 +18,7 @@ export const saveProfile = async (
 	success: boolean;
 }> => {
 	try {
-		const { city, country, firstname, id, lastname } = profile.athlete;
+		const { city, country, firstname, id, lastname, profile: profilePhoto } = profile.athlete;
 		const { access_token, expires_in, refresh_token } = profile;
 
 		const expiresAt = incrementDateBySeconds(expires_in);
@@ -30,6 +30,7 @@ export const saveProfile = async (
 				country: country,
 				firstName: firstname,
 				lastName: lastname,
+				profilePhoto: profilePhoto,
 				stravaProfileId: id,
 			})
 			.returning();

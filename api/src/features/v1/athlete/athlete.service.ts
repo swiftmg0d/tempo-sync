@@ -14,3 +14,13 @@ export const findAthleteByStravaId = async (stravaId: number) => {
 		throw new DatabaseError('Failed to find athlete by Strava ID!');
 	}
 };
+
+export const getAthleteProfile = async () => {
+	try {
+		const athleteProfile = await db.select().from(athlete);
+		return athleteProfile[0];
+	} catch (e) {
+		console.error(e);
+		throw new DatabaseError('Failed to get athlete!');
+	}
+};

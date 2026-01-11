@@ -4,8 +4,7 @@ import { activitySummary } from '@/db/schema/activity-summary.table';
 import { activity } from '@/db/schema/activity.table';
 import { DatabaseError } from '@/errors';
 import { LLMActivityInsightResponse, LLMHeartbeatSongsAnalysis } from '@/types/llm.type';
-import { StravaActivity, StravaActivityCamal } from '@/types/strava.type';
-import { convertToCamelCase } from '@/utils/case.utils';
+import { StravaActivity } from '@/types/strava.type';
 
 import { findAthleteByStravaId } from '../athlete/athlete.service';
 
@@ -16,53 +15,52 @@ export const saveActivity = async (
 	llmActivityInsight?: LLMActivityInsightResponse,
 ) => {
 	try {
-		const converted = convertToCamelCase<StravaActivity, StravaActivityCamal>(stravaActivity);
-
 		const athlete = await findAthleteByStravaId(stravaId);
 
 		const [{ id }] = await db
 			.insert(activity)
 			.values({
-				activityId: converted.id,
-				athleteId: BigInt(athlete.id),
-				bestEfforts: converted.bestEfforts,
-				deviceName: converted.deviceName,
-				distance: converted.distance,
-				gear: converted.gear,
-				laps: converted.laps,
+				activityId: Number(stravaActivity.id),
+				athleteId: athlete.id,
+				bestEfforts: stravaActivity.best_efforts,
+				deviceName: stravaActivity.device_name,
+				gear: stravaActivity.gear,
+				laps: stravaActivity.laps,
 				llmActivityInsight,
 				llmHeartBeatSongsAnalaysis,
-				name: converted.name,
-				splitsMetric: converted.splitsMetric,
-				splitsStandard: converted.splitsStandard,
-				startDate: new Date(converted.startDate),
-				startDateLocal: new Date(converted.startDateLocal),
-				type: converted.type,
+				name: stravaActivity.name,
+				splitsMetric: stravaActivity.splits_metric,
+				splitsStandard: stravaActivity.splits_standard,
+				startDate: new Date(stravaActivity.start_date),
+				startDateLocal: new Date(stravaActivity.start_date_local),
+				type: stravaActivity.type,
 			})
 			.returning({ id: activity.id });
 
 		await db.insert(activityMap).values({
 			activityId: id,
-			mapId: converted.map.id,
-			polyline: converted.map.polyline,
-			summaryPolyline: converted.map.summaryPolyline,
+			mapId: stravaActivity.map.id,
+			polyline: stravaActivity.map.polyline,
+			summaryPolyline: stravaActivity.map.summary_polyline,
 		});
 
 		await db.insert(activitySummary).values({
 			activityId: id,
-			averageCadence: converted.averageCadence,
-			averageHeartrate: converted.averageHeartrate,
-			averageSpeed: converted.averageSpeed,
-			elapsedTime: converted.elapsedTime,
-			elevHigh: converted.elevHigh,
-			elevLow: converted.elevLow,
-			endLatlng: converted.endLatlng,
-			hasHeartrate: converted.hasHeartrate,
-			maxHeartrate: converted.maxHeartrate,
-			maxSpeed: converted.maxSpeed,
-			movingTime: converted.movingTime,
-			startLatlng: converted.startLatlng,
-			totalElevationGain: converted.totalElevationGain,
+			averageCadence: stravaActivity.average_cadence,
+			averageHeartrate: stravaActivity.average_heartrate,
+			averageSpeed: stravaActivity.average_speed,
+			calories: stravaActivity.calories,
+			distance: stravaActivity.distance,
+			elapsedTime: stravaActivity.elapsed_time,
+			elevHigh: stravaActivity.elev_high,
+			elevLow: stravaActivity.elev_low,
+			endLatlng: stravaActivity.end_latlng,
+			hasHeartrate: stravaActivity.has_heartrate,
+			maxHeartrate: stravaActivity.max_heartrate,
+			maxSpeed: stravaActivity.max_speed,
+			movingTime: stravaActivity.moving_time,
+			startLatlng: stravaActivity.start_latlng,
+			totalElevationGain: stravaActivity.total_elevation_gain,
 		});
 
 		return {

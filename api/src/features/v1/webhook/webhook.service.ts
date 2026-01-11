@@ -27,7 +27,6 @@ export const getHeartRateForEachSongFromActivity = async (
 	elapsedTime: number,
 ) => {
 	const startActivityDate = new Date(startDate);
-
 	const endActivityDate = incrementDateBySeconds(elapsedTime, new Date(startActivityDate));
 
 	const songs = await fetchSongsByActivity(spotifyAccessToken, startActivityDate, endActivityDate);

@@ -10,17 +10,17 @@ export type ActivityStream = Partial<
 	>
 >;
 
-export interface EffortCamal {
-	elapsedTime: number;
-	endIndex: number;
+export interface Effort {
+	elapsed_time: number;
+	end_index: number;
 	id: bigint;
-	movingTime: number;
+	moving_time: number;
 	name: string;
-	startIndex: number;
+	start_index: number;
 }
 
-export interface GearCamal {
-	convertedDistance: number;
+export interface Gear {
+	converted_distance: number;
 	distance: number;
 	id: string;
 	name: string;
@@ -28,35 +28,37 @@ export interface GearCamal {
 	retired: boolean;
 }
 
-export interface LapCamal {
-	averageCadence: number;
-	averageHeartrate: number;
-	averageSpeed: number;
+export interface Lap {
+	average_cadence: number;
+	average_heartrate: number;
+	average_speed: number;
 	distance: number;
-	elapsedTime: number;
-	endIndex: number;
+	elapsed_time: number;
+	end_index: number;
 	id: bigint;
-	lapIndex: number;
-	maxHeartrate: number;
-	maxSpeed: number;
-	movingTime: number;
+	lap_index: number;
+	max_heartrate: number;
+	max_speed: number;
+	moving_time: number;
 	name: string;
-	paceZone: number;
+	pace_zone: number;
 	split: number;
-	startIndex: number;
-	totalElevationGain: number;
+	start_index: number;
+	total_elevation_gain: number;
 }
 
-export type SplitMetricCamal = SplitCamal;
+export type SplitMetric = Split;
 
-export type SplitStandardCamal = SplitCamal;
+export type SplitStandard = Split;
 
 export interface StravaActivity {
 	athlete: Athlete;
+	athlete_count: number;
 	average_cadence: number;
 	average_heartrate: number;
 	average_speed: number;
 	best_efforts: Effort[];
+	calories: number;
 	description: string;
 	device_name: string;
 	distance: number;
@@ -82,36 +84,6 @@ export interface StravaActivity {
 	type: string;
 }
 
-export interface StravaActivityCamal {
-	athlete: AthleteCamal;
-	averageCadence: number;
-	averageHeartrate: number;
-	averageSpeed: number;
-	bestEfforts: EffortCamal[];
-	deviceName: string;
-	distance: number;
-	elapsedTime: number;
-	elevHigh: number;
-	elevLow: number;
-	endLatlng: [number, number];
-	gear: GearCamal;
-	hasHeartrate: boolean;
-	id: bigint;
-	laps: LapCamal[];
-	map: ActivityMapCamal;
-	maxHeartrate: number;
-	maxSpeed: number;
-	movingTime: number;
-	name: string;
-	splitsMetric: SplitMetricCamal[];
-	splitsStandard: SplitStandardCamal[];
-	startDate: string;
-	startDateLocal: string;
-	startLatlng: [number, number];
-	totalElevationGain: number;
-	type: string;
-}
-
 export type streamKeys =
 	| 'altitude'
 	| 'cadence'
@@ -131,55 +103,8 @@ interface ActivityMap {
 	summary_polyline: string;
 }
 
-interface ActivityMapCamal {
-	id: string;
-	polyline: string;
-	summaryPolyline: string;
-}
-
 interface Athlete {
 	id: bigint;
-}
-
-interface AthleteCamal {
-	id: number;
-}
-
-interface Effort {
-	elapsed_time: number;
-	end_index: number;
-	id: bigint;
-	moving_time: number;
-	name: string;
-	start_index: number;
-}
-
-interface Gear {
-	converted_distance: number;
-	distance: number;
-	id: string;
-	name: string;
-	primary: boolean;
-	retired: boolean;
-}
-
-interface Lap {
-	average_cadence: number;
-	average_heartrate: number;
-	average_speed: number;
-	distance: number;
-	elapsed_time: number;
-	end_index: number;
-	id: bigint;
-	lap_index: number;
-	max_heartrate: number;
-	max_speed: number;
-	moving_time: number;
-	name: string;
-	pace_zone: number;
-	split: number;
-	start_index: number;
-	total_elevation_gain: number;
 }
 
 interface Split {
@@ -193,19 +118,3 @@ interface Split {
 	pace_zone: number;
 	split: number;
 }
-
-interface SplitCamal {
-	averageGradeAdjustedSpeed: number;
-	averageHeartrate: number;
-	averageSpeed: number;
-	distance: number;
-	elapsedTime: number;
-	elevationDifference: number;
-	movingTime: number;
-	paceZone: number;
-	split: number;
-}
-
-type SplitMetric = Split;
-
-type SplitStandard = Split;
