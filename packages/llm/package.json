@@ -1,0 +1,16 @@
+{
+  "name": "@tempo-sync/llm",
+  "version": "0.0.0",
+  "main": "./src/index.ts",
+  "types": "./src/index.ts",
+  "scripts": {
+    "check-types": "tsc --noEmit"
+  },
+  "dependencies": {
+    "openai": "^6.16.0",
+    "@tempo-sync/shared": "workspace:*"
+  },
+  "devDependencies": {
+    "@tempo-sync/config": "workspace:*"
+  }
+}

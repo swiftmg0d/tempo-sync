@@ -1,0 +1,25 @@
+{
+  "name": "@tempo-sync/integrations",
+  "type": "module",
+  "scripts": {
+    "check-types": "tsc --noEmit",
+    "dev": "wrangler dev --port 3100 --inspector-port 9230",
+    "deploy": "wrangler deploy --minify",
+    "cf-typegen": "wrangler types --env-interface CloudflareBindings"
+  },
+  "dependencies": {
+    "@hono/zod-validator": "^0.7.6",
+    "crypto-js": "^4.2.0",
+    "hono": "^4.11.4",
+    "zod": "^4.3.5",
+    "@tempo-sync/db": "workspace:*",
+    "@tempo-sync/llm": "workspace:*",
+    "@tempo-sync/shared": "workspace:*"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20260115.0",
+    "@tempo-sync/config": "workspace:*",
+    "@types/crypto-js": "^4.2.2",
+    "wrangler": "^4.59.1"
+  }
+}

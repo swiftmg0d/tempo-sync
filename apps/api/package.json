@@ -1,0 +1,24 @@
+{
+  "name": "@tempo-sync/api",
+  "type": "module",
+  "scripts": {
+    "deploy": "wrangler deploy --minify",
+    "cf-typegen": "wrangler types --env-interface CloudflareBindings",
+    "check-types": "tsc --noEmit",
+    "dev": "wrangler dev --port 3000"
+  },
+  "dependencies": {
+    "@mapbox/polyline": "^1.2.1",
+    "@tempo-sync/db": "workspace:*",
+    "@tempo-sync/llm": "workspace:*",
+    "@tempo-sync/shared": "workspace:*",
+    "hono": "^4.11.4",
+    "zod": "^4.3.5"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20260115.0",
+    "@tempo-sync/config": "workspace:*",
+    "@types/mapbox__polyline": "^1.0.5",
+    "wrangler": "^4.59.1"
+  }
+}

@@ -1,0 +1,8 @@
+{
+  "extends": "@tempo-sync/config/typescript/base",
+  "compilerOptions": {
+    "baseUrl": "./src"
+  },
+  "include": ["src/**/*.ts", "*.ts"],
+  "exclude": ["node_modules", "dist"]
+}
