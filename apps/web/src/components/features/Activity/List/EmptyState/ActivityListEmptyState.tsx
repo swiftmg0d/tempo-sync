@@ -1,5 +1,6 @@
-import { Icons } from '@/components/icons';
 import * as E from './ActivityListEmptyState.styled';
+
+import { Icons } from '@/components/icons';
 import { Padded } from '@/styles';
 
 export const ActivityListEmptyState = () => {

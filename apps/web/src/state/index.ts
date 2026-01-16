@@ -9,7 +9,9 @@ interface LoadingState {
 
 export const useLoadingState = create<LoadingState>((set) => ({
 	isLoading: false,
-	toggleLoading: () => set((state) => ({ isLoading: !state.isLoading }))
+	toggleLoading: () => {
+		set((state) => ({ isLoading: !state.isLoading }));
+	}
 }));
 
 // ActiveScreen State
@@ -21,7 +23,9 @@ interface ActiveScreen {
 
 export const useActiveScreenState = create<ActiveScreen>((set) => ({
 	activeScreenIndex: 0,
-	setActiveScreenIndex: (index) => set(() => ({ activeScreenIndex: index }))
+	setActiveScreenIndex: (index) => {
+		set(() => ({ activeScreenIndex: index }));
+	}
 }));
 
 // ActiveCard State
@@ -36,6 +40,10 @@ interface ActivityCardsState {
 export const useActivityCardsStore = create<ActivityCardsState>((set) => ({
 	activeCardId: null,
 	isEmpty: null,
-	setActiveCardId: (cardId) => set({ activeCardId: cardId }),
-	setIsEmpty: (isEmpty) => set({ isEmpty })
+	setActiveCardId: (cardId) => {
+		set({ activeCardId: cardId });
+	},
+	setIsEmpty: (isEmpty) => {
+		set({ isEmpty });
+	}
 }));

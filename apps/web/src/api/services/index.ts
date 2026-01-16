@@ -1,11 +1,12 @@
-import api from '../client';
-import type { ApiResponse } from '../types';
 import type {
 	Activities,
 	ActivitySummary,
 	ActivitySummaryStats,
 	Athlete
 } from '@tempo-sync/shared/types';
+
+import api from '../client';
+import type { ApiResponse } from '../types';
 
 export const apiService = {
 	activity: {

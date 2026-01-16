@@ -1,16 +1,17 @@
-import { flex, text } from '@/styles';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 import { motion } from 'motion/react';
+
+import { flex, text } from '@/styles';
 
 const Container = styled.div`
 	${flex({ direction: 'column-reverse', justifyContent: 'space-between' })}
 
 	${({ theme }) => css`
-		padding-bottom: ${theme.spacing['lg']};
+		padding-bottom: ${theme.spacing.lg};
 	`}
 
-    @media (min-width: ${({ theme }) => theme.breakpoints['lg']}) {
+    @media (min-width: ${({ theme }) => theme.breakpoints.lg}) {
 		${flex({ direction: 'row', justifyContent: 'space-between' })}
 	}
 `;
@@ -20,10 +21,10 @@ const InfoContainer = styled.div`
 
 	${({ theme }) => css`
 		flex: 1;
-		padding: ${theme.spacing['lg']};
+		padding: ${theme.spacing.lg};
 	`}
 
-	@media (min-width: ${({ theme }) => theme.breakpoints['lg']}) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.lg}) {
 		padding: ${({ theme }) => theme.spacing['3xl']};
 	}
 `;
@@ -32,7 +33,7 @@ const InfoHeader = styled(motion.h2)`
 	${text({ weight: 'bold', color: 'primary' })}
 
 	${({ theme }) => css`
-		font-size: clamp(${theme.fontSizes['xl']}, 2vw, ${theme.fontSizes['4xl']});
+		font-size: clamp(${theme.fontSizes.xl}, 2vw, ${theme.fontSizes['4xl']});
 	`}
 `;
 
@@ -41,7 +42,7 @@ const InfoSubHeader = styled(motion.p)`
 
 	${({ theme }) => css`
 		max-width: 450px;
-		font-size: clamp(${theme.fontSizes['md']}, 1vw, ${theme.fontSizes['lg']});
+		font-size: clamp(${theme.fontSizes.md}, 1vw, ${theme.fontSizes.lg});
 	`}
 `;
 
@@ -50,11 +51,11 @@ const ButtonText = styled.span`
 
 	${({ theme }) => css`
 		text-transform: none;
-		padding: ${theme.spacing.s} ${theme.spacing['md']};
-		font-size: clamp(${theme.fontSizes['xs']}, 1vw, ${theme.fontSizes['md']});
+		padding: ${theme.spacing.s} ${theme.spacing.md};
+		font-size: clamp(${theme.fontSizes.xs}, 1vw, ${theme.fontSizes.md});
 	`}
 
-	@media (min-width: ${({ theme }) => theme.breakpoints['lg']}) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.lg}) {
 		${({ theme }) => css`
 			padding: ${theme.spacing.md} ${theme.spacing['3xl']};
 		`}

@@ -1,6 +1,7 @@
-import { size } from '@/styles';
 import { Skeleton } from '@chakra-ui/react';
 import styled from '@emotion/styled';
+
+import { size } from '@/styles';
 
 const SyncStatus = styled(Skeleton)`
 	${size('45px', '12px')}

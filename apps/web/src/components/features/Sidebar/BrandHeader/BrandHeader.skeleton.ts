@@ -1,7 +1,9 @@
-import { desktopOnly, size } from '@/styles';
 import { Skeleton } from '@chakra-ui/react';
 import styled from '@emotion/styled';
+
 import { pulseWaveBaseCss } from './BrandHedaer.styles';
+
+import { desktopOnly, size } from '@/styles';
 
 const SyncInfo = styled(Skeleton)`
 	${size('34px', '15px')}

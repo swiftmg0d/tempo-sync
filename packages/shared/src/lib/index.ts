@@ -1,5 +1,6 @@
 import { Hono, type Env } from 'hono';
 import type { ContentfulStatusCode } from 'hono/utils/http-status';
+
 import { FetchError } from '../errors';
 
 export const createRouter = <T extends Env>() => new Hono<T>();

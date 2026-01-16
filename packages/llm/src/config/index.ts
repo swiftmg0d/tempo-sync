@@ -1,6 +1,7 @@
-import OpenAI from 'openai';
-import type { LLMPipeline, LLMProvider } from '../types';
 import type { LLMEnv } from '@tempo-sync/shared/types';
+import OpenAI from 'openai';
+
+import type { LLMPipeline, LLMProvider } from '../types';
 
 export const getProviderModels = (env: LLMEnv) => {
   const providers: LLMProvider = {

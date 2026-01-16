@@ -1,7 +1,7 @@
+import { useMemo } from 'react';
+
 import type { PolylinePreviewProp } from '@/types';
 import { normalizePolyline } from '@/utils';
-
-import { useMemo } from 'react';
 
 export const PolylinePreview = ({ points, width = 40, height = width }: PolylinePreviewProp) => {
 	const pointsString = useMemo(() => {

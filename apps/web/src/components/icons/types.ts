@@ -1,4 +1,4 @@
-export type SizeProps = {
+export interface SizeProps {
 	width?: string;
 	height?: string;
-};
+}

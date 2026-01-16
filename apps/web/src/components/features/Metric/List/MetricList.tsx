@@ -1,13 +1,13 @@
-import { withSkeleton } from '@/utils';
 import { MetricCard } from '../Card';
+
 import * as M from './MetricList.styled';
-import type { MetricsListType } from './types';
 import { MetricsListSkeleton } from './MetricsList.skeleton';
+import type { MetricsListType } from './types';
+
+import { withSkeleton } from '@/utils';
 
 const MetricListComponent = ({ list, title }: MetricsListType) => {
 	if (!list) return null;
-
-	console.log('Rendering MetricList with metrics:', list);
 
 	return (
 		<M.MetricList.Section

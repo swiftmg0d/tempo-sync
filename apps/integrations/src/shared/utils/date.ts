@@ -1,5 +1,5 @@
 export function incrementDateBySeconds(seconds: number, date: Date = new Date()) {
-	date.setUTCSeconds(date.getSeconds() + seconds);
+  date.setUTCSeconds(date.getSeconds() + seconds);
 
-	return date;
+  return date;
 }

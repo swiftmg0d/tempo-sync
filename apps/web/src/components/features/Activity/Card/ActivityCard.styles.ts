@@ -1,6 +1,7 @@
+import { css } from '@emotion/react';
+
 import { activeBorderState, defaultBorderState, size } from '@/styles';
 import type { AppTheme } from '@/styles';
-import { css } from '@emotion/react';
 
 export const defaultContainerState = ({ theme }: { theme: AppTheme }) => css`
 	${defaultBorderState({ theme })}

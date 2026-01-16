@@ -10,7 +10,7 @@ export type ValidatedContext<
   A,
   Path,
   {
-    in: { [K in Target]: z.infer<T> };
-    out: { [K in Target]: z.infer<T> };
+    in: Record<Target, z.infer<T>>;
+    out: Record<Target, z.infer<T>>;
   }
 >;

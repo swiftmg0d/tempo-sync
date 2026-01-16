@@ -1,18 +1,15 @@
-import type { AppContext, AppEnv } from '@/shared/types/bindings';
 import type { ValidatedContext } from '@tempo-sync/shared/types';
-import type {
-  ActivitySummaryValidation,
-  ActivityValidation,
-} from './activity.schema';
+
+import type { ActivitySummaryValidation, ActivityValidation } from './activity.schema';
 import {
   getActivitiesSummaryStats,
   getActivitySummaryById,
   getAthleteActivities,
 } from './activity.service';
 
-export const getActivities = async (
-  c: ValidatedContext<ActivityValidation, 'query', AppEnv>
-) => {
+import type { AppContext, AppEnv } from '@/shared/types/bindings';
+
+export const getActivities = async (c: ValidatedContext<ActivityValidation, 'query', AppEnv>) => {
   const db = c.get('db');
 
   const { page, limit } = c.req.valid('query');

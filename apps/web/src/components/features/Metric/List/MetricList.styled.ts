@@ -1,6 +1,7 @@
-import { defaultBorderState, flex, text } from '@/styles';
 import styled from '@emotion/styled';
 import { motion } from 'motion/react';
+
+import { defaultBorderState, flex, text } from '@/styles';
 
 const Section = styled(motion.section)`
 	${flex({ direction: 'column', gap: 'lg' })}

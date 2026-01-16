@@ -1,4 +1,5 @@
 import type { Next } from 'hono';
+
 import type { AppContext } from '../types';
 
 export const apiKeyMiddleware = (c: AppContext, next: Next) => {

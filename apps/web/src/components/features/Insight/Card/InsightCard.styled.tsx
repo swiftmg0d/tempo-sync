@@ -1,9 +1,11 @@
+import { css } from '@emotion/react';
+import styled from '@emotion/styled';
+
+import { InsightCardSkeleton } from './InsighCard.skeleton';
+
 import { blur, defaultBorderState, flex, size, text, transitionAll } from '@/styles';
 import { baseColors } from '@/styles/theme/colors';
 import { withSkeleton } from '@/utils';
-import { css } from '@emotion/react';
-import styled from '@emotion/styled';
-import { InsightCardSkeleton } from './InsighCard.skeleton';
 
 const ScoreContainer = styled.div`
 	${flex({ direction: 'row', gap: 'sm' })}

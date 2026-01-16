@@ -15,8 +15,7 @@ Output JSON with:
 
 Infer workout type from pace variance, duration, and patterns. Be specific with numbers.`,
 
-    user: (data: unknown) =>
-      `Extract workout details:\n${JSON.stringify(data, null, 2)}`,
+    user: (data: unknown) => `Extract workout details:\n${JSON.stringify(data, null, 2)}`,
   },
 
   analysis: {
@@ -31,8 +30,7 @@ Determine:
 
 Output bullet points with specific observations. Max 120 words.`,
 
-    user: (data: unknown) =>
-      `What's the story of this workout?\n${JSON.stringify(data, null, 2)}`,
+    user: (data: unknown) => `What's the story of this workout?\n${JSON.stringify(data, null, 2)}`,
   },
 
   formatting: {

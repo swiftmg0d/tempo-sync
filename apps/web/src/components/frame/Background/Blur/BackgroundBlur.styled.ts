@@ -24,7 +24,7 @@ export const BlurPoint = styled.div<{
 
 	width: 384px;
 	height: 384px;
-	background-color: ${({ $color }) => $color || 'transparent'};
+	background-color: ${({ $color }) => $color ?? 'transparent'};
 	border-radius: 9999px;
 	filter: blur(100px);
 

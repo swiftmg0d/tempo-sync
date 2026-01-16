@@ -1,6 +1,8 @@
-import { type FlexProperties, type TextProperties } from '@/types/styles';
 import { css } from '@emotion/react';
+
 import { theme, type AppTheme } from './theme';
+
+import type { FlexProperties, TextProperties } from '@/types/styles';
 
 export const flex =
 	({ direction, gap, alignItems, justifyContent }: FlexProperties) =>
@@ -41,7 +43,7 @@ export const transitionAll = css`
 	transition-duration: 150ms;
 `;
 
-export const blur = (amount: number = 5) => css`
+export const blur = (amount = 5) => css`
 	backdrop-filter: blur(${amount}px);
 	-webkit-backdrop-filter: blur(${amount}px);
 `;
@@ -60,7 +62,7 @@ export const desktopOnly = css`
 	}
 `;
 
-export const transition = (duration: number = 0.5) => {
+export const transition = (duration = 0.5) => {
 	return {
 		initial: { opacity: 0, y: -20 },
 		animate: { opacity: 1, y: 0 },

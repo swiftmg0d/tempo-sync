@@ -1,12 +1,12 @@
 {
-	"name": "@tempo-sync/config",
-	"version": "0.0.0",
-	"private": true,
-	"files": [
-		"*.json"
-	],
-	"exports": {
-		"./typescript/worker": "./typescript/worker.json",
-		"./typescript/base": "./typescript/base.json"
-	}
+  "name": "@tempo-sync/config",
+  "version": "0.0.0",
+  "private": true,
+  "files": [
+    "*.json"
+  ],
+  "exports": {
+    "./typescript/worker": "./typescript/worker.json",
+    "./typescript/base": "./typescript/base.json"
+  }
 }

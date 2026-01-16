@@ -1,8 +1,10 @@
-import type { GeneretePromptProperties, LLMPhase } from '../types';
-import { getProviderModels, llmPipeline } from '../config';
-import { createChatCompletion } from './chat';
-import { promptsMap, type PromptKeys } from '../constants';
 import { PromptError } from '@tempo-sync/shared/errors';
+
+import { getProviderModels, llmPipeline } from '../config';
+import { promptsMap, type PromptKeys } from '../constants';
+import type { GeneretePromptProperties, LLMPhase } from '../types';
+
+import { createChatCompletion } from './chat';
 
 export const generetePrompt = async <T = string>({
   env,
@@ -20,7 +22,7 @@ export const generetePrompt = async <T = string>({
     for (const llm of llms) {
       const client = providers[llm.provider].client;
 
-      const prompts = promptsMap[prompt as PromptKeys];
+      const prompts = promptsMap[prompt];
 
       const response = await createChatCompletion({
         provider: client,
@@ -35,10 +37,7 @@ export const generetePrompt = async <T = string>({
       if (response === 'rate_limited' || response === 'payload_too_large') {
         continue;
       } else if (response === null) {
-        throw new PromptError(
-          500,
-          'LLM provider failed to generate a response!'
-        );
+        throw new PromptError(500, 'LLM provider failed to generate a response!');
       }
 
       previousResult = response;

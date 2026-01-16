@@ -1,8 +1,8 @@
-import { colors } from './colors';
-import { shadows } from './shadows';
-import { layout } from './layout';
-import { typography } from './typography';
 import { breakpoints } from './breakpoints';
+import { colors } from './colors';
+import { layout } from './layout';
+import { shadows } from './shadows';
+import { typography } from './typography';
 
 declare module '@emotion/react' {
 	// eslint-disable-next-line @typescript-eslint/no-empty-object-type

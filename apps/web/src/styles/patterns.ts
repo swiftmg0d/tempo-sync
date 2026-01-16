@@ -1,6 +1,8 @@
 import styled from '@emotion/styled';
+
+import type { AppTheme } from './theme';
+
 import type { PaddingSide } from '@/types/styles';
-import { type AppTheme } from './theme';
 
 export const Padded = styled.div<{
 	$p?: keyof AppTheme['spacing'];

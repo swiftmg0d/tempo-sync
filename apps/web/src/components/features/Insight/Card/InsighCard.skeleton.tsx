@@ -1,7 +1,8 @@
-import { size } from '@/styles';
 import { Skeleton } from '@chakra-ui/react';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
+
+import { size } from '@/styles';
 
 const TitleSkleton = styled(Skeleton)`
 	${({ theme }) => css`

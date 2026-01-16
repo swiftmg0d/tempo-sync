@@ -1,11 +1,11 @@
 {
-	"extends": "@tempo-sync/config/typescript/worker",
-	"compilerOptions": {
-		"baseUrl": "./src",
-		"paths": {
-			"@/*": ["*"]
-		}
-	},
-	"include": ["src/**/*.ts", "*.ts"],
-	"exclude": ["node_modules", "dist"]
+  "extends": "@tempo-sync/config/typescript/worker",
+  "compilerOptions": {
+    "baseUrl": "./src",
+    "paths": {
+      "@/*": ["*"]
+    }
+  },
+  "include": ["src/**/*.ts", "*.ts"],
+  "exclude": ["node_modules", "dist"]
 }

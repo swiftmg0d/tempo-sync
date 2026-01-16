@@ -1,5 +1,6 @@
-import { theme } from '@/styles';
 import { css, keyframes } from '@emotion/react';
+
+import { theme } from '@/styles';
 
 const wave = keyframes`
   0% {

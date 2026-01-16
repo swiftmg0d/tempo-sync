@@ -1,7 +1,9 @@
-import { theme, flex, defaultBorderState, transitionAll } from '@/styles';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
+
 import type { StyledButtonProps } from './types';
+
+import { theme, flex, defaultBorderState, transitionAll } from '@/styles';
 
 export const StyledButton = styled.button<StyledButtonProps>`
 	${transitionAll}
@@ -48,7 +50,7 @@ export const StyledButton = styled.button<StyledButtonProps>`
 	${({ $variant }) => ($variant === 'border' ? defaultBorderState : '')}
 
 	${({ $disabled }) => `
-		opacity: ${$disabled ? 0.5 : 1};
+		opacity: ${$disabled ? '0.5' : '1'};
 	`}
 
 	max-height: 35px;

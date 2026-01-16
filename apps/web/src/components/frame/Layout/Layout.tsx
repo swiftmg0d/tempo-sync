@@ -1,5 +1,6 @@
-import { Background } from '../Background';
 import { Sidebar } from '../../features';
+import { Background } from '../Background';
+
 import * as L from './Layout.styled';
 
 export const Layout = ({ children }: { children: React.ReactNode }) => {

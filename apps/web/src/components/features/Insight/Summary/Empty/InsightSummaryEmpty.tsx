@@ -1,7 +1,10 @@
-import * as I from './InsightSummaryEmpty.styled';
-import { InsightSummaryHero } from '../Hero';
-import { SyncImage } from './SyncImage';
 import { motion } from 'motion/react';
+
+import { InsightSummaryHero } from '../Hero';
+
+import * as I from './InsightSummaryEmpty.styled';
+import { SyncImage } from './SyncImage';
+
 import { transition } from '@/styles';
 
 export const InsightSummaryEmpty = () => {

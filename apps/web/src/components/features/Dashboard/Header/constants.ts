@@ -2,6 +2,7 @@ import type { Group } from '@/components/features/ButtonGroup/types';
 
 export const buttonsGroup: Group[] = [
 	{
+		id: 'analyist-grid',
 		text: {
 			lg: 'Analyist grid',
 			base: 'Grid'
@@ -9,6 +10,7 @@ export const buttonsGroup: Group[] = [
 		iconName: 'grid'
 	},
 	{
+		id: 'global-map',
 		text: {
 			lg: 'Global map',
 			base: 'Map'

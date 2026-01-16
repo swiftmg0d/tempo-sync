@@ -1,6 +1,8 @@
-import { Icons } from '@/components/icons';
-import * as A from './ActivityListNoMore.styled';
 import { Box } from '@chakra-ui/react';
+
+import * as A from './ActivityListNoMore.styled';
+
+import { Icons } from '@/components/icons';
 import { theme } from '@/styles';
 export const ActivityListNoMore = () => {
 	const FlagIcon = Icons.flag;
@@ -14,7 +16,7 @@ export const ActivityListNoMore = () => {
 				<A.ActivityListNoMore.Divider />
 			</A.ActivityListNoMore.IconContainer>
 			<A.ActivityListNoMore.Text>
-				You've reached the beginning of your journey
+				You&apos;ve reached the beginning of your journey
 			</A.ActivityListNoMore.Text>
 		</A.ActivityListNoMore.Container>
 	);

@@ -8,7 +8,7 @@ export const createApp = <T extends Env>() => {
   app.use(logger());
   app.use('*', cors());
 
-  app.get('/health', c => {
+  app.get('/health', (c) => {
     return c.json({ status: 'ok', timestamp: Date.now() }, 200);
   });
 

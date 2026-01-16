@@ -1,10 +1,11 @@
-import type { AppEnv } from './shared/types/bindings';
-import { activity } from './features/activity';
+import { createPoolDb } from '@tempo-sync/db';
 import { createApp } from '@tempo-sync/shared/app';
 import { errorHandler } from '@tempo-sync/shared/middleware';
-import { sync } from './features/sync';
+
+import { activity } from './features/activity';
 import { athlete } from './features/athlete';
-import { createPoolDb } from '@tempo-sync/db';
+import { sync } from './features/sync';
+import type { AppEnv } from './shared/types/bindings';
 
 const app = createApp<AppEnv>();
 
@@ -18,7 +19,7 @@ app.route('/api/activity', activity);
 app.route('/api/athlete', athlete);
 app.route('/api/sync', sync);
 
-app.notFound(c => c.json({ message: 'Not Found' }, 404));
+app.notFound((c) => c.json({ message: 'Not Found' }, 404));
 app.onError(errorHandler);
 
 export default app;

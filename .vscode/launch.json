@@ -43,10 +43,7 @@
   "compounds": [
     {
       "name": "Debug API + Integrations",
-      "configurations": [
-        "Debug API (Wrangler)",
-        "Debug Integrations (Wrangler)"
-      ]
+      "configurations": ["Debug API (Wrangler)", "Debug Integrations (Wrangler)"]
     }
   ]
 }

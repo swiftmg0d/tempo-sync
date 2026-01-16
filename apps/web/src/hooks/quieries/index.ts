@@ -1,7 +1,9 @@
+import { useInfiniteQuery } from '@tanstack/react-query';
+
+import { createQuery } from '../createQuery';
+
 import { apiService } from '@/api/services';
 import { queryKeys } from '@/lib/queryKeys';
-import { createQuery } from '../createQuery';
-import { useInfiniteQuery } from '@tanstack/react-query';
 
 export const useActivities = () =>
 	useInfiniteQuery({

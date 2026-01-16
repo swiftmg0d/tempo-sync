@@ -1,5 +1,6 @@
-import { flex, text } from '@/styles';
 import styled from '@emotion/styled';
+
+import { flex, text } from '@/styles';
 
 const Container = styled.div`
 	${flex({ direction: 'column' })}

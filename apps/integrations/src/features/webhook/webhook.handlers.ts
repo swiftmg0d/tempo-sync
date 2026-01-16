@@ -1,22 +1,15 @@
-import {
-  resyncWithToken,
-  analyizeStravaActivityWithLLM,
-  saveActivity,
-} from './webhook.service';
-import type {
-  StravaVerifyValidation,
-  StravaWebhookValidation,
-} from './webhook.schema';
-import type { CombinedRefreshTokensRequestParams } from '@/shared/types/token';
-import { webhookApi } from './api';
-import { decrypt } from '@/shared/utils';
-import type { AppEnv } from '@/shared/types';
-import type { ValidatedContext, LLMEnv } from '@tempo-sync/shared/types';
 import { syncQueries } from '@tempo-sync/db';
+import type { ValidatedContext, LLMEnv } from '@tempo-sync/shared/types';
 
-export const verifyWebhook = (
-  c: ValidatedContext<StravaVerifyValidation, 'query', AppEnv>
-) => {
+import { webhookApi } from './api';
+import type { StravaVerifyValidation, StravaWebhookValidation } from './webhook.schema';
+import { resyncWithToken, analyizeStravaActivityWithLLM, saveActivity } from './webhook.service';
+
+import type { AppEnv } from '@/shared/types';
+import type { CombinedRefreshTokensRequestParams } from '@/shared/types/token';
+import { decrypt } from '@/shared/utils';
+
+export const verifyWebhook = (c: ValidatedContext<StravaVerifyValidation, 'query', AppEnv>) => {
   const {
     'hub.mode': mode,
     'hub.verify_token': token,
@@ -27,10 +20,7 @@ export const verifyWebhook = (
 
   if (mode && token) {
     if (mode === 'subscribe' && token === VERIFY_TOKEN) {
-      return c.json(
-        { messege: 'Webhook verified', 'hub.challenge': challenge },
-        200
-      );
+      return c.json({ messege: 'Webhook verified', 'hub.challenge': challenge }, 200);
     } else {
       return c.text('Forbidden', 403);
     }
@@ -86,18 +76,13 @@ export const handleWebhookEvent = async (
     OPENROUTER_API_KEY: c.env.OPENROUTER_API_KEY,
   };
 
-  const { updatedActivity, activityInsight } =
-    await analyizeStravaActivityWithLLM(
-      activity,
-      decrypt(stravaAccessToken, c.env.KEY),
-      LLMEnv
-    );
-
-  const { message, success } = await saveActivity(
-    updatedActivity,
-    c.get('db'),
-    activityInsight
+  const { updatedActivity, activityInsight } = await analyizeStravaActivityWithLLM(
+    activity,
+    decrypt(stravaAccessToken, c.env.KEY),
+    LLMEnv
   );
+
+  const { message, success } = await saveActivity(updatedActivity, c.get('db'), activityInsight);
 
   await syncQueries.updateLastSyncTime(c.get('db'), new Date());
 

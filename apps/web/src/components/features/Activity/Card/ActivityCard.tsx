@@ -1,13 +1,14 @@
-import { Padded } from '@/styles/patterns';
-import * as A from './ActivityCard.styled';
 import { Box as BaseBox, Box, Image } from '@chakra-ui/react';
 import prettyMilliseconds from 'pretty-ms';
 
-import { PolylinePreview } from '@/components/ui/PolylinePreview/PolylinePreview';
-import { formatDateDistance } from '@/utils';
-import { Icons } from '@/components/icons';
-import { theme } from '@/styles';
+import * as A from './ActivityCard.styled';
 import type { ActivityCardProps } from './types';
+
+import { Icons } from '@/components/icons';
+import { PolylinePreview } from '@/components/ui/PolylinePreview/PolylinePreview';
+import { theme } from '@/styles';
+import { Padded } from '@/styles/patterns';
+import { formatDateDistance } from '@/utils';
 
 export const ActivityCard = ({
 	active,
@@ -23,7 +24,7 @@ export const ActivityCard = ({
 	const TrendingUpIcon = Icons.trendingUp;
 
 	return (
-		<Padded $p='md' $side='x' as={'li'}>
+		<Padded $p='md' $side='x' as='li'>
 			<A.ActivityCard.Container $active={active}>
 				<Padded $p='md' $side='all'>
 					<A.ActivityCard.Section $active={active} onClick={onClick}>
@@ -33,22 +34,17 @@ export const ActivityCard = ({
 						</A.ActivityCard.MapContainer>
 						<A.ActivityCard.InfoContainer>
 							<A.ActivityCard.Header>
-								<Box display={'flex'} flexDirection={'row'} gap={theme.spacing.sm}>
+								<Box display='flex' flexDirection='row' gap={theme.spacing.sm}>
 									<A.ActivityCard.Title $active={active}>{title}</A.ActivityCard.Title>
 									<A.ActivityCard.TimeLabel>{dateOffset}</A.ActivityCard.TimeLabel>
 								</Box>
-								<Box
-									display={'flex'}
-									flexDirection={'row'}
-									alignItems={'center'}
-									gap={theme.spacing.xs}
-								>
+								<Box display='flex' flexDirection='row' alignItems='center' gap={theme.spacing.xs}>
 									<RunnerIcon />
 									<A.ActivityCard.Type>Run Data</A.ActivityCard.Type>
 									<BaseBox
-										width={'4px'}
-										height={'4px'}
-										borderRadius={'100%'}
+										width='4px'
+										height='4px'
+										borderRadius='100%'
 										backgroundColor={theme.colors.bg.doveGray}
 									/>
 									<A.ActivityCard.Metrics>Predictive</A.ActivityCard.Metrics>
@@ -58,11 +54,11 @@ export const ActivityCard = ({
 								<A.ActivityCard.MusicInfoContainer $active={active}>
 									<Image
 										rounded='md'
-										height={'20px'}
-										width={'20px'}
+										height='20px'
+										width='20px'
 										borderRadius={theme.radii.xs}
 										opacity={active ? 1 : 0.6}
-										border={'transparent'}
+										border='transparent'
 										src='https://tse4.mm.bing.net/th/id/OIP.opYyEXl2x1TyK_XF1DdwlwHaHa?rs=1&pid=ImgDetMain&o=7&rm=300x300'
 										alt='John Doe'
 									/>

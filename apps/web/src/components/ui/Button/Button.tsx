@@ -14,14 +14,14 @@ export const Button = ({
 			disabled={disabled}
 			$disabled={disabled}
 			$variant={variant}
-			$width={style.width!}
-			$height={style.height!}
-			$paddingX={style.paddingX!}
-			$paddingY={style.paddingY!}
+			$width={style.width}
+			$height={style.height}
+			$paddingX={style.paddingX}
+			$paddingY={style.paddingY}
 			$active={active}
 			onClick={onClick}
 		>
-			<>{children}</>
+			{children}
 		</StyledButton>
 	);
 };

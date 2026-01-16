@@ -1,7 +1,4 @@
-import {
-  activityInsightPrompts,
-  activityDescriptionPrompts,
-} from '../prompts/strava';
+import { activityInsightPrompts, activityDescriptionPrompts } from '../prompts/strava';
 
 export const promptsMap = {
   stravaDescription: activityDescriptionPrompts,

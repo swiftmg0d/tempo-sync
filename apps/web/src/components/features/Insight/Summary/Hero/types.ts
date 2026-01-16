@@ -1,4 +1,4 @@
-export type InsightsSummaryHeroProps = {
+export interface InsightsSummaryHeroProps {
 	buttonText: string;
 	variant?: 'primary' | 'secondary';
-};
+}

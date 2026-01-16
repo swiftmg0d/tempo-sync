@@ -1,6 +1,7 @@
+import { useQuery } from '@tanstack/react-query';
+
 import { apiService } from '@/api/services';
 import { queryKeys } from '@/lib/queryKeys';
-import { useQuery } from '@tanstack/react-query';
 
 export function useCurrentAthlete() {
 	return useQuery({

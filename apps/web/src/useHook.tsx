@@ -67,8 +67,6 @@ const useTurnstileCaptcha = (options: UseTurnstileCaptchaOptions = {}) => {
 		}
 	}, [containerId]);
 
-	 
-	 
 	useEffect(() => {
 		// If turnstile is already loaded, initialize immediately
 		if (window.turnstile) {

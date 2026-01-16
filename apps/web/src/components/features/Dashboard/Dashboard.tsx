@@ -1,7 +1,8 @@
 import { DashboardHeader } from './Header/DashboardHeader';
-import { useActiveScreenState, useActivityCardsStore } from '@/state';
 import { showActiveScreen } from './utils';
+
 import { BlackgroundBlur } from '@/components/frame/Background/Blur';
+import { useActiveScreenState, useActivityCardsStore } from '@/state';
 
 export const Dashboard = () => {
 	const activeScreenIndex = useActiveScreenState((state) => state.activeScreenIndex);

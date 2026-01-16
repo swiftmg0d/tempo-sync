@@ -1,6 +1,7 @@
-import { flex, text } from '@/styles';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
+
+import { flex, text } from '@/styles';
 
 const Container = styled.div`
 	${flex({ direction: 'column', gap: 'sm', justifyContent: 'center', alignItems: 'center' })}

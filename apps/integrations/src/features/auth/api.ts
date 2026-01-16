@@ -1,9 +1,7 @@
 import { http } from '@tempo-sync/shared/lib';
-import {
-  SPOTFIY_TOKEN_URL,
-  SPOTIFY_AUTH_HEADER,
-  STRAVA_TOKEN_URL,
-} from './constants';
+
+import { SPOTFIY_TOKEN_URL, SPOTIFY_AUTH_HEADER, STRAVA_TOKEN_URL } from './constants';
+
 import type {
   SpotifyTokenRequestParams,
   SpotifyTokenResponse,
@@ -31,16 +29,13 @@ export const authApi = {
         {
           method: 'POST',
           headers: {
-            Authorization: SPOTIFY_AUTH_HEADER(
-              request.client_id,
-              request.client_secret
-            ),
+            Authorization: SPOTIFY_AUTH_HEADER(request.client_id, request.client_secret),
             'Content-Type': 'application/x-www-form-urlencoded',
           },
           body: new URLSearchParams({
             grant_type: request.grant_type,
             code: request.code,
-            redirect_uri: request.redirect_uri!,
+            redirect_uri: request.redirect_uri,
           }),
         },
         'Failed to fetch Spotify access token'

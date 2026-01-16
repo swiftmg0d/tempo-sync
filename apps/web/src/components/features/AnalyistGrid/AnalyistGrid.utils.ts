@@ -1,7 +1,9 @@
-import type { IconName } from '@/components/icons';
-import type { CardType } from './types';
 import type { MetricCard } from '../Metric/Card/types';
+
 import { metricMap } from './constants';
+import type { CardType } from './types';
+
+import type { IconName } from '@/components/icons';
 
 export const createMetricCard = (type: CardType, value: string) => {
 	const mapIcons = {
@@ -44,7 +46,7 @@ export const getMetricList = (
 ) => {
 	return avgPace || avgHr || distance || calories
 		? ([avgPace, avgHr, distance, calories].map((value, index) => {
-				return createMetricCard(metricMap[index], value?.toString() || '0');
+				return createMetricCard(metricMap[index], value?.toString() ?? '0');
 			}) satisfies MetricCard[])
 		: null;
 };

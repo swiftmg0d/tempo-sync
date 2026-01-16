@@ -1,6 +1,7 @@
-import { defaultBorderState, flex, text } from '@/styles';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
+
+import { defaultBorderState, flex, text } from '@/styles';
 
 const Card = styled.article`
 	${flex({ direction: 'column', gap: 'lg' })}

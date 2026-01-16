@@ -1,4 +1,6 @@
-import { type PoolDatabase } from '../client';
+import { and, eq, sql } from 'drizzle-orm';
+
+import type { PoolDatabase } from '../client';
 import {
   activity,
   activityMap,
@@ -11,17 +13,12 @@ import {
   type TokenProvider,
   type TokenType,
 } from '../schema';
-import { and, eq, sql } from 'drizzle-orm';
 
 export const athleteQueries = {
   findAthleteByStravaId:
     (db: PoolDatabase) =>
     ({ stravaId }: { stravaId: number }) => {
-      return db
-        .select()
-        .from(athlete)
-        .where(eq(athlete.stravaProfileId, stravaId))
-        .limit(1);
+      return db.select().from(athlete).where(eq(athlete.stravaProfileId, stravaId)).limit(1);
     },
   getAthleteProfile: ({ db }: { db: PoolDatabase }) => {
     return db.select().from(athlete).limit(1);
@@ -31,25 +28,11 @@ export const athleteQueries = {
 export const tokenQueries = {
   findTokenByProviderAndId:
     (db: PoolDatabase) =>
-    ({
-      provider,
-      id,
-      type,
-    }: {
-      provider: TokenProvider;
-      id: string;
-      type: TokenType;
-    }) => {
+    ({ provider, id, type }: { provider: TokenProvider; id: string; type: TokenType }) => {
       return db
         .select()
         .from(token)
-        .where(
-          and(
-            eq(token.provider, provider),
-            eq(token.athleteId, id),
-            eq(token.type, type)
-          )
-        )
+        .where(and(eq(token.provider, provider), eq(token.athleteId, id), eq(token.type, type)))
         .limit(1);
     },
   updateTokenById: ({
@@ -76,27 +59,10 @@ export const tokenQueries = {
 };
 
 export const activityQueries = {
-  insertActivity: ({
-    db,
-    activityData,
-  }: {
-    db: PoolDatabase;
-    activityData: NewActivity;
-  }) => {
-    return db
-      .insert(activity)
-      .values(activityData)
-      .returning({ id: activity.id });
+  insertActivity: ({ db, activityData }: { db: PoolDatabase; activityData: NewActivity }) => {
+    return db.insert(activity).values(activityData).returning({ id: activity.id });
   },
-  getAllActivities: ({
-    db,
-    page,
-    limit,
-  }: {
-    db: PoolDatabase;
-    page: number;
-    limit: number;
-  }) => {
+  getAllActivities: ({ db, page, limit }: { db: PoolDatabase; page: number; limit: number }) => {
     return db
       .select({
         date: activity.startDate,
@@ -114,13 +80,7 @@ export const activityQueries = {
 };
 
 export const activitySummaryQueries = {
-  getActivitySummaryById: ({
-    db,
-    activityId,
-  }: {
-    db: PoolDatabase;
-    activityId: string;
-  }) => {
+  getActivitySummaryById: ({ db, activityId }: { db: PoolDatabase; activityId: string }) => {
     return db
       .select({
         avgHr: activitySummary.averageHeartrate,

@@ -1,6 +1,6 @@
 import type { MetricCard } from '../Card/types';
 
-export type MetricsListType = {
+export interface MetricsListType {
 	title: string;
 	list: MetricCard[] | null;
-};
+}

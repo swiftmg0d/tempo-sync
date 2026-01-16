@@ -1,5 +1,6 @@
-import { theme } from '@/styles';
 import { css } from '@emotion/react';
+
+import { theme } from '@/styles';
 
 export const scrollbar = css`
 	/* Firefox */

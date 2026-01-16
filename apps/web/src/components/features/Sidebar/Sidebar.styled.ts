@@ -1,7 +1,9 @@
-import { flex, SIDEBAR_OFFSET, text } from '@/styles';
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
+
 import { scrollbar } from './Sidebar.styles';
+
+import { flex, SIDEBAR_OFFSET, text } from '@/styles';
 
 const Aside = styled.aside`
 	display: none;

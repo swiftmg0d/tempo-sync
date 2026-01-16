@@ -6,22 +6,16 @@ import {
   activityMap,
   activitySummary,
 } from '@tempo-sync/db';
-
-import { decrypt, encrypt, incrementDateBySeconds } from '@/shared/utils';
-import type {
-  CombinedRefreshTokensRequestParams,
-  TokenResponse,
-} from '@/shared/types/token';
-import { syncToken } from './lib';
-import type {
-  LLMActivityInsightResponse,
-  LLMEnv,
-  StravaActivity,
-} from '@tempo-sync/shared/types';
-import { generetePrompt, type PromptKeys } from '@tempo-sync/llm';
-import { webhookApi } from './api';
 import type { PoolDatabase } from '@tempo-sync/db/client';
+import { generetePrompt, type PromptKeys } from '@tempo-sync/llm';
 import { DatabaseError } from '@tempo-sync/shared/errors';
+import type { LLMActivityInsightResponse, LLMEnv, StravaActivity } from '@tempo-sync/shared/types';
+
+import { webhookApi } from './api';
+import { syncToken } from './lib';
+
+import type { CombinedRefreshTokensRequestParams, TokenResponse } from '@/shared/types/token';
+import { decrypt, encrypt, incrementDateBySeconds } from '@/shared/utils';
 
 export const resyncWithToken = async (
   provider: TokenProvider,
@@ -45,13 +39,9 @@ export const resyncWithToken = async (
     };
   }
 
-  let refreshedTokenData: TokenResponse = await syncToken(provider, {
-    client_id:
-      provider === 'spotify' ? request.client_id : request.strava_client_id,
-    client_secret:
-      provider === 'spotify'
-        ? request.client_secret
-        : request.strava_client_secret,
+  const refreshedTokenData: TokenResponse = await syncToken(provider, {
+    client_id: provider === 'spotify' ? request.client_id : request.strava_client_id,
+    client_secret: provider === 'spotify' ? request.client_secret : request.strava_client_secret,
     grant_type: request.grant_type,
     refresh_token: decrypt(refreshToken.value, request.key),
   });
@@ -99,10 +89,7 @@ export const analyizeStravaActivityWithLLM = async (
 
   const splitedResponse = response.split('\n');
 
-  const [title, description] = [
-    splitedResponse[0],
-    splitedResponse.slice(1).join('\n'),
-  ];
+  const [title, description] = [splitedResponse[0], splitedResponse.slice(1).join('\n')];
 
   const updatedActivity = await webhookApi.strava.updateActivityById({
     activityId: activity.id.toString(),
@@ -140,7 +127,7 @@ export const saveActivity = async (
       stravaId: activity.athlete.id,
     });
 
-    return db.transaction(async tx => {
+    return db.transaction(async (tx) => {
       const [{ id }] = await tx
         .insert(activitySchema)
         .values({

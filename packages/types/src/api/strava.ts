@@ -4,7 +4,7 @@ export type ActivityStream = Partial<
     {
       data: number[];
       original_size: number;
-      resolution: 'high' | 'high' | 'medium';
+      resolution: 'high' | 'medium';
       series_type: 'distance' | 'time';
     }
   >

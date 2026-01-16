@@ -4,17 +4,27 @@
   "scripts": {
     "build": "turbo run build",
     "dev": "turbo run dev",
-    "lint": "turbo run lint",
-    "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "check-types": "turbo run check-types",
     "reset": "find . -name \"node_modules\" -type d -prune -exec rm -rf '{}' +\n",
-    "db:studio": "turbo run --filter=@tempo-sync/db db:studio"
+    "db:studio": "turbo run --filter=@tempo-sync/db db:studio",
+    "lint": "turbo run lint",
+    "lint:fix": "turbo run lint -- --fix",
+    "format": "prettier --write .",
+    "format:check": "prettier --check .",
+    "prepare": "husky"
   },
   "devDependencies": {
+    "@eslint/js": "^9.39.2",
     "dotenv-cli": "^7.4.4",
-    "prettier": "^3.7.4",
+    "eslint": "^9.39.2",
+    "eslint-config-prettier": "^10.1.8",
+    "eslint-plugin-import": "^2.32.0",
+    "eslint-plugin-prettier": "^5.5.5",
+    "husky": "^9.1.7",
+    "prettier": "^3.8.0",
     "turbo": "^2.7.4",
-    "typescript": "5.9.2"
+    "typescript": "5.9.2",
+    "typescript-eslint": "^8.53.0"
   },
   "packageManager": "pnpm@9.0.0",
   "engines": {

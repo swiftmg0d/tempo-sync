@@ -1,7 +1,8 @@
-import { showWhen } from '@/utils';
 import { AnalyistGrid } from '../AnalyistGrid';
 import { GlobalMap } from '../GlobalMap';
 import { InsightSummary, InsightSummaryEmpty } from '../Insight/Summary';
+
+import { showWhen } from '@/utils';
 
 export const showActiveScreen = (
 	activeScreenIndex: number,

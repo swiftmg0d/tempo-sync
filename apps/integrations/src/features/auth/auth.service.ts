@@ -1,26 +1,19 @@
-import { incrementDateBySeconds } from '@/shared/utils';
-import type {
-  SpotifyTokenResponse,
-  StravaTokenResponse,
-} from '@/shared/types/token';
 import { athlete, DrizzleQueryError, token, eq } from '@tempo-sync/db';
-import { encrypt } from '@/shared/utils/crypto';
 import type { PoolDatabase } from '@tempo-sync/db/client';
 import { DatabaseError } from '@tempo-sync/shared/errors';
 
-export const saveProfile = async (
-  response: StravaTokenResponse,
-  key: string,
-  db: PoolDatabase
-) => {
+import type { SpotifyTokenResponse, StravaTokenResponse } from '@/shared/types/token';
+import { incrementDateBySeconds } from '@/shared/utils';
+import { encrypt } from '@/shared/utils/crypto';
+
+export const saveProfile = async (response: StravaTokenResponse, key: string, db: PoolDatabase) => {
   try {
-    const { city, country, firstname, id, lastname, profile } =
-      response.athlete;
+    const { city, country, firstname, id, lastname, profile } = response.athlete;
     const { access_token, expires_in, refresh_token } = response;
 
     const expiresAt = incrementDateBySeconds(expires_in);
 
-    return await db.transaction(async tx => {
+    return await db.transaction(async (tx) => {
       const [athleteProfile] = await tx
         .insert(athlete)
         .values({
@@ -48,7 +41,7 @@ export const saveProfile = async (
         value: encrypt(refresh_token, key),
       });
 
-      return athleteProfile.id!;
+      return athleteProfile.id;
     });
   } catch (e) {
     if (e instanceof DrizzleQueryError) {
@@ -77,7 +70,7 @@ export const syncProfileWithSpotify = async (
   const expiresAt = incrementDateBySeconds(expires_in);
 
   try {
-    await db.transaction(async tx => {
+    await db.transaction(async (tx) => {
       const [{ id }] = await tx
         .select({
           id: athlete.id,
@@ -108,9 +101,6 @@ export const syncProfileWithSpotify = async (
   } catch (e) {
     console.error(e);
 
-    throw new DatabaseError(
-      500,
-      'Database error occurred while syncing with Spotify!'
-    );
+    throw new DatabaseError(500, 'Database error occurred while syncing with Spotify!');
   }
 };

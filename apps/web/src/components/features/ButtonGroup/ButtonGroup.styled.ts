@@ -1,5 +1,6 @@
-import { defaultBorderState, flex } from '@/styles';
 import styled from '@emotion/styled';
+
+import { defaultBorderState, flex } from '@/styles';
 
 const Container = styled.div<{ $disabled?: boolean }>`
 	${flex({ direction: 'row' })}
@@ -7,7 +8,7 @@ const Container = styled.div<{ $disabled?: boolean }>`
 	${defaultBorderState}
 
 	${({ $disabled }) => `
-		opacity: ${$disabled ? 0.5 : 1};
+		opacity: ${$disabled ? '0.5' : '1'};
 	`}
     width: 100%;
 	padding: ${({ theme }) => theme.spacing.s};

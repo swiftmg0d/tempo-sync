@@ -1,8 +1,10 @@
+import { css } from '@emotion/react';
+import styled from '@emotion/styled';
+
+import { DashboardHeaderSkeleton } from './DashboardHeader.skeleton';
+
 import { flex, size, text } from '@/styles';
 import { withSkeleton } from '@/utils';
-import styled from '@emotion/styled';
-import { DashboardHeaderSkeleton } from './DashboardHeader.skeleton';
-import { css } from '@emotion/react';
 
 const Container = styled.header`
 	${flex({ direction: 'column', justifyContent: 'space-between', alignItems: 'center', gap: 'md' })}

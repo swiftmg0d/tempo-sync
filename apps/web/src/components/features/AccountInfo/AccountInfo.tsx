@@ -1,16 +1,15 @@
-import { withSkeleton } from '@/utils';
-import * as A from './AccountInfo.styled';
 import { AccountInfoSkeleton } from './AccountInfo.skeleton';
+import * as A from './AccountInfo.styled';
 import type { AccountInfoProps } from './types';
+
+import { withSkeleton } from '@/utils';
 
 const AccountInfoComponent = ({ header, subHeader }: AccountInfoProps) => {
 	return (
-		<>
-			<A.AccountInfo.Container>
-				<A.AccountInfo.Header>{header}</A.AccountInfo.Header>
-				<A.AccountInfo.SubHeader>{subHeader}</A.AccountInfo.SubHeader>
-			</A.AccountInfo.Container>
-		</>
+		<A.AccountInfo.Container>
+			<A.AccountInfo.Header>{header}</A.AccountInfo.Header>
+			<A.AccountInfo.SubHeader>{subHeader}</A.AccountInfo.SubHeader>
+		</A.AccountInfo.Container>
 	);
 };
 

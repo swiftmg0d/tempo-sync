@@ -1,13 +1,11 @@
-import type { Context, ValidationTargets } from 'hono';
-import type z from 'zod';
 import { zValidator } from '@hono/zod-validator';
+import type { Context, ValidationTargets } from 'hono';
 import { HTTPException } from 'hono/http-exception';
+import type z from 'zod';
+
 import { GenericError } from '../errors';
 
-export const validate = <
-  Target extends keyof ValidationTargets,
-  Schema extends z.ZodTypeAny,
->(
+export const validate = <Target extends keyof ValidationTargets, Schema extends z.ZodTypeAny>(
   target: Target,
   schema: Schema
 ) => {
@@ -17,7 +15,7 @@ export const validate = <
         {
           success: false,
           error: 'Validation failed',
-          details: result.error.issues.map(issue => ({
+          details: result.error.issues.map((issue) => ({
             field: issue.path.join('.'),
             message: issue.message,
           })),

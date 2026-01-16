@@ -1,4 +1,4 @@
-export type AvatarProps = {
+export interface AvatarProps {
 	fallbackName: string;
 	image: string;
-};
+}

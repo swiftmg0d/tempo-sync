@@ -1,16 +1,18 @@
 import { http } from '@tempo-sync/shared/lib';
+import type { StravaActivity } from '@tempo-sync/shared/types';
+
 import {
   SPOTFIY_TOKEN_URL,
   SPOTIFY_AUTH_HEADER,
   STRAVA_API_URL,
   STRAVA_TOKEN_URL,
 } from '../auth/constants';
+
 import type {
   RefreshTokenRequestParams,
   SpotifyTokenResponse,
   StravaTokenResponse,
 } from '@/shared/types/token';
-import type { StravaActivity } from '@tempo-sync/shared/types';
 
 export const webhookApi = {
   strava: {
@@ -30,13 +32,7 @@ export const webhookApi = {
         'Failed to refresh Strava token'
       ),
 
-    fetchActivityById: ({
-      activityId,
-      accessToken,
-    }: {
-      activityId: string;
-      accessToken: string;
-    }) =>
+    fetchActivityById: ({ activityId, accessToken }: { activityId: string; accessToken: string }) =>
       http<StravaActivity>(
         `${STRAVA_API_URL}/activities/${activityId}`,
         {
@@ -77,10 +73,7 @@ export const webhookApi = {
         {
           method: 'POST',
           headers: {
-            Authorization: SPOTIFY_AUTH_HEADER(
-              request.client_id,
-              request.client_secret
-            ),
+            Authorization: SPOTIFY_AUTH_HEADER(request.client_id, request.client_secret),
             'Content-Type': 'application/x-www-form-urlencoded',
           },
           body: new URLSearchParams({

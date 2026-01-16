@@ -1,5 +1,6 @@
-import { theme } from '@/styles';
 import { StyledSvg } from './Svg.styled';
+
+import { theme } from '@/styles';
 
 export const Globe = ({ active }: { active: boolean }) => {
 	const fillColor = active ? theme.colors.icon.secondary : theme.colors.icon.primary;

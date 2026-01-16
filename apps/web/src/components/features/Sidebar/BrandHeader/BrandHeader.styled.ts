@@ -1,8 +1,10 @@
-import { defaultBorderState, desktopOnly, flex, mobileOnly, text } from '@/styles';
-import { withSkeleton } from '@/utils';
 import styled from '@emotion/styled';
+
 import { BrandHeaderSkeleton } from './BrandHeader.skeleton';
 import { pulseWaveBaseCss } from './BrandHedaer.styles';
+
+import { defaultBorderState, desktopOnly, flex, mobileOnly, text } from '@/styles';
+import { withSkeleton } from '@/utils';
 
 const Container = styled.div`
 	@media (min-width: ${({ theme }) => theme.breakpoints.xl}) {

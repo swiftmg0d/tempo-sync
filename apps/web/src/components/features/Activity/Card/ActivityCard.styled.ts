@@ -1,7 +1,9 @@
-import { activeContainerState, defaultContainerState } from './ActivityCard.styles';
-import styled from '@emotion/styled';
-import { defaultBorderState, flex, size, text, theme } from '@/styles';
 import { css, keyframes } from '@emotion/react';
+import styled from '@emotion/styled';
+
+import { activeContainerState, defaultContainerState } from './ActivityCard.styles';
+
+import { defaultBorderState, flex, size, text, theme } from '@/styles';
 
 const MusicInfoContainer = styled.div<{ $active: boolean }>`
 	${flex({ direction: 'row', gap: 'sm', alignItems: 'center' })}

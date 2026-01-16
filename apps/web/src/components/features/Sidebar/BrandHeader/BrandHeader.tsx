@@ -1,10 +1,10 @@
-import { MobileOnly } from '@/styles';
 import * as B from './BrandHeader.styled';
-import { Icons } from '@/components/icons';
 
-import { useActivityCardsStore } from '@/state';
-import { showWhen } from '@/utils';
+import { Icons } from '@/components/icons';
 import { Queries } from '@/hooks/quieries';
+import { useActivityCardsStore } from '@/state';
+import { MobileOnly } from '@/styles';
+import { showWhen } from '@/utils';
 
 export const BrandHeader = () => {
 	const isEmpty = useActivityCardsStore((state) => state.isEmpty);

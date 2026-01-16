@@ -1,16 +1,17 @@
-import { ButtonGroup } from '@/components/features/ButtonGroup';
+import { Box } from '@chakra-ui/react';
+import { useEffect, useState } from 'react';
+
 import * as D from './DashboardHeader.styled';
 import { buttonsGroup } from './constants';
-import { Button } from '@/components/ui/Button';
-import { Icons } from '@/components/icons';
-import { useActiveScreenState, useActivityCardsStore } from '@/state';
-import { useEffect, useState } from 'react';
-import { BrandHeader } from '@/components/features/Sidebar/BrandHeader';
-import { Box } from '@chakra-ui/react';
 
+import { ButtonGroup } from '@/components/features/ButtonGroup';
+import { BrandHeader } from '@/components/features/Sidebar/BrandHeader';
+import { Icons } from '@/components/icons';
+import { Button } from '@/components/ui/Button';
 import { Queries } from '@/hooks/quieries';
 import { queryClient } from '@/lib/queryClient';
 import { queryKeys } from '@/lib/queryKeys';
+import { useActiveScreenState, useActivityCardsStore } from '@/state';
 
 export const DashboardHeader = () => {
 	const RetryIcon = Icons.retry;
@@ -23,7 +24,7 @@ export const DashboardHeader = () => {
 
 	useEffect(() => {
 		if (isSuccess) {
-			queryClient.invalidateQueries({ queryKey: queryKeys.activity.list });
+			void queryClient.invalidateQueries({ queryKey: queryKeys.activity.list });
 		}
 	}, [isSuccess, dataUpdatedAt]);
 
@@ -35,12 +36,14 @@ export const DashboardHeader = () => {
 
 			<ButtonGroup
 				group={buttonsGroup}
-				onChange={(index) => setActiveScreenIndex(index)}
+				onChange={(index) => {
+					setActiveScreenIndex(index);
+				}}
 				disabled={!!isEmpty}
 			/>
 
 			<D.DashboardHeader.SyncInfoContainer>
-				<Box alignItems={'center'} direction={'row'} display={'flex'}>
+				<Box alignItems='center' direction='row' display='flex'>
 					<D.DashboardHeader.SyncLabel>Last synced: </D.DashboardHeader.SyncLabel>
 					<D.DashboardHeader.SyncStatus isLoading={isLoading} $disabled={!!isEmpty}>
 						{isEmpty ? 'Never' : data}
@@ -52,9 +55,11 @@ export const DashboardHeader = () => {
 					style={{ paddingX: 's', paddingY: 'sm' }}
 					variant='border'
 					onClick={() => {
-						refetch();
+						void refetch();
 						setToggleRetry(true);
-						setTimeout(() => setToggleRetry(false), 1000);
+						setTimeout(() => {
+							setToggleRetry(false);
+						}, 1000);
 					}}
 				>
 					<RetryIcon isRetrying={toggleRetry} />

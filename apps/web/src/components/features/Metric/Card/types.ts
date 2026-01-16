@@ -1,6 +1,6 @@
 import type { IconName } from '@/components/icons';
 
-export type MetricCardProps = {
+export interface MetricCardProps {
 	id?: `${string}-${string}-${string}-${string}-${string}`;
 	icon: IconName;
 	description: string;
@@ -8,6 +8,6 @@ export type MetricCardProps = {
 		value: string;
 		unit: string;
 	};
-};
+}
 
 export type MetricCard = MetricCardProps;

@@ -26,8 +26,8 @@ export interface LLMHeartbeatAnalysisResponse {
 
 export type LLMHeartbeatSongsAnalysis = LLMHeartbeatAnalysisResponse;
 
-export type LLMEnv = {
+export interface LLMEnv {
   GEMINI_API_KEY: string;
   GROQ_API_KEY: string;
   OPENROUTER_API_KEY: string;
-};
+}

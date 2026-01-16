@@ -1,4 +1,3 @@
-import { decodeActivityMap } from '@/shared/lib';
 import {
   activity,
   activityQueries,
@@ -9,15 +8,15 @@ import {
 import { DatabaseError } from '@tempo-sync/shared/errors';
 import type { Activities } from '@tempo-sync/shared/types';
 
+import { decodeActivityMap } from '@/shared/lib';
+
 export const getAthleteActivities = async (
   db: PoolDatabase,
   page: number,
   limit: number
 ): Promise<Activities> => {
   try {
-    const [{ total }] = await db
-      .select({ total: sql<number>`count(*)` })
-      .from(activity);
+    const [{ total }] = await db.select({ total: sql<number>`count(*)` }).from(activity);
 
     const activities = await activityQueries.getAllActivities({
       db,
@@ -28,7 +27,7 @@ export const getAthleteActivities = async (
     const hasMore = page * limit < total;
 
     return {
-      activities: activities.map(activity => ({
+      activities: activities.map((activity) => ({
         ...activity,
         polyline: decodeActivityMap(activity.polyline),
       })),
@@ -37,7 +36,7 @@ export const getAthleteActivities = async (
         limit,
         nextPage: hasMore ? page + 1 : null,
         page,
-        total: Number(total),
+        total,
       },
     };
   } catch (e) {
@@ -46,10 +45,7 @@ export const getAthleteActivities = async (
   }
 };
 
-export const getActivitySummaryById = async (
-  activityId: string,
-  db: PoolDatabase
-) => {
+export const getActivitySummaryById = async (activityId: string, db: PoolDatabase) => {
   try {
     const convertToPace = (speed: number) => {
       return 1000 / speed / 60;
@@ -83,7 +79,7 @@ export const getActivitiesSummaryStats = async (db: PoolDatabase) => {
         id: crypto.randomUUID(),
         info: 'Total runs',
         title: 'Lifetime',
-        value: Number(result.totalCount) ?? 0,
+        value: result.totalCount ?? 0,
       },
       {
         icon: 'map',

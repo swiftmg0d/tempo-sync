@@ -1,15 +1,16 @@
 import type { IconName } from '@/components/icons';
 
-export type Group = {
+export interface Group {
+	id: string;
 	text?: {
 		base: string;
 		lg: string;
 	};
 	iconName?: IconName;
-};
+}
 
-export type ButtonGroupProps = {
+export interface ButtonGroupProps {
 	group: Group[];
 	onChange?: (index: number) => void;
 	disabled?: boolean;
-};
+}

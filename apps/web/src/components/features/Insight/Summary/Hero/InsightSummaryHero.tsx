@@ -1,10 +1,11 @@
-import { Button } from '@/components/ui/Button';
-import * as I from './InsightSummaryHero.styled';
-import analysisIllustration from '@/assets/images/analysis-illustration.svg';
-import type { InsightsSummaryHeroProps } from './types';
-import { withSkeleton } from '@/utils';
 import { InsightSummaryHeroSkeleton } from './InsightSummaryHero.skeleton';
+import * as I from './InsightSummaryHero.styled';
+import type { InsightsSummaryHeroProps } from './types';
+
+import analysisIllustration from '@/assets/images/analysis-illustration.svg';
+import { Button } from '@/components/ui/Button';
 import { transition } from '@/styles';
+import { withSkeleton } from '@/utils';
 
 const InsightSummaryHeroComponent = ({
 	buttonText,
@@ -22,9 +23,11 @@ const InsightSummaryHeroComponent = ({
 				</I.InsightSummaryHero.InfoSubHeader>
 
 				<Button
-					active={true}
+					active
 					style={{ height: '48px', width: 'max-content' }}
-					onClick={() => variant !== 'primary' && window.location.reload()}
+					onClick={() => {
+						if (variant !== 'primary') window.location.reload();
+					}}
 				>
 					<I.InsightSummaryHero.ButtonText>{buttonText}</I.InsightSummaryHero.ButtonText>
 				</Button>

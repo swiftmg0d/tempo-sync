@@ -1,11 +1,9 @@
-import type OpenAI from 'openai';
-import type { PromptKeys } from '../constants';
 import type { LLMEnv } from '@tempo-sync/shared/types';
+import type OpenAI from 'openai';
 
-export type GroqModel =
-  | 'llama-3.3-70b-versatile'
-  | 'llama-4-maverick-17b-128e-instruct'
-  | 'llama-3.3-70b-versatile';
+import type { PromptKeys } from '../constants';
+
+export type GroqModel = 'llama-3.3-70b-versatile' | 'llama-4-maverick-17b-128e-instruct';
 
 export type OpenRouterModel =
   | 'qwen/qwen3-coder:free'
@@ -27,17 +25,16 @@ export type LLMModel =
 
 export type LLMPhase = 'processing' | 'analysis' | 'formatting';
 
-export type LLMPipeline = {
-  [key in LLMPhase]: LLMModel[];
-};
+export type LLMPipeline = Record<LLMPhase, LLMModel[]>;
 
-export type LLMProvider = {
-  [key in 'groq' | 'openrouter' | 'gemini']: {
+export type LLMProvider = Record<
+  'groq' | 'openrouter' | 'gemini',
+  {
     client: OpenAI;
-  };
-};
+  }
+>;
 
-export type LLMChatCompletionParams = {
+export interface LLMChatCompletionParams {
   provider: OpenAI;
   prompts: {
     system: string;
@@ -45,13 +42,9 @@ export type LLMChatCompletionParams = {
   };
   temp?: number;
   model: LLMModel['model'];
-};
+}
 
-export type ChatCompletionResponse =
-  | 'rate_limited'
-  | 'payload_too_large'
-  | string
-  | null;
+export type ChatCompletionResponse = 'rate_limited' | 'payload_too_large' | string | null;
 
 export interface GeneretePromptProperties {
   env: LLMEnv;

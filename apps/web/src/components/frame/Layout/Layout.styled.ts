@@ -1,5 +1,6 @@
-import { SIDEBAR_OFFSET } from '@/styles';
 import styled from '@emotion/styled';
+
+import { SIDEBAR_OFFSET } from '@/styles';
 
 const Main = styled.main`
 	position: fixed;

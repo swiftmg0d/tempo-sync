@@ -1,6 +1,6 @@
 import type { Spacings } from '@/styles';
 
-export type ButtonProps = {
+export interface ButtonProps {
 	children?: React.ReactNode;
 	variant?: 'border' | 'transparent';
 	active: boolean;
@@ -13,9 +13,9 @@ export type ButtonProps = {
 		paddingY?: Spacings;
 		height?: string;
 	};
-};
+}
 
-export type StyledButtonProps = {
+export interface StyledButtonProps {
 	$variant?: 'border' | 'transparent';
 	$width?: string;
 	$active?: boolean;
@@ -23,4 +23,4 @@ export type StyledButtonProps = {
 	$paddingY?: Spacings;
 	$disabled?: boolean;
 	$height?: string;
-};
+}

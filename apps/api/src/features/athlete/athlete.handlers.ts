@@ -1,7 +1,7 @@
-import type { AppContext } from '@/shared/types/bindings';
-import { DatabaseError } from '@tempo-sync/shared/errors';
-import { athlete } from './athlete.routes';
 import { athleteQueries } from '@tempo-sync/db';
+import { DatabaseError } from '@tempo-sync/shared/errors';
+
+import type { AppContext } from '@/shared/types/bindings';
 
 export const getAthlete = async (c: AppContext) => {
   try {

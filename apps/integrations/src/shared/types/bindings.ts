@@ -2,7 +2,7 @@ import type { PoolDatabase } from '@tempo-sync/db/client';
 import type { Context, Handler, ValidationTargets } from 'hono';
 import type z from 'zod';
 
-export type Bindings = {
+export interface Bindings {
   VERIFY_TOKEN: string;
 
   SPOTIFY_CLIENT_ID: string;
@@ -24,17 +24,17 @@ export type Bindings = {
   OPENROUTER_API_KEY: string;
 
   X_API_KEY: string;
-};
+}
 
-export type Variables = {
+export interface Variables {
   db: PoolDatabase;
   profileId?: number;
-};
+}
 
-export type AppEnv = {
+export interface AppEnv {
   Bindings: Bindings;
   Variables: Variables;
-};
+}
 
 export type AppContext = Context<AppEnv>;
 export type AppHandler = Handler<AppEnv>;
