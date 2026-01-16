@@ -1,0 +1,5 @@
+{
+	"extends": "@tempo-sync/config/typescript/base",
+	"include": ["src/**/*.ts", "src/**/*.tsx", "*.ts"],
+	"exclude": ["node_modules", "dist"]
+}
