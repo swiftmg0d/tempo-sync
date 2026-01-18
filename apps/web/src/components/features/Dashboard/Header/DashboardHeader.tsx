@@ -1,4 +1,3 @@
-import { Box } from '@chakra-ui/react';
 import { useEffect, useState } from 'react';
 
 import * as D from './DashboardHeader.styled';
@@ -12,6 +11,7 @@ import { Queries } from '@/hooks/quieries';
 import { queryClient } from '@/lib/queryClient';
 import { queryKeys } from '@/lib/queryKeys';
 import { useActiveScreenState, useActivityCardsStore } from '@/state';
+import { Box } from '@/styles';
 
 export const DashboardHeader = () => {
 	const RetryIcon = Icons.retry;

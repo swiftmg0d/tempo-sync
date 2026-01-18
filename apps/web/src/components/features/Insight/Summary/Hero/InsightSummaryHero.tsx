@@ -33,7 +33,11 @@ const InsightSummaryHeroComponent = ({
 				</Button>
 			</I.InsightSummaryHero.InfoContainer>
 
-			<I.InsightSummaryHero.Image src={analysisIllustration} alt='Analysis Illustration' />
+			<I.InsightSummaryHero.Image
+				src={analysisIllustration}
+				alt='Analysis Illustration'
+				fetchPriority='high'
+			/>
 		</I.InsightSummaryHero.Container>
 	);
 };

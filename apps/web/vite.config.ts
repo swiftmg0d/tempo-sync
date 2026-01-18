@@ -27,5 +27,22 @@ export default defineConfig({
 		alias: {
 			'@': path.resolve(__dirname, './src')
 		}
+	},
+	build: {
+		minify: 'terser',
+		cssCodeSplit: true,
+		rollupOptions: {
+			output: {
+				manualChunks: {
+					query: ['@tanstack/react-query'],
+					'react-vendor': ['react', 'react-dom'],
+					motion: ['motion'],
+					emotion: ['@emotion/react', '@emotion/styled']
+				}
+			}
+		}
+	},
+	esbuild: {
+		drop: ['console', 'debugger']
 	}
 });

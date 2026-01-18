@@ -2,8 +2,9 @@ import { pxToRem } from '@/utils';
 
 export const typography = {
 	fonts: {
-		sans: "'Source Sans 3', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif" as const
+		sans: "'Source Sans 3 Variable', system-ui, -apple-system, 'Segoe UI', Roboto, Arial, sans-serif" as const
 	},
+
 	fontSizes: {
 		xxs: pxToRem(10),
 		xs: pxToRem(12),

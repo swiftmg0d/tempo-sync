@@ -1,5 +1,4 @@
-// import type { GeoPoint } from '@/types';
-import { formatDistance } from 'date-fns';
+import { formatDistance } from 'date-fns/formatDistance';
 
 export function withSkeleton<T extends object>(
 	Component: React.ComponentType<T>,

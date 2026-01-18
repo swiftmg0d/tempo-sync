@@ -39,7 +39,7 @@ const Container = styled.div`
 	&:hover {
 		border-color: ${baseColors.teal(0.3)};
 		box-shadow: ${({ theme }) => theme.shadows.lg};
-		border-width: 2px;
+		border-width: 1px;
 	}
 
 	&:hover ${ScoreValueStyled} {

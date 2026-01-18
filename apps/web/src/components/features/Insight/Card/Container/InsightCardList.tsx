@@ -1,10 +1,10 @@
-import { Box } from '@chakra-ui/react';
 import type { ActivitySummaryStats } from '@tempo-sync/shared/types';
 
 import { InsightCard } from '../InsightCard';
 
 import { InsightCardListSkeleton } from './InsightCardList.skeleton';
 
+import { Box } from '@/styles';
 import { withSkeleton } from '@/utils';
 
 const InsightCardListComponent = ({ data }: { data: ActivitySummaryStats[] }) => {

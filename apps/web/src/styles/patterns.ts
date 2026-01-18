@@ -1,3 +1,4 @@
+import { chakra } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 
 import type { AppTheme } from './theme';
@@ -48,3 +49,5 @@ export const DesktopOnly = styled.div`
 		display: block;
 	}
 `;
+
+export const Box = chakra('div');
