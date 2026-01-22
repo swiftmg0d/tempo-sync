@@ -18,17 +18,23 @@ export type GeminiModel =
   | 'gemini-2.5-pro-preview-05-06'
   | 'gemini-2.5-flash-preview-05-20';
 
+export type CerebrasModel = 'llama-3.3-70b' | 'qwen-3-32b';
+
+export type SambanovaModel = 'Meta-Llama-3.3-70B-Instruct' | 'DeepSeek-R1-0528';
+
 export type LLMModel =
   | { provider: 'groq'; model: GroqModel }
   | { provider: 'openrouter'; model: OpenRouterModel }
-  | { provider: 'gemini'; model: GeminiModel };
+  | { provider: 'gemini'; model: GeminiModel }
+  | { provider: 'cerebras'; model: CerebrasModel }
+  | { provider: 'sambanova'; model: SambanovaModel };
 
 export type LLMPhase = 'processing' | 'analysis' | 'formatting';
 
 export type LLMPipeline = Record<LLMPhase, LLMModel[]>;
 
 export type LLMProvider = Record<
-  'groq' | 'openrouter' | 'gemini',
+  'groq' | 'openrouter' | 'gemini' | 'cerebras' | 'sambanova',
   {
     client: OpenAI;
   }

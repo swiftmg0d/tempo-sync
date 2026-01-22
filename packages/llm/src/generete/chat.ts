@@ -31,6 +31,7 @@ export const createChatCompletion = async ({
         return 'payload_too_large';
       }
     }
+    console.error('Error in createChatCompletion:', error);
   }
   return null;
 };

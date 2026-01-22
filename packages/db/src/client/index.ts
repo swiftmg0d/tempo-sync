@@ -14,4 +14,5 @@ export const createPoolDb = (databaseUrl: string) => {
 
 export type Database = ReturnType<typeof createDb>;
 export type PoolDatabase = ReturnType<typeof createPoolDb>;
+export type AnyDatabase = Database | PoolDatabase;
 export type Schema = typeof schema;
