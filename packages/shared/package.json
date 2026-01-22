@@ -17,6 +17,7 @@
   },
   "dependencies": {
     "@hono/zod-validator": "^0.7.6",
+    "@mapbox/polyline": "^1.2.1",
     "@tempo-sync/types": "workspace:*",
     "date-fns": "^4.1.0",
     "hono": "^4.11.4",
@@ -24,6 +25,7 @@
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20260115.0",
-    "@tempo-sync/config": "workspace:*"
+    "@tempo-sync/config": "workspace:*",
+    "@types/mapbox__polyline": "^1.0.5"
   }
 }

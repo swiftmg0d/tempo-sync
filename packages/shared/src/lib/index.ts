@@ -1,5 +1,6 @@
 import { Hono, type Env } from 'hono';
 import type { ContentfulStatusCode } from 'hono/utils/http-status';
+import { decode } from '@mapbox/polyline';
 
 import { FetchError } from '../errors';
 
@@ -27,3 +28,9 @@ export async function http<T>(
   }
   return response.json();
 }
+
+export const decodeActivityMap = (polyline: null | string) => {
+  if (!polyline) return null;
+
+  return decode(polyline).map(([lat, lng]) => [lng, lat]);
+};

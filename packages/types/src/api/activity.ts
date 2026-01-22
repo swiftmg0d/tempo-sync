@@ -10,7 +10,7 @@ export interface Activity {
   id: string;
   title: string;
   date: Date;
-  polyline: [number, number][] | null;
+  polyline: number[][] | null;
   time: number;
 }
 
@@ -31,6 +31,9 @@ export interface ActivitySummary {
   avgHr: number | null;
   distance: number;
   calories: number | null;
+  date: Date;
+  deviceName: string | null;
+  gear: string | null;
 }
 
 export interface ActivitySummaryStats {
