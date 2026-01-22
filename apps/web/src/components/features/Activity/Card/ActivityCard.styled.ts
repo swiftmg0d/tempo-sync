@@ -49,8 +49,6 @@ const Container = styled.div<{ $active?: boolean }>`
 `;
 
 export const PulsingContainer = styled.div`
-	${size('320px', '105px')}
-
 	${defaultBorderState}
 
 	background-color: transparent;
@@ -104,6 +102,7 @@ const MapLabel = styled.span`
 
 const InfoContainer = styled.div`
 	${flex({ direction: 'column' })}
+	flex:1
 `;
 
 const Title = styled.h1<{ $active?: boolean }>`
@@ -112,23 +111,30 @@ const Title = styled.h1<{ $active?: boolean }>`
 	${({ theme, $active }) =>
 		$active ? `color: ${theme.colors.text.primary};` : `color: ${theme.colors.text.secondary};`}
 
-
-	max-width:150px;
+	max-width: none;
 	overflow: hidden;
 	white-space: nowrap;
 	text-overflow: ellipsis;
+
+	@media screen and (min-width: ${({ theme }) => theme.breakpoints.md}) {
+		max-width: 150px;
+	}
 `;
 
 const TimeLabel = styled.time`
 	${text({ size: 'xxs', weight: 'regular', color: 'secondary' })}
 
-	max-width: 45px;
+	max-width: none;
 	margin-left: auto;
 
 	white-space: wrap;
 	word-wrap: break-word;
 	overflow-wrap: break-word;
 	text-align: right;
+
+	@media screen and (min-width: ${({ theme }) => theme.breakpoints.md}) {
+		max-width: 45px;
+	}
 `;
 
 const Type = styled.p`

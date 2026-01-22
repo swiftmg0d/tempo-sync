@@ -1,7 +1,9 @@
+import { Box } from '@chakra-ui/react';
+
 import * as A from './ActivityListNoMore.styled';
 
 import { Icons } from '@/components/icons';
-import { Box, theme } from '@/styles';
+import { theme } from '@/styles';
 export const ActivityListNoMore = () => {
 	const FlagIcon = Icons.flag;
 	return (
