@@ -1,4 +1,4 @@
-import { syncQueries } from '@tempo-sync/db';
+import { syncQueries, athleteQueries } from '@tempo-sync/db';
 import type { ValidatedContext, LLMEnv } from '@tempo-sync/shared/types';
 
 import { webhookApi } from './api';
@@ -34,11 +34,14 @@ export const handleWebhookEvent = async (
   const body = c.req.valid('json');
   const stravaId = body.owner_id;
 
-  console.log('Received Webhook Event:', body);
-
   if (body.updates?.title && !body.updates.title.includes('AI-ASSISTED')) {
     return c.text('No update needed for this activity', 200);
   }
+
+  const db = c.get('db');
+
+  const findAthlete = athleteQueries.findAthleteByStravaId(db);
+  const [{ id }] = await findAthlete({ stravaId });
 
   const request: CombinedRefreshTokensRequestParams = {
     client_id: c.env.SPOTIFY_CLIENT_ID,
@@ -49,18 +52,14 @@ export const handleWebhookEvent = async (
     key: c.env.KEY,
   };
 
-  const { result: stravaAccessToken } = await resyncWithToken(
-    'strava',
-    request,
-    stravaId,
-    c.get('db')
-  );
-  const { result: spotifyAccessToken } = await resyncWithToken(
-    'spotify',
-    request,
-    stravaId,
-    c.get('db')
-  );
+  const { result: stravaAccessToken } = await resyncWithToken('strava', request, stravaId, db);
+
+  // const { result: spotifyAccessToken } = await resyncWithToken(
+  //   'spotify',
+  //   request,
+  //   stravaId,
+  //   c.get('db')
+  // );
 
   const activityId = body.object_id;
   const athleteId = body.owner_id;
@@ -74,6 +73,8 @@ export const handleWebhookEvent = async (
     GEMINI_API_KEY: c.env.GEMINI_API_KEY,
     GROQ_API_KEY: c.env.GROQ_API_KEY,
     OPENROUTER_API_KEY: c.env.OPENROUTER_API_KEY,
+    CEREBRAS_API_KEY: c.env.CEREBRAS_API_KEY,
+    SAMBANOVA_API_KEY: c.env.SAMBANOVA_API_KEY,
   };
 
   const { updatedActivity, activityInsight } = await analyizeStravaActivityWithLLM(
@@ -84,7 +85,7 @@ export const handleWebhookEvent = async (
 
   const { message, success } = await saveActivity(updatedActivity, c.get('db'), activityInsight);
 
-  await syncQueries.updateLastSyncTime(c.get('db'), new Date());
+  await syncQueries.updateLastSyncTime(db, new Date());
 
   return c.json({ message, success }, 200);
 };

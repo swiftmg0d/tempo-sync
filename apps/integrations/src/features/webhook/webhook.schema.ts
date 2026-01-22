@@ -6,6 +6,7 @@ export const stravaWebhookSchema = z.object({
   object_id: z.number(),
   aspect_type: z.enum(['create', 'update', 'delete']),
   event_time: z.number(),
+  subscription_id: z.number(),
   updates: z
     .object({
       title: z.string().optional(),

@@ -23,57 +23,62 @@ export const resyncWithToken = async (
   stravaId: number,
   db: PoolDatabase
 ) => {
-  const findToken = tokenQueries.findTokenByProviderAndId(db);
-  const findAthlete = athleteQueries.findAthleteByStravaId(db);
+  try {
+    const findToken = tokenQueries.findTokenByProviderAndId(db);
+    const findAthlete = athleteQueries.findAthleteByStravaId(db);
 
-  const [{ id }] = await findAthlete({ stravaId });
+    const [{ id }] = await findAthlete({ stravaId });
 
-  const [accessToken] = await findToken({ provider, id, type: 'access' });
-  const [refreshToken] = await findToken({ provider, id, type: 'refresh' });
+    const [accessToken] = await findToken({ provider, id, type: 'access' });
+    const [refreshToken] = await findToken({ provider, id, type: 'refresh' });
 
-  if (accessToken.expiresAt && accessToken.expiresAt > new Date()) {
-    return {
-      message: `${provider} access token is still valid, no need to resync!`,
-      result: accessToken.value,
-      success: true,
-    };
-  }
+    if (accessToken.expiresAt && accessToken.expiresAt > new Date()) {
+      return {
+        message: `${provider} access token is still valid, no need to resync!`,
+        result: accessToken.value,
+        success: true,
+      };
+    }
 
-  const refreshedTokenData: TokenResponse = await syncToken(provider, {
-    client_id: provider === 'spotify' ? request.client_id : request.strava_client_id,
-    client_secret: provider === 'spotify' ? request.client_secret : request.strava_client_secret,
-    grant_type: request.grant_type,
-    refresh_token: decrypt(refreshToken.value, request.key),
-  });
+    const refreshedTokenData: TokenResponse = await syncToken(provider, {
+      client_id: provider === 'spotify' ? request.client_id : request.strava_client_id,
+      client_secret: provider === 'spotify' ? request.client_secret : request.strava_client_secret,
+      grant_type: request.grant_type,
+      refresh_token: decrypt(refreshToken.value, request.key),
+    });
 
-  const [updatedAccessToken] = await tokenQueries.updateTokenById({
-    db,
-    tokenData: {
-      type: 'access',
-      provider,
-      value: encrypt(refreshedTokenData.access_token, request.key),
-      expiresAt: incrementDateBySeconds(refreshedTokenData.expires_in),
-    },
-    id,
-  });
-
-  if (refreshedTokenData.refresh_token) {
-    await tokenQueries.updateTokenById({
+    const [updatedAccessToken] = await tokenQueries.updateTokenById({
       db,
       tokenData: {
-        type: 'refresh',
+        type: 'access',
         provider,
-        value: encrypt(refreshedTokenData.refresh_token, request.key),
+        value: encrypt(refreshedTokenData.access_token, request.key),
+        expiresAt: incrementDateBySeconds(refreshedTokenData.expires_in),
       },
       id,
     });
-  }
 
-  return {
-    message: `${provider} token resynced successfully!`,
-    result: updatedAccessToken.value,
-    success: true,
-  };
+    if (refreshedTokenData.refresh_token) {
+      await tokenQueries.updateTokenById({
+        db,
+        tokenData: {
+          type: 'refresh',
+          provider,
+          value: encrypt(refreshedTokenData.refresh_token, request.key),
+        },
+        id,
+      });
+    }
+
+    return {
+      message: `${provider} token resynced successfully!`,
+      result: updatedAccessToken.value,
+      success: true,
+    };
+  } catch (e) {
+    console.error('Error in resyncWithToken:', e);
+    throw e;
+  }
 };
 
 export const analyizeStravaActivityWithLLM = async (

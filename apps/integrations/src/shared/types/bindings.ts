@@ -1,6 +1,5 @@
 import type { PoolDatabase } from '@tempo-sync/db/client';
-import type { Context, Handler, ValidationTargets } from 'hono';
-import type z from 'zod';
+import type { Context, Handler } from 'hono';
 
 export interface Bindings {
   VERIFY_TOKEN: string;
@@ -22,8 +21,11 @@ export interface Bindings {
   GEMINI_API_KEY: string;
   GROQ_API_KEY: string;
   OPENROUTER_API_KEY: string;
+  SAMBANOVA_API_KEY: string;
+  CEREBRAS_API_KEY: string;
 
   X_API_KEY: string;
+  SUBSCRIPTION_ID: number;
 }
 
 export interface Variables {
