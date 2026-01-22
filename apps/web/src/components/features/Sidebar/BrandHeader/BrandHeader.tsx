@@ -1,21 +1,32 @@
+import { useShallow } from 'zustand/shallow';
+
 import * as B from './BrandHeader.styled';
 
 import { Icons } from '@/components/icons';
 import { Queries } from '@/hooks/quieries';
-import { useActivityCardsStore } from '@/state';
+import { useActivityCardsStore, useUIStore } from '@/store';
 import { MobileOnly } from '@/styles';
 import { showWhen } from '@/utils';
 
 export const BrandHeader = () => {
 	const isEmpty = useActivityCardsStore((state) => state.isEmpty);
 	const { isLoading } = Queries.useSyncStatus();
+	const { toggleSidebar, isSidebarOpen } = useUIStore(
+		useShallow((state) => ({
+			toggleSidebar: state.toggleSidebar,
+			isSidebarOpen: state.isSidebarOpen
+		}))
+	);
 
 	const [LogoIcon, HamburgerIcon, SignalFlowIcon] = [Icons.logo, Icons.hamburger, Icons.signalFlow];
 
 	return (
 		<B.BrandHeader.Container>
 			<B.BrandHeader.LogoContainer>
-				<MobileOnly>
+				<MobileOnly
+					onClick={isSidebarOpen ? undefined : toggleSidebar}
+					style={{ cursor: isSidebarOpen ? 'default' : 'pointer' }}
+				>
 					<HamburgerIcon />
 				</MobileOnly>
 				<LogoIcon />

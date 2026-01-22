@@ -18,7 +18,7 @@ export function showWhen(condition: boolean, component: React.ReactNode) {
 }
 
 export function normalizePolyline(
-	points: [number, number][] | null,
+	points: number[][] | null,
 	width: number,
 	height: number,
 	padding = 10

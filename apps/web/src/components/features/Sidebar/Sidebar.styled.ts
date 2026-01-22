@@ -3,12 +3,28 @@ import styled from '@emotion/styled';
 
 import { scrollbar } from './Sidebar.styles';
 
-import { flex, SIDEBAR_OFFSET, text } from '@/styles';
+import { flex, SIDEBAR_OFFSET, text, transitionAll } from '@/styles';
 
-const Aside = styled.aside`
-	display: none;
+const Aside = styled.aside<{ $isOpen: boolean }>`
+	${flex({ direction: 'column' })}
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.xl}) {
+	z-index: 5;
+	background-color: white;
+	position: fixed;
+	bottom: 0;
+	width: 100%;
+	${transitionAll}
+	transition-duration: 100ms;
+
+	${({ $isOpen }) => css`
+		height: ${$isOpen ? '60dvh' : '6dvh'};
+		overflow-y: ${$isOpen ? 'auto' : 'hidden'};
+	`}
+
+	border-radius: 35px;
+	box-shadow: ${({ theme }) => theme.shadows.upwards};
+
+	@media (min-width: ${({ theme }) => theme.breakpoints.md}) {
 		${flex({ direction: 'column' })}
 
 		background-color: ${({ theme }) => theme.colors.bg.lightSecondary};
@@ -16,6 +32,10 @@ const Aside = styled.aside`
 		width: ${SIDEBAR_OFFSET}px;
 		position: fixed;
 		height: 100dvh;
+
+		top: 0;
+		bottom: auto;
+		border-radius: 0;
 	}
 `;
 

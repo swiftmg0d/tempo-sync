@@ -6,7 +6,7 @@ import { defineConfig } from 'vite';
 import tsconfigPaths from 'vite-tsconfig-paths';
 
 // https://vite.dev/config/
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
 	plugins: [
 		react({
 			jsxImportSource: '@emotion/react',
@@ -43,6 +43,6 @@ export default defineConfig({
 		}
 	},
 	esbuild: {
-		drop: ['console', 'debugger']
+		drop: mode === 'production' ? ['console', 'debugger'] : []
 	}
-});
+}));

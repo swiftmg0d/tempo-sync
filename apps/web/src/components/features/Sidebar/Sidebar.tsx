@@ -1,3 +1,4 @@
+import { Box, Text } from '@chakra-ui/react';
 import { useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { useShallow } from 'zustand/shallow';
@@ -12,23 +13,29 @@ import { BrandHeader } from './BrandHeader';
 import * as S from './Sidebar.styled';
 
 import { Avatar } from '@/components/ui/Avatar';
-import { useActivities } from '@/hooks/quieries';
-import { useCurrentAthlete } from '@/hooks/quieries/useCurrentAthlete';
-import { useActivityCardsStore } from '@/state';
-import { Padded } from '@/styles/patterns';
+import { Queries, useActivities } from '@/hooks/quieries';
+import { useActivityCardsStore, useUIStore } from '@/store';
+import { theme } from '@/styles';
+import { DesktopOnly, MobileOnly, Padded } from '@/styles/patterns';
 import { showWhen } from '@/utils';
 
 export const Sidebar = () => {
-	const { activeCardId, setActiveCardId, setIsEmpty, isEmpty } = useActivityCardsStore(
+	const { activityId, setActiveCardId, setIsEmpty, isEmpty } = useActivityCardsStore(
 		useShallow((state) => ({
-			activeCardId: state.activeCardId,
+			activityId: state.activityId,
 			setActiveCardId: state.setActiveCardId,
 			setIsEmpty: state.setIsEmpty,
 			isEmpty: state.isEmpty
 		}))
 	);
 
-	const { data, isLoading: isCurrentAthleteLoading } = useCurrentAthlete();
+	const { toggleSidebar, sidebarOpen } = useUIStore(
+		useShallow((state) => ({
+			toggleSidebar: state.toggleSidebar,
+			sidebarOpen: state.isSidebarOpen
+		}))
+	);
+	const { data, isLoading: isCurrentAthleteLoading } = Queries.useCurrentAthlete();
 
 	const {
 		data: infiniteActivities,
@@ -63,25 +70,42 @@ export const Sidebar = () => {
 	}, [inView, fetchNextPage, isFetchingNextPage, isEmpty]);
 
 	return (
-		<S.Sidebar.Aside>
+		<S.Sidebar.Aside $isOpen={sidebarOpen}>
 			{/* Header */}
 			<S.Sidebar.Section $border='bot' as='header'>
-				<Padded $side='all' $p='xxl'>
-					<BrandHeader />
-				</Padded>
+				<DesktopOnly>
+					<Padded $side='all' $p='xxl'>
+						<BrandHeader />
+					</Padded>
+				</DesktopOnly>
+
+				<MobileOnly>
+					<Box display='flex' justifyContent='center'>
+						<Box
+							width='48px'
+							height='6px'
+							backgroundColor={theme.colors.bg.doveGray}
+							borderRadius={theme.radii.md}
+							onClick={toggleSidebar}
+						/>
+					</Box>
+					<Text fontWeight={theme.fontWeights.bold} textAlign='center' paddingTop={theme.spacing.s}>
+						Recent Analyses
+					</Text>
+				</MobileOnly>
 			</S.Sidebar.Section>
 
 			{/* Content */}
 			<S.Sidebar.Section $flex={2} $overflow='show' as='main' $disabled={!!isEmpty}>
 				<ActivityList
 					isLoading={isActivitiesLoading}
-					isActiveCard={(index) => index === activeCardId}
-					onClick={(index) => {
-						if (index === activeCardId) {
+					isActiveCard={(id) => id === activityId}
+					onClick={(id) => {
+						if (activityId === id) {
 							setActiveCardId(null);
 							return;
 						}
-						setActiveCardId(index);
+						setActiveCardId(id);
 					}}
 					activities={activities ?? []}
 				/>

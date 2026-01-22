@@ -8,6 +8,7 @@ export const queryKeys = {
 	activity: {
 		list: ['activities'] as const,
 		summary: (id: string) => [...queryKeys.activity.list, id, 'summary'] as const,
-		summaries: () => [...queryKeys.activity.list, 'summaries'] as const
+		summaries: () => [...queryKeys.activity.list, 'summaries'] as const,
+		polylines: () => [...queryKeys.activity.list, 'polylines'] as const
 	}
 } as const;
