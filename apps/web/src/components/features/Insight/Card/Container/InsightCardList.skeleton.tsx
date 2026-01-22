@@ -1,6 +1,6 @@
-import { InsightCard } from '../InsightCard';
+import { Box } from '@chakra-ui/react/box';
 
-import { Box } from '@/styles';
+import { InsightCard } from '../InsightCard';
 
 export const InsightCardListSkeleton = () => {
 	return (

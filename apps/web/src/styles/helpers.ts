@@ -34,7 +34,7 @@ export const defaultBorderState = ({ theme }: { theme: AppTheme }) => css`
 `;
 
 export const activeBorderState = ({ theme }: { theme: AppTheme }) => css`
-	border: 1px solid ${theme.colors.border.primaryRgb(0.03)};
+	border: 1px solid ${theme.colors.border.secondaryRgb(0.3)};
 `;
 
 export const transitionAll = css`
@@ -50,7 +50,7 @@ export const blur = (amount = 5) => css`
 
 export const mobileOnly = css`
 	display: block;
-	@media (min-width: ${theme.breakpoints.xl}) {
+	@media (min-width: ${theme.breakpoints.md}) {
 		display: none;
 	}
 `;

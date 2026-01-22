@@ -22,7 +22,7 @@ const Container = styled.header`
 		box-shadow: ${theme.shadows.sm};
 	`}
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.xl}) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.md}) {
 		${flex({ direction: 'row', alignItems: 'center' })}
 		${size('100%', '80px')}
 	}
@@ -31,7 +31,7 @@ const Container = styled.header`
 const SyncInfoContainer = styled.div`
 	display: none;
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.xl}) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.md}) {
 		${flex({ direction: 'row', gap: 'md', alignItems: 'center' })}
 	}
 `;
@@ -50,7 +50,7 @@ const SyncStatus = withSkeleton(SyncStatusBase, DashboardHeaderSkeleton.SyncStat
 
 const MobileNavWrapper = styled.div`
 	width: 100%;
-	@media (min-width: ${({ theme }) => theme.breakpoints.xl}) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.md}) {
 		display: none;
 	}
 `;

@@ -15,7 +15,7 @@ const Container = styled.div<{ $disabled?: boolean }>`
 	border-radius: ${({ theme }) => theme.radii.md};
 	background-color: ${({ theme }) => theme.colors.bg.lightSecondary};
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.xl}) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.md}) {
 		width: auto;
 	}
 `;
@@ -23,7 +23,7 @@ const Container = styled.div<{ $disabled?: boolean }>`
 const Label = styled.span<{ $shownOn?: 'base' | 'lg' }>`
 	${({ $shownOn }) => $shownOn !== 'base' && 'display: none;'}
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.xl}) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.l}) {
 		${({ $shownOn }) => $shownOn === 'lg' && 'display: inline;'}
 		${({ $shownOn }) => $shownOn === 'base' && 'display: none;'}
 	}

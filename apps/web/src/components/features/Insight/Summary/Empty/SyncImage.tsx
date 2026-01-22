@@ -1,4 +1,4 @@
-import { Box } from '@/styles/patterns';
+import { Box } from '@chakra-ui/react';
 
 export const SyncImage = () => {
 	return (

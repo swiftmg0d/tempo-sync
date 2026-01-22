@@ -19,7 +19,21 @@ const Header = styled.h2`
 	overflow: hidden;
 	text-overflow: ellipsis;
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.xl}) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.md}) {
+		white-space: normal;
+		overflow: visible;
+		text-overflow: clip;
+	}
+`;
+
+export const SubInfo = styled.p`
+	${text({ color: 'secondary', weight: 'medium', size: 'sm' })}
+
+	white-space: nowrap;
+	overflow: hidden;
+	text-overflow: ellipsis;
+
+	@media (min-width: ${({ theme }) => theme.breakpoints.md}) {
 		white-space: normal;
 		overflow: visible;
 		text-overflow: clip;
@@ -37,9 +51,9 @@ const CardsContainer = styled.div`
 		display: none;
 	}
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.xl}) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.md}) {
 		overflow-x: hidden;
 	}
 `;
 
-export const MetricList = { Section, Header, CardsContainer };
+export const MetricList = { Section, Header, CardsContainer, SubInfo };

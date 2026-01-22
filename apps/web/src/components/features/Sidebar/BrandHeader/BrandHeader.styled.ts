@@ -7,7 +7,7 @@ import { defaultBorderState, desktopOnly, flex, mobileOnly, text } from '@/style
 import { withSkeleton } from '@/utils';
 
 const Container = styled.div`
-	@media (min-width: ${({ theme }) => theme.breakpoints.xl}) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.md}) {
 		${flex({ direction: 'column', gap: 'xxl' })}
 	}
 `;
@@ -15,7 +15,7 @@ const Container = styled.div`
 const LogoContainer = styled.div`
 	${flex({ direction: 'row', gap: 'sm', alignItems: 'center' })}
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.xl}) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.md}) {
 		${flex({ direction: 'row', gap: 'md', alignItems: 'center' })}
 	}
 `;
@@ -48,8 +48,6 @@ const PulseWaveStyled = styled.div<{ $disabled: boolean }>`
 
 const SyncInfoStyled = styled.span`
 	${text({ weight: 'bold', size: 'xxs', color: 'secondary' })}
-
-	${desktopOnly}
 
 	text-transform: uppercase;
 `;

@@ -2,11 +2,11 @@ import { DashboardHeader } from './Header/DashboardHeader';
 import { showActiveScreen } from './utils';
 
 import { BlackgroundBlur } from '@/components/frame/Background/Blur';
-import { useActiveScreenState, useActivityCardsStore } from '@/state';
+import { useActiveScreenStore, useActivityCardsStore } from '@/store';
 
 export const Dashboard = () => {
-	const activeScreenIndex = useActiveScreenState((state) => state.activeScreenIndex);
-	const activityCardId = useActivityCardsStore((state) => state.activeCardId);
+	const activeScreenIndex = useActiveScreenStore((state) => state.activeScreenIndex);
+	const activityCardId = useActivityCardsStore((state) => state.activityId);
 	const isEmpty = useActivityCardsStore((state) => state.isEmpty);
 
 	return (

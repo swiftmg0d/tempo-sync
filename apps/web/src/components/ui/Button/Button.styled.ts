@@ -63,7 +63,7 @@ export const StyledButton = styled.button<StyledButtonProps>`
 	${flex({ direction: 'row', alignItems: 'center', gap: 'sm', justifyContent: 'center' })}
 	flex: 1;
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.xl}) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.md}) {
 		flex: 0 1 auto;
 		${flex({ direction: 'row', alignItems: 'center', gap: 'sm' })}
 	}

@@ -1,4 +1,3 @@
-import { chakra } from '@chakra-ui/react';
 import styled from '@emotion/styled';
 
 import type { AppTheme } from './theme';
@@ -38,16 +37,14 @@ export const Padded = styled.div<{
 
 export const MobileOnly = styled.div`
 	display: block;
-	@media (min-width: ${({ theme }) => theme.breakpoints.xl}) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.md}) {
 		display: none;
 	}
 `;
 
 export const DesktopOnly = styled.div`
 	display: none;
-	@media (min-width: ${({ theme }) => theme.breakpoints.xl}) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.md}) {
 		display: block;
 	}
 `;
-
-export const Box = chakra('div');

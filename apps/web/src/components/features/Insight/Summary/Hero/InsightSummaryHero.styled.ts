@@ -11,7 +11,7 @@ const Container = styled.div`
 		padding-bottom: ${theme.spacing.lg};
 	`}
 
-    @media (min-width: ${({ theme }) => theme.breakpoints.lg}) {
+    @media (min-width: ${({ theme }) => theme.breakpoints.xl}) {
 		${flex({ direction: 'row', justifyContent: 'space-between' })}
 	}
 `;
@@ -24,7 +24,7 @@ const InfoContainer = styled.div`
 		padding: ${theme.spacing.lg};
 	`}
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.lg}) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.xl}) {
 		padding: ${({ theme }) => theme.spacing['3xl']};
 	}
 `;
@@ -55,7 +55,7 @@ const ButtonText = styled.span`
 		font-size: clamp(${theme.fontSizes.xs}, 1vw, ${theme.fontSizes.md});
 	`}
 
-	@media (min-width: ${({ theme }) => theme.breakpoints.lg}) {
+	@media (min-width: ${({ theme }) => theme.breakpoints.xl}) {
 		${({ theme }) => css`
 			padding: ${theme.spacing.md} ${theme.spacing['3xl']};
 		`}

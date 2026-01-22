@@ -1,3 +1,4 @@
+import { Box } from '@chakra-ui/react/box';
 import { useEffect, useState } from 'react';
 
 import * as D from './DashboardHeader.styled';
@@ -10,15 +11,14 @@ import { Button } from '@/components/ui/Button';
 import { Queries } from '@/hooks/quieries';
 import { queryClient } from '@/lib/queryClient';
 import { queryKeys } from '@/lib/queryKeys';
-import { useActiveScreenState, useActivityCardsStore } from '@/state';
-import { Box } from '@/styles';
+import { useActiveScreenStore, useActivityCardsStore } from '@/store';
 
 export const DashboardHeader = () => {
 	const RetryIcon = Icons.retry;
 
 	const [toggleRetry, setToggleRetry] = useState(false);
 
-	const setActiveScreenIndex = useActiveScreenState((state) => state.setActiveScreenIndex);
+	const setActiveScreenIndex = useActiveScreenStore((state) => state.setActiveScreenIndex);
 	const isEmpty = useActivityCardsStore((state) => state.isEmpty);
 	const { isLoading, data, refetch, isSuccess, dataUpdatedAt } = Queries.useSyncStatus();
 

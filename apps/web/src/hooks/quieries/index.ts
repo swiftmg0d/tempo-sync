@@ -8,7 +8,7 @@ import { queryKeys } from '@/lib/queryKeys';
 export const useActivities = () =>
 	useInfiniteQuery({
 		queryKey: queryKeys.activity.list,
-		queryFn: ({ pageParam }) => apiService.activity.getActivities(pageParam, 6),
+		queryFn: ({ pageParam }) => apiService.activity.getActivities(pageParam),
 		initialPageParam: 1,
 		getNextPageParam: (lastPage) => lastPage.data.pagination.nextPage
 	});
@@ -42,9 +42,28 @@ const useSyncStatus = createQuery({
 	}
 });
 
+const useActivitiesPolylines = createQuery({
+	queryKey: queryKeys.activity.polylines(),
+	queryFn: apiService.activity.getActivitiesPolylines,
+	options: {
+		select: (res) => res.data
+	}
+});
+
+const useCurrentAthlete = createQuery({
+	queryKey: queryKeys.athlete.me,
+	queryFn: apiService.athlete.getMe,
+	options: {
+		select: (res) => res.data.athlete,
+		staleTime: 5 * 60 * 1000
+	}
+});
+
 export const Queries = {
 	useActivities,
 	useActivitySummary,
 	useActivitiesSummaries,
-	useSyncStatus
+	useSyncStatus,
+	useActivitiesPolylines,
+	useCurrentAthlete
 };

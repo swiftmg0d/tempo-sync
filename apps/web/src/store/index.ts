@@ -7,7 +7,7 @@ interface LoadingState {
 	toggleLoading: () => void;
 }
 
-export const useLoadingState = create<LoadingState>((set) => ({
+export const useLoadingStore = create<LoadingState>((set) => ({
 	isLoading: false,
 	toggleLoading: () => {
 		set((state) => ({ isLoading: !state.isLoading }));
@@ -21,7 +21,7 @@ interface ActiveScreen {
 	setActiveScreenIndex: (index: number) => void;
 }
 
-export const useActiveScreenState = create<ActiveScreen>((set) => ({
+export const useActiveScreenStore = create<ActiveScreen>((set) => ({
 	activeScreenIndex: 0,
 	setActiveScreenIndex: (index) => {
 		set(() => ({ activeScreenIndex: index }));
@@ -31,19 +31,31 @@ export const useActiveScreenState = create<ActiveScreen>((set) => ({
 // ActiveCard State
 
 interface ActivityCardsState {
-	activeCardId: string | null;
+	activityId: string | null;
 	isEmpty: boolean | null;
-	setActiveCardId: (cardId: string | null) => void;
+	setActiveCardId: (activityId: string | null) => void;
 	setIsEmpty: (isEmpty: boolean) => void;
 }
 
 export const useActivityCardsStore = create<ActivityCardsState>((set) => ({
-	activeCardId: null,
+	activityId: null,
 	isEmpty: null,
-	setActiveCardId: (cardId) => {
-		set({ activeCardId: cardId });
+	setActiveCardId: (activityId) => {
+		set({ activityId });
 	},
 	setIsEmpty: (isEmpty) => {
 		set({ isEmpty });
+	}
+}));
+
+interface UIState {
+	isSidebarOpen: boolean;
+	toggleSidebar: () => void;
+}
+
+export const useUIStore = create<UIState>((set) => ({
+	isSidebarOpen: false,
+	toggleSidebar: () => {
+		set((state) => ({ isSidebarOpen: !state.isSidebarOpen }));
 	}
 }));
