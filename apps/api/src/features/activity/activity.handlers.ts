@@ -8,6 +8,7 @@ import {
 } from './activity.service';
 
 import type { AppContext, AppEnv } from '@/shared/types/bindings';
+import { activityMap } from '@tempo-sync/db';
 
 export const getActivities = async (c: ValidatedContext<ActivityValidation, 'query', AppEnv>) => {
   const db = c.get('db');
@@ -37,4 +38,15 @@ export const getOverallActivitySummary = async (c: AppContext) => {
   const summary = await getActivitiesSummaryStats(db);
 
   return c.json(summary);
+};
+export const getActivitiesPolylines = async (c: AppContext) => {
+  const db = c.get('db');
+  const maps = await db
+    .select({
+      polyline: activityMap.polyline,
+      activityId: activityMap.activityId,
+    })
+    .from(activityMap);
+
+  return c.json(maps);
 };

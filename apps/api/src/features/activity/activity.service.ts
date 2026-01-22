@@ -6,7 +6,7 @@ import {
   type PoolDatabase,
 } from '@tempo-sync/db';
 import { DatabaseError } from '@tempo-sync/shared/errors';
-import type { Activities } from '@tempo-sync/shared/types';
+import type { Activities, ActivitySummary } from '@tempo-sync/shared/types';
 
 import { decodeActivityMap } from '@/shared/lib';
 
@@ -45,7 +45,10 @@ export const getAthleteActivities = async (
   }
 };
 
-export const getActivitySummaryById = async (activityId: string, db: PoolDatabase) => {
+export const getActivitySummaryById = async (
+  activityId: string,
+  db: PoolDatabase
+): Promise<ActivitySummary> => {
   try {
     const convertToPace = (speed: number) => {
       return 1000 / speed / 60;
