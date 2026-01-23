@@ -1,4 +1,4 @@
-export interface InsightsSummaryHeroProps {
+export interface SummaryHeroProps {
 	buttonText: string;
 	variant?: 'primary' | 'secondary';
 }

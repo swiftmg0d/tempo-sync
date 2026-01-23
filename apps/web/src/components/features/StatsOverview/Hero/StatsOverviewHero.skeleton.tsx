@@ -2,7 +2,7 @@ import { Box, Skeleton } from '@chakra-ui/react';
 
 import { theme } from '@/styles';
 
-export const InsightSummaryHeroSkeleton = () => {
+export const StatsOverviewHeroSkeleton = () => {
 	return (
 		<Box
 			display='flex'

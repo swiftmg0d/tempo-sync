@@ -1,7 +1,7 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
 
-import { InsightCardSkeleton } from './InsighCard.skeleton';
+import { StatsOverviewCardSkeleton } from './StatsOverviewCard.skeleton';
 
 import { blur, defaultBorderState, flex, size, text, transitionAll } from '@/styles';
 import { baseColors } from '@/styles/theme/colors';
@@ -77,13 +77,16 @@ const InfoStyled = styled.p`
 	${text({ weight: 'regular', size: 'xs', color: 'secondary' })};
 `;
 
-const Title = withSkeleton(TitleStyled, InsightCardSkeleton.TitleSkleton);
-const Info = withSkeleton(InfoStyled, InsightCardSkeleton.InfoSkeleton);
-const ScoreLabel = withSkeleton(ScoreLabelStyled, InsightCardSkeleton.ScoreLabelSkeleton);
-const ScoreValue = withSkeleton(ScoreValueStyled, InsightCardSkeleton.ScoreValueSkeleton);
-const IconContainer = withSkeleton(IconContainerStyled, InsightCardSkeleton.IconContainerSkeleton);
+const Title = withSkeleton(TitleStyled, StatsOverviewCardSkeleton.TitleSkleton);
+const Info = withSkeleton(InfoStyled, StatsOverviewCardSkeleton.InfoSkeleton);
+const ScoreLabel = withSkeleton(ScoreLabelStyled, StatsOverviewCardSkeleton.ScoreLabelSkeleton);
+const ScoreValue = withSkeleton(ScoreValueStyled, StatsOverviewCardSkeleton.ScoreValueSkeleton);
+const IconContainer = withSkeleton(
+	IconContainerStyled,
+	StatsOverviewCardSkeleton.IconContainerSkeleton
+);
 
-export const InsightCard = {
+export const StatsOverviewCard = {
 	Container,
 	IconContainer,
 	Header,

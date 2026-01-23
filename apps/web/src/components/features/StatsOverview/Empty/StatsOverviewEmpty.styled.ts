@@ -50,7 +50,7 @@ const InfoSubHeader = styled(motion.p)`
 	max-width: 520px;
 `;
 
-export const InsightSummaryEmpty = {
+export const StatsOverviewEmpty = {
 	Container,
 	InfoContainer,
 	InfoHeader,

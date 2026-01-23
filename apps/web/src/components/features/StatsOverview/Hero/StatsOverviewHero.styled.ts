@@ -68,7 +68,7 @@ const Image = styled.img`
 	`}
 `;
 
-export const InsightSummaryHero = {
+export const StatsOverviewHero = {
 	Container,
 	InfoContainer,
 	InfoHeader,

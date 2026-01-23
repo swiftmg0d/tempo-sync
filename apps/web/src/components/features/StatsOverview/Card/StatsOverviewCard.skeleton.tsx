@@ -49,7 +49,7 @@ const IconContainerSkeleton = styled(Skeleton)`
 		border-radius: ${theme.radii.sm};
 	`}
 `;
-export const InsightCardSkeleton = {
+export const StatsOverviewCardSkeleton = {
 	TitleSkleton,
 	InfoSkeleton,
 	ScoreLabelSkeleton,

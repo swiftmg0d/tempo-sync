@@ -16,7 +16,7 @@ const InfoSubHeaderSkeleton = styled(Skeleton)`
 	border-radius: ${({ theme }) => theme.radii.md};
 `;
 
-export const InsightSummaryEmptySkeleton = {
+export const StatsOverviewEmptySkeleton = {
 	InfoHeaderSkeleton,
 	InfoSubHeaderSkeleton
 };

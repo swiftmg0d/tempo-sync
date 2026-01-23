@@ -7,6 +7,6 @@ const Container = styled.div`
 	`};
 `;
 
-export const InsightSummary = {
+export const StatsOverview = {
 	Container
 };
