@@ -74,7 +74,7 @@ export const Sidebar = () => {
 			{/* Header */}
 			<S.Sidebar.Section $border='bot' as='header'>
 				<DesktopOnly>
-					<Padded $side='all' $p='xxl'>
+					<Padded $side='all' $p='xl'>
 						<BrandHeader />
 					</Padded>
 				</DesktopOnly>

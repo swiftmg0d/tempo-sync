@@ -20,6 +20,8 @@ export const scrollbar = css`
 		background-color: rgba(0, 0, 0, 0.18);
 		border-radius: 999px;
 		border: 3px solid transparent;
+
+		-webkit-background-clip: content-box;
 		background-clip: content-box;
 	}
 

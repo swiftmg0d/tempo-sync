@@ -3,7 +3,7 @@ import styled from '@emotion/styled';
 import { BrandHeaderSkeleton } from './BrandHeader.skeleton';
 import { pulseWaveBaseCss } from './BrandHedaer.styles';
 
-import { defaultBorderState, desktopOnly, flex, mobileOnly, text } from '@/styles';
+import { defaultBorderState, flex, mobileOnly, text } from '@/styles';
 import { withSkeleton } from '@/utils';
 
 const Container = styled.div`
@@ -25,10 +25,14 @@ const Title = styled.h1`
 `;
 
 const Description = styled.p`
-	${desktopOnly}
 	${text({ weight: 'bold', size: 'xs', color: 'secondary' })}
 
 	text-transform: uppercase;
+
+	display: none;
+	@media (min-width: ${({ theme }) => theme.breakpoints.md}) {
+		display: block;
+	}
 `;
 
 const SyncContainer = styled.div`

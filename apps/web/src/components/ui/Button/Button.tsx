@@ -11,6 +11,7 @@ export const Button = ({
 }: ButtonProps) => {
 	return (
 		<StyledButton
+			type='button'
 			disabled={disabled}
 			$disabled={disabled}
 			$variant={variant}
@@ -20,6 +21,7 @@ export const Button = ({
 			$paddingY={style.paddingY}
 			$active={active}
 			onClick={onClick}
+			title='Button'
 		>
 			{children}
 		</StyledButton>

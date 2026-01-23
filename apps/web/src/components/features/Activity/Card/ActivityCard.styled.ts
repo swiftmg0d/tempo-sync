@@ -64,7 +64,9 @@ const Section = styled.section<{ $active?: boolean }>`
 	${flex({ direction: 'row', gap: 'lg' })}
 
 	cursor: pointer;
+
 	user-select: none;
+	-wekit-user-select: none;
 
 	transition:
 		border-color 160ms ease,

@@ -3,12 +3,13 @@ import styled from '@emotion/styled';
 
 import { DashboardHeaderSkeleton } from './DashboardHeader.skeleton';
 
-import { flex, size, text } from '@/styles';
+import { blur, flex, size, text } from '@/styles';
 import { withSkeleton } from '@/utils';
 
 const Container = styled.header`
 	${flex({ direction: 'column', justifyContent: 'space-between', alignItems: 'center', gap: 'md' })}
 	${size('100%', 'auto')}
+	${blur(12)}
 
 	position: sticky;
 	top: 0;
@@ -18,7 +19,7 @@ const Container = styled.header`
 		background-color: ${theme.colors.bg.lightPrimary(0.95)};
 		border-bottom: 1px solid ${theme.colors.border.primaryRgb(0.08)};
 		padding: ${theme.spacing.lg} ${theme.spacing.xxl};
-		backdrop-filter: blur(12px);
+
 		box-shadow: ${theme.shadows.sm};
 	`}
 

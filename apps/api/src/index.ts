@@ -15,6 +15,11 @@ app.use('*', async (c, next) => {
   await next();
 });
 
+app.use('*', async (c, next) => {
+  c.header('x-content-type-options', 'nosniff');
+  await next();
+});
+
 app.route('/api/activity', activity);
 app.route('/api/athlete', athlete);
 app.route('/api/sync', sync);

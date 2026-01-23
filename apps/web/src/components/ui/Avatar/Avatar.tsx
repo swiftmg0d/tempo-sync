@@ -9,7 +9,7 @@ const AvatarComponent = ({ fallbackName, image }: AvatarProps) => {
 	return (
 		<AvatarBase.Root>
 			<AvatarBase.Fallback name={fallbackName} />
-			<AvatarBase.Image src={image} />
+			<AvatarBase.Image src={image} title='Image of the athlete' />
 		</AvatarBase.Root>
 	);
 };

@@ -44,8 +44,8 @@ export const transitionAll = css`
 `;
 
 export const blur = (amount = 5) => css`
-	backdrop-filter: blur(${amount}px);
 	-webkit-backdrop-filter: blur(${amount}px);
+	backdrop-filter: blur(${amount}px);
 `;
 
 export const mobileOnly = css`
