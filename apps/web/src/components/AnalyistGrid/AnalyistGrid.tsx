@@ -1,7 +1,6 @@
 import { MetricList } from '../Metric';
 
-import { getMetricList } from './AnalyistGrid.utils';
-
+import { getMetricList } from '@/features/AnalyistGrid/AnalyistGrid.utils';
 import { Queries } from '@/hooks/quieries';
 import { useActivityCardsStore } from '@/store';
 import { Padded } from '@/styles';

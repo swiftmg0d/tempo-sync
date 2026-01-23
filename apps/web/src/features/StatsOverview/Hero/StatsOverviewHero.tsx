@@ -3,7 +3,7 @@ import * as S from './StatsOverviewHero.styled';
 import type { SummaryHeroProps } from './types';
 
 import analysisIllustration from '@/assets/images/analysis-illustration.svg';
-import { Button } from '@/components/ui/Button';
+import { Button } from '@/components/Button';
 import { transition } from '@/styles';
 import { withSkeleton } from '@/utils';
 

@@ -3,16 +3,15 @@ import { useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { useShallow } from 'zustand/shallow';
 
-import { AccountInfo } from '../AccountInfo';
-import { ActivityList } from '../Activity';
-import { ActivityListEmptyState } from '../Activity/List/EmptyState/ActivityListEmptyState';
-import { ActivityListLoadMore } from '../Activity/List/LoadMore';
-import { ActivityListNoMore } from '../Activity/List/NoMore';
-
 import { BrandHeader } from './BrandHeader';
 import * as S from './Sidebar.styled';
 
-import { Avatar } from '@/components/ui/Avatar';
+import { AccountInfo } from '@/components/AccountInfo';
+import { ActivityList } from '@/components/Activity/List';
+import { ActivityListEmptyState } from '@/components/Activity/List/EmptyState/ActivityListEmptyState';
+import { ActivityListLoadMore } from '@/components/Activity/List/LoadMore';
+import { ActivityListNoMore } from '@/components/Activity/List/NoMore';
+import { Avatar } from '@/components/Avatar';
 import { Queries, useActivities } from '@/hooks/quieries';
 import { useActivityCardsStore, useUIStore } from '@/store';
 import { theme } from '@/styles';

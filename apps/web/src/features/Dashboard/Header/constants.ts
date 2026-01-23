@@ -1,4 +1,4 @@
-import type { Group } from '@/components/features/ButtonGroup/types';
+import type { Group } from '@/components/ButtonGroup/types';
 
 export const buttonsGroup: Group[] = [
 	{

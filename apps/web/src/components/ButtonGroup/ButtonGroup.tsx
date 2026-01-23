@@ -3,8 +3,8 @@ import { useState } from 'react';
 import * as B from './ButtonGroup.styled';
 import type { ButtonGroupProps } from './types';
 
+import { Button } from '@/components/Button';
 import { Icons } from '@/components/icons';
-import { Button } from '@/components/ui/Button';
 export const ButtonGroup = ({ group, onChange, disabled }: ButtonGroupProps) => {
 	const [selectedIndex, setSelectedIndex] = useState<number | null>(0);
 

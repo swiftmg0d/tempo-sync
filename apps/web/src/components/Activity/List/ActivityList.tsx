@@ -1,8 +1,9 @@
+import { ActivityCard } from '../Card';
+
 import { ActivityListSkeleton } from './ActivityList.skeleton';
 import * as A from './ActivityList.styled';
 import type { ActivityListProps } from './types';
 
-import { ActivityCard } from '@/components/features/Activity/Card';
 import { withSkeleton } from '@/utils';
 
 const ActivityListComponent = ({ onClick, isActiveCard, activities }: ActivityListProps) => {

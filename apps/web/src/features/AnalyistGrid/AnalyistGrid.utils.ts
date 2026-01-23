@@ -1,4 +1,4 @@
-import type { MetricCard } from '../Metric/Card/types';
+import type { MetricCard } from '../../components/Metric/Card/types';
 
 import { metricMap } from './constants';
 import type { CardType } from './types';

@@ -4,10 +4,10 @@ import { useEffect, useState } from 'react';
 import * as D from './DashboardHeader.styled';
 import { buttonsGroup } from './constants';
 
-import { ButtonGroup } from '@/components/features/ButtonGroup';
-import { BrandHeader } from '@/components/features/Sidebar/BrandHeader';
+import { Button } from '@/components/Button';
+import { ButtonGroup } from '@/components/ButtonGroup';
 import { Icons } from '@/components/icons';
-import { Button } from '@/components/ui/Button';
+import { BrandHeader } from '@/features/Sidebar/BrandHeader';
 import { Queries } from '@/hooks/quieries';
 import { queryClient } from '@/lib/queryClient';
 import { queryKeys } from '@/lib/queryKeys';

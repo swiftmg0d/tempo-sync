@@ -1,7 +1,7 @@
-import { AnalyistGrid } from '../AnalyistGrid';
 import { GlobalMap } from '../GlobalMap';
 import { StatsOverview, StatsOverviewEmpty } from '../StatsOverview';
 
+import { AnalyistGrid } from '@/features/AnalyistGrid';
 import { showWhen } from '@/utils';
 
 export const showActiveScreen = (

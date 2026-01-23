@@ -1,10 +1,10 @@
 import { useShallow } from 'zustand/shallow';
 
-import { Sidebar } from '../../features';
 import { Background } from '../Background';
 
 import * as L from './Layout.styled';
 
+import { Sidebar } from '@/features';
 import { useUIStore } from '@/store';
 
 export const Layout = ({ children }: { children: React.ReactNode }) => {
