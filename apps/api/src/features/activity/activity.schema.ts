@@ -11,3 +11,6 @@ export const getActivitySummaryShema = z.object({
 
 export type ActivityValidation = typeof activitySchema;
 export type ActivitySummaryValidation = typeof getActivitySummaryShema;
+
+export const getActivityLLMInsightsSchema = getActivitySummaryShema;
+export type ActivityLLMInsightsValidation = typeof getActivityLLMInsightsSchema;

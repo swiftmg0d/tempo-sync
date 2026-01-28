@@ -1,6 +1,10 @@
 import type { ValidatedContext } from '@tempo-sync/shared/types';
 
-import type { ActivitySummaryValidation, ActivityValidation } from './activity.schema';
+import type {
+  ActivityLLMInsightsValidation,
+  ActivitySummaryValidation,
+  ActivityValidation,
+} from './activity.schema';
 import {
   getActivitiesSummaryStats,
   getActivitySummaryById,
@@ -8,7 +12,7 @@ import {
 } from './activity.service';
 
 import type { AppContext, AppEnv } from '@/shared/types/bindings';
-import { activityMap } from '@tempo-sync/db';
+import { activity, activityMap, eq } from '@tempo-sync/db';
 
 export const getActivities = async (c: ValidatedContext<ActivityValidation, 'query', AppEnv>) => {
   const db = c.get('db');
@@ -50,3 +54,18 @@ export const getActivitiesPolylines = async (c: AppContext) => {
 
   return c.json(maps);
 };
+
+export async function getActivityLLMInsights(
+  c: ValidatedContext<ActivityLLMInsightsValidation, 'param', AppEnv>
+) {
+  const { id } = c.req.valid('param');
+
+  const db = c.get('db');
+
+  const [{ insight }] = await db
+    .select({ insight: activity.llmActivityInsight })
+    .from(activity)
+    .where(eq(activity.id, id));
+
+  return c.json(insight);
+}
