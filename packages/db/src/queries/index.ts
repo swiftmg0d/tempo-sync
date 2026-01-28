@@ -6,14 +6,13 @@ import {
   activityMap,
   activitySummary,
   athlete,
+  profile,
   sync,
   token,
-  type NewActivity,
   type NewToken,
   type TokenProvider,
   type TokenType,
 } from '../schema';
-import { date } from 'drizzle-orm/mysql-core';
 
 export const athleteQueries = {
   findAthleteByStravaId:
@@ -29,6 +28,9 @@ export const athleteQueries = {
     },
   getAthleteProfile: ({ db }: { db: AnyDatabase }) => {
     return db.select().from(athlete).limit(1);
+  },
+  getProfiles: (db: AnyDatabase) => {
+    return db.select().from(profile);
   },
 };
 

@@ -35,7 +35,7 @@ Output JSON with:
 
 - anomalies: [] // unusual data points, GPS glitches, pace spikes, HR drops
 
-Infer activity type from pace variance, duration, split patterns, and effort. Be specific with numbers.`,
+Be precise and base classifications on the provided metrics and patterns.`,
 
     user: (data: unknown) =>
       `Extract metrics from this Strava activity:\n${JSON.stringify(data, null, 2)}`,
@@ -88,7 +88,6 @@ OUTPUT FORMAT (strict JSON, no markdown):
   { "title": "Detected Anomalies", "description": "Any unusual patterns or data points, or 'None detected' if clean" },
   { "title": "Personalized Recommendations", "description": "What to do in the next session based on this one" },
   { "title": "Rating", "description": "X/10 - brief justification" },
-  { "title": "Activity Type", "description": "Human-readable type name", "type": "recovery|endurance|tempo|interval|speed|race|progression|fartlek|warmup_cooldown|unknown" }
 ]
 
 RULES:
@@ -96,8 +95,7 @@ RULES:
 - No markdown code fences (\`\`\`json or \`\`\`)
 - No text before or after the JSON
 - Each description: 1-3 sentences, direct and concise
-- Be honest in rating - 7+ means genuinely well-executed
-- Activity type must match one of the enum values exactly`,
+- Be honest in rating - 7+ means genuinely well-executed`,
 
     user: (data: unknown) =>
       `Format this analysis into the JSON structure:\n${JSON.stringify(data, null, 2)}`,

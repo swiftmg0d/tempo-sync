@@ -1,13 +1,5 @@
 import { relations } from 'drizzle-orm';
-import {
-  bigint,
-  boolean,
-  doublePrecision,
-  integer,
-  pgTable,
-  real,
-  varchar,
-} from 'drizzle-orm/pg-core';
+import { boolean, doublePrecision, integer, pgTable, real, varchar } from 'drizzle-orm/pg-core';
 import { nanoid } from 'nanoid';
 
 import { activity } from './activity.table';

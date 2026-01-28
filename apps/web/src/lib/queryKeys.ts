@@ -9,6 +9,11 @@ export const queryKeys = {
 		list: ['activities'] as const,
 		summary: (id: string) => [...queryKeys.activity.list, id, 'summary'] as const,
 		summaries: () => [...queryKeys.activity.list, 'summaries'] as const,
-		polylines: () => [...queryKeys.activity.list, 'polylines'] as const
+		polylines: () => [...queryKeys.activity.list, 'polylines'] as const,
+		LLMInsights: (id: string) => [...queryKeys.activity.list, id, 'llm-insights'] as const,
+		profile: () => [...queryKeys.activity.list, 'profiles'] as const
+	},
+	profile: {
+		list: ['profiles'] as const
 	}
 } as const;

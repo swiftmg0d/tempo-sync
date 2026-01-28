@@ -19,6 +19,7 @@
     "@hono/zod-validator": "^0.7.6",
     "@mapbox/polyline": "^1.2.1",
     "@tempo-sync/types": "workspace:*",
+    "@tempo-sync/db": "workspace:*",
     "date-fns": "^4.1.0",
     "hono": "^4.11.4",
     "zod": "^4.3.5"
