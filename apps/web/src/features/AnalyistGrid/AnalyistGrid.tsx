@@ -1,10 +1,13 @@
+import { Box } from '@chakra-ui/react';
+
 import { MetricList } from '../../components/Metric';
+import { InsightCarousel } from '../Insight/Carousel/InsightCarousel';
 
 import { getMetricList } from './AnalyistGrid.utils';
 
 import { Queries } from '@/hooks/quieries';
 import { useActivityCardsStore } from '@/store';
-import { Padded } from '@/styles';
+import { Padded, theme } from '@/styles';
 
 export const AnalyistGrid = () => {
 	const activeCardId = useActivityCardsStore((state) => state.activityId);
@@ -17,14 +20,56 @@ export const AnalyistGrid = () => {
 
 	return (
 		<Padded $p='xxl' $side='all'>
-			<MetricList
-				title={activitySummary?.title ?? 'Activity Metrics'}
-				list={metricList}
-				isLoading={isLoading}
-				date={activitySummary?.date ?? new Date()}
-				deviceName={activitySummary?.deviceName ?? ''}
-				gear={activitySummary?.gear ?? ''}
-			/>
+			<Box display='flex' gap={theme.spacing.xxl} flexDirection='column'>
+				<MetricList
+					title={activitySummary?.title ?? 'Activity Metrics'}
+					list={metricList}
+					isLoading={isLoading}
+					date={activitySummary?.date ?? new Date()}
+					deviceName={activitySummary?.deviceName ?? ''}
+					gear={activitySummary?.gear ?? ''}
+				/>
+
+				<Box
+					display='flex'
+					flexDirection='column'
+					lg={{ flexDirection: 'row' }}
+					gap={theme.spacing.md}
+				>
+					<Box flex={1} minWidth={0} padding={theme.spacing.lg}>
+						<div>Placeholder for Future Analysis Component</div>
+						<h3>
+							Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatem deleniti voluptas
+							distinctio sint fuga placeat beatae atque tenetur ullam dolor nihil, eum velit neque,
+							numquam ad doloremque culpa cum dignissimos.
+						</h3>
+					</Box>
+					<Box flex={1 / 2} minWidth={0} padding={theme.spacing.lg}>
+						<div>Placeholder for Future Analysis Component</div>
+						<h3>
+							Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatem deleniti voluptas
+							distinctio sint fuga placeat beatae atque tenetur ullam dolor nihil, eum velit neque,
+							numquam ad doloremque culpa cum dignissimos.
+						</h3>
+					</Box>
+				</Box>
+				<Box
+					display='flex'
+					flexDirection='column'
+					lg={{ flexDirection: 'row' }}
+					gap={theme.spacing.md}
+				>
+					<Box flex={1 / 2} minWidth={0} padding={theme.spacing.lg}>
+						<div>Placeholder for Future Analysis Component</div>
+						<h3>
+							Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatem deleniti voluptas
+							distinctio sint fuga placeat beatae atque tenetur ullam dolor nihil, eum velit neque,
+							numquam ad doloremque culpa cum dignissimos.
+						</h3>
+					</Box>
+					<InsightCarousel flex={1} />
+				</Box>
+			</Box>
 		</Padded>
 	);
 };

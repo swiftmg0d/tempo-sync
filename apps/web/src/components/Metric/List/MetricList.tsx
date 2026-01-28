@@ -13,12 +13,7 @@ const MetricListComponent = ({ list, title, date, deviceName, gear }: MetricsLis
 	if (!list) return null;
 
 	return (
-		<M.MetricList.Section
-			initial={{ opacity: 0, y: -20 }}
-			animate={{ opacity: 1, y: 0 }}
-			exit={{ opacity: 0, y: -20 }}
-			transition={{ duration: 0.1 }}
-		>
+		<M.MetricList.Section>
 			<Box>
 				<M.MetricList.Header>{title}</M.MetricList.Header>
 				<M.MetricList.SubInfo>

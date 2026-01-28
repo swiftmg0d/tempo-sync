@@ -13,6 +13,8 @@ import { PaceIcon } from './Pace';
 import { Retry } from './Retry';
 import { Runner } from './Runner';
 import { SignalFlow } from './SignalFlow';
+import { SpotifyIcon } from './Spotify';
+import { StravaIcon } from './Strava';
 import { TrendingUp } from './TrendingUp';
 
 export const Icons = {
@@ -31,7 +33,9 @@ export const Icons = {
 	history: HistoryIcon,
 	map: MapIcon,
 	headphone: HeadphoneIcon,
-	flag: FlagIcon
+	flag: FlagIcon,
+	strava: StravaIcon,
+	spotify: SpotifyIcon
 } as const;
 
 export type IconName = keyof typeof Icons;

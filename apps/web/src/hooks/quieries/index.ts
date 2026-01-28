@@ -59,11 +59,31 @@ const useCurrentAthlete = createQuery({
 	}
 });
 
+const useLLMActivityInsights = (id: string) =>
+	createQuery({
+		queryFn: () => apiService.activity.getActivityLLMInsights(id),
+		queryKey: queryKeys.activity.LLMInsights(id),
+		options: {
+			enabled: !!id,
+			select: (res) => res.data
+		}
+	});
+
+const useProfiles = createQuery({
+	queryKey: queryKeys.profile.list,
+	queryFn: apiService.profile.getProfiles,
+	options: {
+		select: (res) => res.data
+	}
+});
+
 export const Queries = {
 	useActivities,
 	useActivitySummary,
 	useActivitiesSummaries,
 	useSyncStatus,
 	useActivitiesPolylines,
-	useCurrentAthlete
+	useCurrentAthlete,
+	useLLMActivityInsights,
+	useProfiles
 };

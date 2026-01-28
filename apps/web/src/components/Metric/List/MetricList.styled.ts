@@ -1,9 +1,8 @@
 import styled from '@emotion/styled';
-import { motion } from 'motion/react';
 
 import { defaultBorderState, flex, text } from '@/styles';
 
-const Section = styled(motion.section)`
+const Section = styled.section`
 	${flex({ direction: 'column', gap: 'lg' })}
 	${defaultBorderState}
 
