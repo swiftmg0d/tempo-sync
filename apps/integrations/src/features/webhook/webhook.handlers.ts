@@ -1,13 +1,16 @@
 import { syncQueries, athleteQueries } from '@tempo-sync/db';
-import type { ValidatedContext, LLMEnv } from '@tempo-sync/shared/types';
+import type {
+  ValidatedContext,
+  LLMEnv,
+  CombinedRefreshTokensRequestParams,
+} from '@tempo-sync/shared/types';
 
 import { webhookApi } from './api';
 import type { StravaVerifyValidation, StravaWebhookValidation } from './webhook.schema';
 import { resyncWithToken, analyizeStravaActivityWithLLM, saveActivity } from './webhook.service';
 
 import type { AppEnv } from '@/shared/types';
-import type { CombinedRefreshTokensRequestParams } from '@/shared/types/token';
-import { decrypt } from '@/shared/utils';
+import { decrypt } from '@tempo-sync/shared';
 
 export const verifyWebhook = (c: ValidatedContext<StravaVerifyValidation, 'query', AppEnv>) => {
   const {
@@ -33,6 +36,8 @@ export const handleWebhookEvent = async (
 ) => {
   const body = c.req.valid('json');
   const stravaId = body.owner_id;
+
+  console.log('Received Strava webhook event:', body);
 
   if (body.updates?.title && !body.updates.title.includes('AI-ASSISTED')) {
     return c.text('No update needed for this activity', 200);
@@ -66,7 +71,7 @@ export const handleWebhookEvent = async (
 
   const activity = await webhookApi.strava.fetchActivityById({
     activityId: activityId.toString(),
-    accessToken: decrypt(stravaAccessToken, c.env.KEY),
+    accessToken: stravaAccessToken,
   });
 
   const LLMEnv: LLMEnv = {
@@ -79,7 +84,7 @@ export const handleWebhookEvent = async (
 
   const { updatedActivity, activityInsight } = await analyizeStravaActivityWithLLM(
     activity,
-    decrypt(stravaAccessToken, c.env.KEY),
+    stravaAccessToken,
     LLMEnv
   );
 

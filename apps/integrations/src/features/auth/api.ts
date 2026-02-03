@@ -1,13 +1,13 @@
+import {
+  SPOTFIY_TOKEN_URL,
+  SPOTIFY_AUTH_HEADER,
+  STRAVA_TOKEN_URL,
+  type SpotifyTokenRequestParams,
+  type SpotifyTokenResponse,
+  type StravaTokenRequestParams,
+  type StravaTokenResponse,
+} from '@tempo-sync/shared';
 import { http } from '@tempo-sync/shared/lib';
-
-import { SPOTFIY_TOKEN_URL, SPOTIFY_AUTH_HEADER, STRAVA_TOKEN_URL } from './constants';
-
-import type {
-  SpotifyTokenRequestParams,
-  SpotifyTokenResponse,
-  StravaTokenRequestParams,
-  StravaTokenResponse,
-} from '@/shared/types/token';
 
 export const authApi = {
   strava: {

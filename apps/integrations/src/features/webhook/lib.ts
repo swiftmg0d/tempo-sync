@@ -1,16 +1,13 @@
 import type { TokenProvider } from '@tempo-sync/db';
 
-import { webhookApi } from './api';
-
-import type { RefreshTokenRequestParams } from '@/shared/types/token';
+import { refreshToken } from '@tempo-sync/shared/api';
+import type { RefreshTokenRequestParams } from '@tempo-sync/shared/types';
 
 export const syncToken = async (provider: TokenProvider, request: RefreshTokenRequestParams) => {
   const mapFn = {
-    spotify: webhookApi.spotify.refreshToken,
-    strava: webhookApi.strava.refreshToken,
+    spotify: refreshToken.spotify,
+    strava: refreshToken.strava,
   };
 
-  return await mapFn[provider]({
-    request,
-  });
+  return await mapFn[provider].refreshToken({ request });
 };

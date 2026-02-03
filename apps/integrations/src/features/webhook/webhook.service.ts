@@ -9,13 +9,17 @@ import {
 import type { PoolDatabase } from '@tempo-sync/db/client';
 import { generetePrompt, type PromptKeys } from '@tempo-sync/llm';
 import { DatabaseError } from '@tempo-sync/shared/errors';
-import type { LLMActivityInsightResponse, LLMEnv, StravaActivity } from '@tempo-sync/shared/types';
+import type {
+  CombinedRefreshTokensRequestParams,
+  LLMActivityInsightResponse,
+  LLMEnv,
+  StravaActivity,
+  TokenResponse,
+} from '@tempo-sync/shared/types';
 
 import { webhookApi } from './api';
 import { syncToken } from './lib';
-
-import type { CombinedRefreshTokensRequestParams, TokenResponse } from '@/shared/types/token';
-import { decrypt, encrypt, incrementDateBySeconds } from '@/shared/utils';
+import { decrypt, encrypt, incrementDateBySeconds } from '@tempo-sync/shared';
 
 export const resyncWithToken = async (
   provider: TokenProvider,
@@ -35,7 +39,7 @@ export const resyncWithToken = async (
     if (accessToken.expiresAt && accessToken.expiresAt > new Date()) {
       return {
         message: `${provider} access token is still valid, no need to resync!`,
-        result: accessToken.value,
+        result: decrypt(accessToken.value, request.key),
         success: true,
       };
     }
@@ -72,7 +76,7 @@ export const resyncWithToken = async (
 
     return {
       message: `${provider} token resynced successfully!`,
-      result: updatedAccessToken.value,
+      result: decrypt(updatedAccessToken.value, request.key),
       success: true,
     };
   } catch (e) {
