@@ -31,9 +31,6 @@ export const activity = pgTable('activity', {
   gear: json().$type<Gear>(),
   laps: json().$type<Lap[]>(),
   llmActivityInsight: json('llm_activity_insight').$type<LLMActivityInsightResponse>(),
-  llmHeartBeatSongsAnalaysis: json(
-    'llm_heart_beat_songs_analaysis'
-  ).$type<LLMHeartbeatSongsAnalysis>(),
   name: varchar({ length: 255 }).notNull(),
   splitsMetric: json('splits_metric').$type<SplitMetric[]>(),
   splitsStandard: json('splits_standard').$type<SplitStandard[]>(),
@@ -41,6 +38,9 @@ export const activity = pgTable('activity', {
 
   startDateLocal: timestamp('start_date_local').notNull(),
   type: varchar({ length: 255 }),
+
+  hearBeatData: json('heart_beat_data').$type<number[]>(),
+  candaceData: json('cadance_data').$type<number[]>(),
 });
 
 export const activityRelations = relations(activity, ({ one }) => ({

@@ -20,6 +20,7 @@ import type {
 import { webhookApi } from './api';
 import { syncToken } from './lib';
 import { decrypt, encrypt, incrementDateBySeconds } from '@tempo-sync/shared';
+import type { StreamData } from '@/shared/types/strava';
 
 export const resyncWithToken = async (
   provider: TokenProvider,
@@ -128,6 +129,7 @@ export const analyizeStravaActivityWithLLM = async (
 export const saveActivity = async (
   activity: StravaActivity,
   db: PoolDatabase,
+  activityStreams: StreamData,
   activityInsight?: LLMActivityInsightResponse
 ) => {
   try {
@@ -147,13 +149,14 @@ export const saveActivity = async (
           gear: activity.gear,
           laps: activity.laps,
           llmActivityInsight: activityInsight,
-          llmHeartBeatSongsAnalaysis: null,
           name: activity.name,
           splitsMetric: activity.splits_metric,
           splitsStandard: activity.splits_standard,
           startDate: new Date(activity.start_date),
           startDateLocal: new Date(activity.start_date_local),
           type: activity.type,
+          hearBeatData: activityStreams.heartrate.data,
+          candaceData: activityStreams.cadence.data,
         })
         .returning({ id: activitySchema.id });
 

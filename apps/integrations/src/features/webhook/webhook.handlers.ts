@@ -59,12 +59,17 @@ export const handleWebhookEvent = async (
 
   const { result: stravaAccessToken } = await resyncWithToken('strava', request, stravaId, db);
 
-  // const { result: spotifyAccessToken } = await resyncWithToken(
-  //   'spotify',
-  //   request,
-  //   stravaId,
-  //   c.get('db')
-  // );
+  const activityStreams = await webhookApi.strava.getActivityStreams({
+    activityId: body.object_id.toString(),
+    accessToken: stravaAccessToken,
+  });
+
+  // // const { result: spotifyAccessToken } = await resyncWithToken(
+  // //   'spotify',
+  // //   request,
+  // //   stravaId,
+  // //   c.get('db')
+  // // );
 
   const activityId = body.object_id;
   const athleteId = body.owner_id;
@@ -88,7 +93,12 @@ export const handleWebhookEvent = async (
     LLMEnv
   );
 
-  const { message, success } = await saveActivity(updatedActivity, c.get('db'), activityInsight);
+  const { message, success } = await saveActivity(
+    updatedActivity,
+    c.get('db'),
+    activityStreams,
+    activityInsight
+  );
 
   await syncQueries.updateLastSyncTime(db, new Date());
 
