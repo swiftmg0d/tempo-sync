@@ -77,6 +77,22 @@ const useProfiles = createQuery({
 	}
 });
 
+const useAthleteTopArtist = createQuery({
+	queryKey: queryKeys.athlete.topArtist,
+	queryFn: () => apiService.spotify.getTopArtists(),
+	options: {
+		select: (res) => res.data
+	}
+});
+
+const useAthleteTotalActivities = createQuery({
+	queryKey: queryKeys.athlete.totalActivities,
+	queryFn: () => apiService.strava.getAllActivitiesCount(),
+	options: {
+		select: (res) => res.data
+	}
+});
+
 export const Queries = {
 	useActivities,
 	useActivitySummary,
@@ -85,5 +101,7 @@ export const Queries = {
 	useActivitiesPolylines,
 	useCurrentAthlete,
 	useLLMActivityInsights,
-	useProfiles
+	useProfiles,
+	useAthleteTopArtist,
+	useAthleteTotalActivities
 };

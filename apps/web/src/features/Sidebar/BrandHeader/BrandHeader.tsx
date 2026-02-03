@@ -38,7 +38,10 @@ export const BrandHeader = () => {
 							<SignalFlowIcon />
 						</MobileOnly>
 					)}
-					<B.BrandHeader.SyncInfo isLoading={isLoading}>Synced</B.BrandHeader.SyncInfo>
+					{showWhen(
+						!isEmpty,
+						<B.BrandHeader.SyncInfo isLoading={isLoading}>Synced</B.BrandHeader.SyncInfo>
+					)}
 					<B.BrandHeader.PulseWave isLoading={isLoading} $disabled={!!isEmpty} />
 					{showWhen(!!isEmpty, <B.BrandHeader.SyncInfoEmpty>Offline</B.BrandHeader.SyncInfoEmpty>)}
 				</B.BrandHeader.SyncContainer>

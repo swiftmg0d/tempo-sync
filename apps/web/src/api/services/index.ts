@@ -32,6 +32,12 @@ export const apiService = {
 		getStatus: () => api.get<ApiResponse<{ status: string }>>('/sync/status')
 	},
 	profile: {
-		getProfiles: () => api.get<ApiResponse<Profile[]>>('/athlete/profiles')
+		getProfiles: () => api.get<ApiResponse<(Profile & { title: string })[]>>('/athlete/profiles')
+	},
+	spotify: {
+		getTopArtists: () => api.get<ApiResponse<{ name: string; href: string }>>('/spotify/top-artist')
+	},
+	strava: {
+		getAllActivitiesCount: () => api.get<ApiResponse<{ count: number }>>('/strava/activities/count')
 	}
 };

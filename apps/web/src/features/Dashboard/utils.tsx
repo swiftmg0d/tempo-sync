@@ -1,3 +1,5 @@
+import { Box } from '@chakra-ui/react/box';
+
 import { GlobalMap } from '../GlobalMap';
 import { StatsOverview, StatsOverviewEmpty } from '../StatsOverview';
 
@@ -21,6 +23,8 @@ export const showActiveScreen = (
 			{activeScreenIndex === 1 && <GlobalMap />}
 			{showWhen(isStatsOverviewScreenNotEmpty, <StatsOverview />)}
 			{showWhen(isStatsOverviewScreenEmpty, <StatsOverviewEmpty />)}
+
+			<Box height='50px' />
 		</>
 	);
 };

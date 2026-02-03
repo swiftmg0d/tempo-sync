@@ -1,6 +1,8 @@
 export const queryKeys = {
 	athlete: {
-		me: ['athlete'] as const
+		me: ['athlete'] as const,
+		topArtist: ['athlete', 'top-artist'] as const,
+		totalActivities: ['athlete', 'total-activities'] as const
 	},
 	sync: {
 		status: ['status'] as const

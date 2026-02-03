@@ -14,7 +14,7 @@ export const ProfileListSkeleton = () => {
 					flex={1}
 					borderRadius={theme.radii.md}
 				>
-					<ProfileCard icon='map' header='Loading Profile' infoTitle='' infoValue='' href='' />
+					<ProfileCard icon='map' header='Loading Profile' infoTitle='' href='' />
 				</Skeleton>
 			))}
 		</Box>

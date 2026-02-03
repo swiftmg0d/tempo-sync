@@ -5,20 +5,51 @@ import { Icons } from '../../icons';
 import * as P from './ProfileCard.styled';
 import type { ProfileCardProps } from './types';
 
-export const ProfileCard = ({ icon, header, infoTitle, infoValue, href }: ProfileCardProps) => {
+import { Queries } from '@/hooks/quieries';
+
+export const ProfileCard = ({ icon, header, infoTitle, href }: ProfileCardProps) => {
 	const Icon = Icons[icon];
+
+	const { isLoading: isTotalActivitiesLoading, data: totalActivitiesData } =
+		Queries.useAthleteTotalActivities({
+			enabled: infoTitle === 'Total Activities:'
+		});
+
+	const { isLoading, data } = Queries.useAthleteTopArtist({
+		enabled: infoTitle === 'Top Artist:',
+		retry: 3,
+		retryDelay: (attempt) => Math.min(3000 * 2 ** attempt, 30000)
+	});
 
 	return (
 		<P.ProfileCard.Container onClick={() => window.open(href, '_blank')}>
 			<Icon active={false} />
 			<P.ProfileCard.Header>{header}</P.ProfileCard.Header>
 			<P.ProfileCard.Label>
-				<Box height='6px' width='6px' borderRadius='full' backgroundColor='#10b981' />
+				<Box
+					height='6px'
+					width='6px'
+					borderRadius='full'
+					backgroundColor='#10b981'
+					as='span'
+					display='block'
+				/>
 				Connected
 			</P.ProfileCard.Label>
 			<P.ProfileCard.InfoContainer>
 				<P.ProfileCard.InfoTitle>{infoTitle}</P.ProfileCard.InfoTitle>
-				<P.ProfileCard.InfoValue>{infoValue}</P.ProfileCard.InfoValue>
+				<P.ProfileCard.InfoValue
+					href={infoTitle === 'Top Artist:' && data ? data.href : undefined}
+					target='_blank'
+					rel='noopener noreferrer'
+					onClick={(e) => {
+						e.stopPropagation();
+					}}
+					as='a'
+					isLoading={infoTitle === 'Total Activities:' ? isTotalActivitiesLoading : isLoading}
+				>
+					{infoTitle === 'Total Activities:' ? totalActivitiesData?.count : data?.name}
+				</P.ProfileCard.InfoValue>
 			</P.ProfileCard.InfoContainer>
 		</P.ProfileCard.Container>
 	);
