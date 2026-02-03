@@ -10,7 +10,8 @@
     "./lib": "./src/lib/index.ts",
     "./errors": "./src/errors/index.ts",
     "./app": "./src/app/index.ts",
-    "./utils": "./src/utils/index.ts"
+    "./utils": "./src/utils/index.ts",
+    "./api": "./src/api/index.ts"
   },
   "scripts": {
     "check-types": "tsc --noEmit"
@@ -18,8 +19,9 @@
   "dependencies": {
     "@hono/zod-validator": "^0.7.6",
     "@mapbox/polyline": "^1.2.1",
-    "@tempo-sync/types": "workspace:*",
     "@tempo-sync/db": "workspace:*",
+    "@tempo-sync/types": "workspace:*",
+    "crypto-js": "^4.2.0",
     "date-fns": "^4.1.0",
     "hono": "^4.11.4",
     "zod": "^4.3.5"
@@ -27,6 +29,7 @@
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20260115.0",
     "@tempo-sync/config": "workspace:*",
+    "@types/crypto-js": "^4.2.2",
     "@types/mapbox__polyline": "^1.0.5"
   }
 }
