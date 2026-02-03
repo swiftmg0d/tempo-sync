@@ -11,12 +11,9 @@ export type OpenRouterModel =
   | 'xiaomi/mimo-v2-flash:free'
   | 'tngtech/deepseek-r1t2-chimera:free'
   | 'google/gemma-3-27b-it:free'
-  | 'meta-llama/llama-3.3-70b-instruct:free';
-
-export type GeminiModel =
-  | 'gemini-2.0-flash'
-  | 'gemini-2.5-pro-preview-05-06'
-  | 'gemini-2.5-flash-preview-05-20';
+  | 'meta-llama/llama-3.3-70b-instruct:free'
+  | 'arcee-ai/arcee-trinity-large-preview:free'
+  | 'deepseek/deepseek-chat-v3-0324:free';
 
 export type CerebrasModel = 'llama-3.3-70b' | 'qwen-3-32b';
 
@@ -25,7 +22,6 @@ export type SambanovaModel = 'Meta-Llama-3.3-70B-Instruct' | 'DeepSeek-R1-0528';
 export type LLMModel =
   | { provider: 'groq'; model: GroqModel }
   | { provider: 'openrouter'; model: OpenRouterModel }
-  | { provider: 'gemini'; model: GeminiModel }
   | { provider: 'cerebras'; model: CerebrasModel }
   | { provider: 'sambanova'; model: SambanovaModel };
 
