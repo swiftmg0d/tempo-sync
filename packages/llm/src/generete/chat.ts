@@ -29,6 +29,9 @@ export const createChatCompletion = async ({
       } else if (error.status == 413) {
         console.warn('Request payload too large... trying next provider if available.');
         return 'payload_too_large';
+      } else if (error.status === 404) {
+        console.error('Model not found... trying next provider if available.');
+        return 'payload_too_large';
       }
     }
     console.error('Error in createChatCompletion:', error);

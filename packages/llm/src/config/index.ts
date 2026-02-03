@@ -41,22 +41,20 @@ export const getProviderModels = (env: LLMEnv) => {
 
 export const llmPipeline: LLMPipeline = {
   processing: [
-    { provider: 'gemini', model: 'gemini-2.0-flash' },
     { provider: 'cerebras', model: 'llama-3.3-70b' },
     { provider: 'groq', model: 'llama-3.3-70b-versatile' },
     { provider: 'sambanova', model: 'Meta-Llama-3.3-70B-Instruct' },
     { provider: 'openrouter', model: 'qwen/qwen3-coder:free' },
   ],
   analysis: [
-    { provider: 'openrouter', model: 'deepseek/deepseek-r1-0528:free' },
-    { provider: 'gemini', model: 'gemini-2.5-pro-preview-05-06' },
     { provider: 'sambanova', model: 'DeepSeek-R1-0528' },
-    { provider: 'cerebras', model: 'qwen-3-32b' },
-    { provider: 'openrouter', model: 'xiaomi/mimo-v2-flash:free' },
+    { provider: 'openrouter', model: 'deepseek/deepseek-r1-0528:free' },
     { provider: 'openrouter', model: 'tngtech/deepseek-r1t2-chimera:free' },
+    { provider: 'openrouter', model: 'arcee-ai/arcee-trinity-large-preview:free' },
+    { provider: 'openrouter', model: 'deepseek/deepseek-chat-v3-0324:free' },
+    { provider: 'cerebras', model: 'qwen-3-32b' },
   ],
   formatting: [
-    { provider: 'gemini', model: 'gemini-2.0-flash' },
     { provider: 'cerebras', model: 'llama-3.3-70b' },
     { provider: 'openrouter', model: 'google/gemma-3-27b-it:free' },
     { provider: 'groq', model: 'llama-3.3-70b-versatile' },
