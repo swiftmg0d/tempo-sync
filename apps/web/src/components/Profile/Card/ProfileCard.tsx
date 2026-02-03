@@ -16,9 +16,7 @@ export const ProfileCard = ({ icon, header, infoTitle, href }: ProfileCardProps)
 		});
 
 	const { isLoading, data } = Queries.useAthleteTopArtist({
-		enabled: infoTitle === 'Top Artist:',
-		retry: 3,
-		retryDelay: (attempt) => Math.min(3000 * 2 ** attempt, 30000)
+		enabled: infoTitle === 'Top Artist:'
 	});
 
 	return (
@@ -48,7 +46,9 @@ export const ProfileCard = ({ icon, header, infoTitle, href }: ProfileCardProps)
 					as='a'
 					isLoading={infoTitle === 'Total Activities:' ? isTotalActivitiesLoading : isLoading}
 				>
-					{infoTitle === 'Total Activities:' ? totalActivitiesData?.count : data?.name}
+					{infoTitle === 'Total Activities:'
+						? (totalActivitiesData?.count ?? 'N/A')
+						: (data?.name ?? 'N/A')}
 				</P.ProfileCard.InfoValue>
 			</P.ProfileCard.InfoContainer>
 		</P.ProfileCard.Container>

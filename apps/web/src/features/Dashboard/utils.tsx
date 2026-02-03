@@ -4,6 +4,7 @@ import { GlobalMap } from '../GlobalMap';
 import { StatsOverview, StatsOverviewEmpty } from '../StatsOverview';
 
 import { AnalyistGrid } from '@/features/AnalyistGrid';
+import { MobileOnly } from '@/styles';
 import { showWhen } from '@/utils';
 
 export const showActiveScreen = (
@@ -24,7 +25,9 @@ export const showActiveScreen = (
 			{showWhen(isStatsOverviewScreenNotEmpty, <StatsOverview />)}
 			{showWhen(isStatsOverviewScreenEmpty, <StatsOverviewEmpty />)}
 
-			<Box height='50px' />
+			<MobileOnly>
+				<Box height='50px' />
+			</MobileOnly>
 		</>
 	);
 };
