@@ -3,6 +3,11 @@ import type { Context, Handler } from 'hono';
 
 export interface Bindings {
   DATABASE_URL: string;
+  KEY: string;
+  SPOTIFY_CLIENT_ID: string;
+  SPOTIFY_CLIENT_SECRET: string;
+  STRAVA_CLIENT_ID: string;
+  STRAVA_CLIENT_SECRET: string;
 }
 
 export interface Variables {
