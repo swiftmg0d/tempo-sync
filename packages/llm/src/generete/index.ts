@@ -34,12 +34,16 @@ export const generetePrompt = async <T = string>({
         model: llm.model,
       });
 
-      if (response === 'rate_limited' || response === 'payload_too_large') {
+      if (
+        response === 'rate_limited' ||
+        response === 'payload_too_large' ||
+        response === 'server_error' ||
+        response === 'model_not_found'
+      ) {
         continue;
-      } else if (response === null) {
+      } else if (response === null || response === 'auth_failed') {
         throw new PromptError(500, 'LLM provider failed to generate a response!');
       }
-
       previousResult = response;
       break;
     }

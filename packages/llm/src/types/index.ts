@@ -3,7 +3,10 @@ import type OpenAI from 'openai';
 
 import type { PromptKeys } from '../constants';
 
-export type GroqModel = 'llama-3.3-70b-versatile' | 'llama-4-maverick-17b-128e-instruct';
+export type GroqModel =
+  | 'llama-3.3-70b-versatile'
+  | 'llama-4-maverick-17b-128e-instruct'
+  | 'llama-3.1-405b-reasoning';
 
 export type OpenRouterModel =
   | 'qwen/qwen3-coder:free'
