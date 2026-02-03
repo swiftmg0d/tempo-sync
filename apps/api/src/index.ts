@@ -6,6 +6,8 @@ import { activity } from './features/activity';
 import { athlete } from './features/athlete';
 import { sync } from './features/sync';
 import type { AppEnv } from './shared/types/bindings';
+import { strava } from './features/strava';
+import { spotify } from './features/spotify';
 
 const app = createApp<AppEnv>();
 
@@ -23,6 +25,8 @@ app.use('*', async (c, next) => {
 app.route('/api/activity', activity);
 app.route('/api/athlete', athlete);
 app.route('/api/sync', sync);
+app.route('/api/spotify', spotify);
+app.route('/api/strava', strava);
 
 app.notFound((c) => c.json({ message: 'Not Found' }, 404));
 app.onError(errorHandler);

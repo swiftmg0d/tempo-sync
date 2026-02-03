@@ -38,6 +38,14 @@
       "port": 9229,
       "skipFiles": ["<node_internals>/**"],
       "sourceMaps": true
+    },
+    {
+      "name": "Attach to Integrations Worker",
+      "type": "chrome",
+      "request": "attach",
+      "port": 9230,
+      "urlFilter": "*",
+      "webRoot": "${workspaceFolder}/apps/integrations"
     }
   ],
   "compounds": [

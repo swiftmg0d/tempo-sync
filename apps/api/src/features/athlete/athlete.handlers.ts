@@ -19,11 +19,14 @@ export const getAthlete = async (c: AppContext) => {
 export const getProfiles = async (c: AppContext) => {
   try {
     const db = c.get('db');
-
     const profiles = await athleteQueries.getProfiles(db);
-    tokenQueries.findTokenByProviderAndId(db);
 
-    return c.json(profiles);
+    const updatedProfiles = profiles.map((profile) => ({
+      ...profile,
+      title: profile.name == 'Strava' ? 'Total Activities:' : 'Top Artist:',
+    }));
+
+    return c.json(updatedProfiles);
   } catch (error) {
     console.error('Error fetching profiles:', error);
     throw new DatabaseError(500, 'Failed to fetch profiles.');
