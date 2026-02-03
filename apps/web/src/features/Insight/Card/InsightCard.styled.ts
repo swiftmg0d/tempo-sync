@@ -46,7 +46,7 @@ const HeaderStyled = styled.h3`
 `;
 
 const DescriptionStyled = styled.p`
-	${text({ size: 'xxs', weight: 'regular', color: 'secondary' })}
+	${text({ size: 'xs', weight: 'regular', color: 'secondary' })}
 
 	${({ theme }) => css`
 		line-height: 1.6;
@@ -57,9 +57,6 @@ const DescriptionStyled = styled.p`
 		overflow: hidden;
 
 		@media (min-width: ${theme.breakpoints.md}) {
-			font-size: ${theme.fontSizes.xs};
-		}
-		@media (min-width: ${theme.breakpoints.lg}) {
 			font-size: ${theme.fontSizes.sm};
 		}
 	`}
