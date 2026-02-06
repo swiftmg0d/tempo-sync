@@ -81,7 +81,8 @@ export const activityQueries = {
       .innerJoin(activityMap, eq(activityMap.activityId, activity.id))
       .innerJoin(activitySummary, eq(activitySummary.activityId, activity.id))
       .limit(limit)
-      .offset((page - 1) * limit);
+      .offset((page - 1) * limit)
+      .orderBy(sql`start_date DESC`);
   },
 };
 
