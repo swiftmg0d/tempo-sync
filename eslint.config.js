@@ -8,7 +8,7 @@ export default tseslint.config(
   ...tseslint.configs.strictTypeChecked,
   ...tseslint.configs.stylisticTypeChecked,
   {
-    ignores: ['**/dist/**', '**/node_modules/**', '**/*.config.js'],
+    ignores: ['**/dist/**', '**/node_modules/**', '**/*.config.js', '**/.wrangler/**'],
   },
   {
     languageOptions: {

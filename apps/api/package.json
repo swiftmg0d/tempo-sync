@@ -2,6 +2,7 @@
   "name": "@tempo-sync/api",
   "type": "module",
   "scripts": {
+    "lint": "eslint .",
     "deploy": "wrangler deploy --minify",
     "cf-typegen": "wrangler types --env-interface CloudflareBindings",
     "check-types": "tsc --noEmit",
