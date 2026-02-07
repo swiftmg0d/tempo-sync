@@ -25,7 +25,7 @@ export interface Bindings {
   CEREBRAS_API_KEY: string;
 
   X_API_KEY: string;
-  SUBSCRIPTION_ID: number;
+  SUBSCRIPTION_ID: string;
 }
 
 export interface Variables {

@@ -13,7 +13,7 @@ export const subscriptionMiddleware = async (
 
   const subscriptionIdFromBody = body.subscription_id;
 
-  if (subscriptionIdFromBody !== c.env.SUBSCRIPTION_ID) {
+  if (subscriptionIdFromBody !== Number(c.env.SUBSCRIPTION_ID)) {
     return c.json({ message: 'Unauthorized subscription ID' }, 401);
   }
 
