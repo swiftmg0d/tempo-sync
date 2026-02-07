@@ -5,7 +5,7 @@ import type z from 'zod';
 
 import { GenericError } from '../errors';
 
-export const validate = <Target extends keyof ValidationTargets, Schema extends z.ZodTypeAny>(
+export const validate = <Target extends keyof ValidationTargets, Schema extends z.ZodType>(
   target: Target,
   schema: Schema
 ) => {

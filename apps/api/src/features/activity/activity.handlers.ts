@@ -1,3 +1,4 @@
+import { activity, activityMap, activitySummary, eq } from '@tempo-sync/db';
 import type { MultiValidatedContext, ValidatedContext } from '@tempo-sync/shared/types';
 
 import type {
@@ -12,10 +13,9 @@ import {
   getActivitySummaryById,
   getAthleteActivities,
 } from './activity.service';
-
-import { activity, activityMap, activitySummary, eq } from '@tempo-sync/db';
-import type { AppContext, AppEnv } from '@/shared/types/bindings';
 import { aggregateActivityStreams } from './utils';
+
+import type { AppContext, AppEnv } from '@/shared/types/bindings';
 
 export const getActivities = async (c: ValidatedContext<ActivityValidation, 'query', AppEnv>) => {
   const db = c.get('db');

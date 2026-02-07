@@ -1,7 +1,7 @@
 import { PromptError } from '@tempo-sync/shared/errors';
 
 import { getProviderModels, llmPipeline } from '../config';
-import { promptsMap, type PromptKeys } from '../constants';
+import { promptsMap } from '../constants';
 import type { GeneretePromptProperties, LLMPhase } from '../types';
 
 import { createChatCompletion } from './chat';

@@ -166,15 +166,7 @@ Solo evening session
 
 Output ONLY the formatted summary, Nothing else.`,
 
-    user: (
-      data: unknown,
-      weather?: {
-        temp: number;
-        conditions: string;
-        humidity?: number;
-        wind?: string;
-      }
-    ) => {
+    user: (data: unknown) => {
       const base = JSON.stringify(data, null, 2);
 
       return `Generate workout summary:\n${base}`;

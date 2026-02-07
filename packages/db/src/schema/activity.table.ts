@@ -3,7 +3,6 @@ import type {
   Gear,
   Lap,
   LLMActivityInsightResponse,
-  LLMHeartbeatSongsAnalysis,
   SplitMetric,
   SplitStandard,
 } from '@tempo-sync/types';

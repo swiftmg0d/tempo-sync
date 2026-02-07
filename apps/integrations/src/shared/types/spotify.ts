@@ -1,4 +1,4 @@
-type Track = {
+interface Track {
   track: {
     id: string;
     name: string;
@@ -26,8 +26,8 @@ type Track = {
     type: 'playlist' | 'artist' | 'album' | 'show';
     uri: string;
   };
-};
+}
 
-export type RecentlyPlayedTracksResponse = {
+export interface RecentlyPlayedTracksResponse {
   items: Track[];
-};
+}

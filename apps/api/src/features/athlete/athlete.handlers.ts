@@ -1,4 +1,4 @@
-import { athleteQueries, tokenQueries } from '@tempo-sync/db';
+import { athleteQueries } from '@tempo-sync/db';
 import { DatabaseError } from '@tempo-sync/shared/errors';
 
 import type { AppContext } from '@/shared/types/bindings';
@@ -23,7 +23,7 @@ export const getProfiles = async (c: AppContext) => {
 
     const updatedProfiles = profiles.map((profile) => ({
       ...profile,
-      title: profile.name == 'Strava' ? 'Total Activities:' : 'Top Artist:',
+      title: profile.name === 'Strava' ? 'Total Activities:' : 'Top Artist:',
     }));
 
     return c.json(updatedProfiles);

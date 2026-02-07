@@ -1,8 +1,9 @@
+import { athleteQueries } from '@tempo-sync/db';
+
+import { stravaAPI } from './api';
+
 import { resetToken } from '@/shared/lib';
 import type { AppContext } from '@/shared/types/bindings';
-import { decrypt, encrypt } from '@tempo-sync/shared';
-import { stravaAPI } from './api';
-import { athleteQueries } from '@tempo-sync/db';
 
 export const getAllActivitesCount = async (c: AppContext) => {
   const db = c.get('db');

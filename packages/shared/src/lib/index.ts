@@ -1,6 +1,6 @@
+import { decode } from '@mapbox/polyline';
 import { Hono, type Env } from 'hono';
 import type { ContentfulStatusCode } from 'hono/utils/http-status';
-import { decode } from '@mapbox/polyline';
 
 import { FetchError } from '../errors';
 

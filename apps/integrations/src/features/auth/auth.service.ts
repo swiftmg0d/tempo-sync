@@ -1,13 +1,12 @@
 import { athlete, DrizzleQueryError, token, eq } from '@tempo-sync/db';
 import type { AnyDatabase } from '@tempo-sync/db/client';
-import { DatabaseError } from '@tempo-sync/shared/errors';
-
 import {
   encrypt,
   incrementDateBySeconds,
   type SpotifyTokenResponse,
   type StravaTokenResponse,
 } from '@tempo-sync/shared';
+import { DatabaseError } from '@tempo-sync/shared/errors';
 
 export const saveProfile = async (response: StravaTokenResponse, key: string, db: AnyDatabase) => {
   try {

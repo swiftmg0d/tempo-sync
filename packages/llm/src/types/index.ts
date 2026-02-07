@@ -49,7 +49,16 @@ export interface LLMChatCompletionParams {
   model: LLMModel['model'];
 }
 
-export type ChatCompletionResponse = 'rate_limited' | 'payload_too_large' | string | null;
+export const ChatCompletionResponse = {
+  RATE_LIMITED: 'rate_limited',
+  PAYLOAD_TOO_LARGE: 'payload_too_large',
+  SERVER_ERROR: 'server_error',
+  MODEL_NOT_FOUND: 'model_not_found',
+  AUTH_FAILED: 'auth_failed',
+} as const;
+
+export type ChatCompletionResponseType =
+  (typeof ChatCompletionResponse)[keyof typeof ChatCompletionResponse];
 
 export interface GeneretePromptProperties {
   env: LLMEnv;

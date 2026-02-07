@@ -1,12 +1,19 @@
-import type { RecentlyPlayedTracksResponse } from '@/shared/types/spotify';
-import type { StreamData } from '@/shared/types/strava';
 import { STRAVA_API_URL, SPOTIFY_API_URL } from '@tempo-sync/shared';
 import { http } from '@tempo-sync/shared/lib';
 import type { StravaActivity } from '@tempo-sync/shared/types';
 
+import type { RecentlyPlayedTracksResponse } from '@/shared/types/spotify';
+import type { StreamData } from '@/shared/types/strava';
+
 export const webhookApi = {
   strava: {
-    fetchActivityById: ({ activityId, accessToken }: { activityId: string; accessToken: string }) =>
+    fetchActivityById: async ({
+      activityId,
+      accessToken,
+    }: {
+      activityId: string;
+      accessToken: string;
+    }) =>
       http<StravaActivity>(
         `${STRAVA_API_URL}/activities/${activityId}`,
         {
@@ -17,7 +24,7 @@ export const webhookApi = {
         },
         'Failed to fetch Strava activity by ID'
       ),
-    updateActivityById: ({
+    updateActivityById: async ({
       activityId,
       accessToken,
       data,
@@ -39,7 +46,7 @@ export const webhookApi = {
         'Failed to update Strava activity by ID'
       );
     },
-    getActivityStreams: ({
+    getActivityStreams: async ({
       activityId,
       accessToken,
     }: {
@@ -65,7 +72,7 @@ export const webhookApi = {
     },
   },
   spotify: {
-    fetchRecentlyPlayedTracks: ({
+    fetchRecentlyPlayedTracks: async ({
       accessToken,
       after,
       before,

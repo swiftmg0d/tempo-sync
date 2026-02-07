@@ -81,7 +81,7 @@ export const getActivitiesSummaryStats = async (db: PoolDatabase) => {
         id: crypto.randomUUID(),
         info: 'Total runs',
         title: 'Lifetime',
-        value: result.totalCount ?? 0,
+        value: result.totalCount,
       },
       {
         icon: 'map',

@@ -19,7 +19,7 @@ export const aggregateActivityStreams = (data: (number | null)[], name: string) 
     let sum = 0;
 
     for (let i = start; i < end; i++) {
-      sum += data[i]!;
+      sum += data[i] ?? 0;
     }
 
     const avg = sum / count;

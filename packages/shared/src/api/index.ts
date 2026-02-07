@@ -3,8 +3,9 @@ import type {
   SpotifyTokenResponse,
   StravaTokenResponse,
 } from '@tempo-sync/types';
-import { http } from '../lib';
+
 import { SPOTFIY_TOKEN_URL, SPOTIFY_AUTH_HEADER, STRAVA_TOKEN_URL } from '../constants';
+import { http } from '../lib';
 
 export const refreshToken = {
   strava: {

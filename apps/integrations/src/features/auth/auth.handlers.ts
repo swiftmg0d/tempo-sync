@@ -16,7 +16,7 @@ export const stravaCallback = async (c: AppContext) => {
   const request = {
     client_id: c.env.STRAVA_CLIENT_ID,
     client_secret: c.env.STRAVA_CLIENT_SECRET,
-    code: code!,
+    code: code ?? '',
     grant_type: 'authorization_code',
   };
 
@@ -24,7 +24,7 @@ export const stravaCallback = async (c: AppContext) => {
 
   const id = await saveProfile(accessToken, c.env.KEY, c.get('db'));
 
-  setCookie(c, 'profileId', String(id), {
+  setCookie(c, 'profileId', id, {
     httpOnly: true,
     secure: true,
     maxAge: 60 * 10,
@@ -41,7 +41,7 @@ export const spotifyCallback = async (c: AppContext) => {
   if (!profileId) return c.json({ message: 'Invalid profileId' }, 400);
 
   const request = {
-    code: code!,
+    code: code ?? '',
     grant_type: 'authorization_code',
     redirect_uri: c.env.SPOTIFY_REDIRECT_URL,
     client_id: c.env.SPOTIFY_CLIENT_ID,

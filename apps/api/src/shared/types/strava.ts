@@ -1,4 +1,4 @@
-export type AthleteStatsResponse = {
+export interface AthleteStatsResponse {
   all_run_totals: {
     count: number;
     distance: number;
@@ -6,4 +6,4 @@ export type AthleteStatsResponse = {
     elapsed_time: number;
     elevation_gain: number;
   };
-};
+}

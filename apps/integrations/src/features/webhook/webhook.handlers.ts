@@ -1,28 +1,14 @@
-import { syncQueries, athleteQueries } from '@tempo-sync/db';
+import { incrementDateBySeconds } from '@tempo-sync/shared';
 import type {
   ValidatedContext,
-  LLMEnv,
   CombinedRefreshTokensRequestParams,
 } from '@tempo-sync/shared/types';
 
 import { webhookApi } from './api';
 import type { StravaVerifyValidation, StravaWebhookValidation } from './webhook.schema';
-import {
-  resyncWithToken,
-  analyizeStravaActivityWithLLM,
-  saveActivity,
-  getRecentlyPlayedSongsDuringActivity,
-  handleStravaWebhook,
-} from './webhook.service';
+import { resyncWithToken, handleStravaWebhook } from './webhook.service';
 
 import type { AppEnv } from '@/shared/types';
-import {
-  decrypt,
-  http,
-  incrementDateBySeconds,
-  SPOTIFY_API_URL,
-  STRAVA_API_URL,
-} from '@tempo-sync/shared';
 
 export const verifyWebhook = (c: ValidatedContext<StravaVerifyValidation, 'query', AppEnv>) => {
   const {
@@ -68,7 +54,7 @@ export const handleWebhookEvent = async (
   };
 
   const { result: stravaAccessToken } = await resyncWithToken('strava', request, stravaId, db);
-  const { result: spotifyAccessToken } = await resyncWithToken('spotify', request, stravaId, db);
+  // const { result: spotifyAccessToken } = await resyncWithToken('spotify', request, stravaId, db);
 
   const activity = await webhookApi.strava.fetchActivityById({
     activityId: activityId.toString(),
@@ -77,6 +63,10 @@ export const handleWebhookEvent = async (
 
   const startDate = new Date(activity.start_date);
   const endDate = incrementDateBySeconds(activity.elapsed_time, new Date(startDate));
+
+  console.log(
+    `Activity start time: ${startDate.toISOString()}, end time: ${endDate.toISOString()}`
+  );
 
   // await getRecentlyPlayedSongsDuringActivity({
   //   accessToken: spotifyAccessToken,

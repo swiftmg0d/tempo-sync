@@ -1,8 +1,8 @@
-export type TopArtist = {
+export interface TopArtist {
   name: string;
   href: string;
-};
+}
 
-export type AthleteTopArtistResponse = {
-  items: Array<TopArtist & { external_urls: { spotify: string } }>;
-};
+export interface AthleteTopArtistResponse {
+  items: (TopArtist & { external_urls: { spotify: string } })[];
+}

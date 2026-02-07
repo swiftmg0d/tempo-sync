@@ -1,5 +1,4 @@
 import type { TokenProvider } from '@tempo-sync/db';
-
 import { refreshToken } from '@tempo-sync/shared/api';
 import type { RefreshTokenRequestParams } from '@tempo-sync/shared/types';
 

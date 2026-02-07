@@ -1,6 +1,7 @@
+import { spotifyAPI } from './api';
+
 import { resetToken } from '@/shared/lib';
 import type { AppContext } from '@/shared/types/bindings';
-import { spotifyAPI } from './api';
 import type { TopArtist } from '@/shared/types/spotify';
 
 export const getAthleteTopArtist = async (c: AppContext) => {

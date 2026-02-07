@@ -1,5 +1,6 @@
-import type { AthleteTopArtistResponse } from '@/shared/types/spotify';
 import { http, SPOTIFY_API_URL } from '@tempo-sync/shared';
+
+import type { AthleteTopArtistResponse } from '@/shared/types/spotify';
 
 export const spotifyAPI = {
   getTopArtists: async (token: string) => {

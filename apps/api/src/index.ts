@@ -4,10 +4,10 @@ import { errorHandler } from '@tempo-sync/shared/middleware';
 
 import { activity } from './features/activity';
 import { athlete } from './features/athlete';
+import { spotify } from './features/spotify';
+import { strava } from './features/strava';
 import { sync } from './features/sync';
 import type { AppEnv } from './shared/types/bindings';
-import { strava } from './features/strava';
-import { spotify } from './features/spotify';
 
 const app = createApp<AppEnv>();
 

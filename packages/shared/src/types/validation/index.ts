@@ -2,7 +2,7 @@ import type { Context, Env, ValidationTargets } from 'hono';
 import type z from 'zod';
 
 export type ValidatedContext<
-  T extends z.ZodSchema,
+  T extends z.ZodType,
   Target extends keyof ValidationTargets,
   A extends Env = Env,
   Path extends string = '/',
@@ -16,8 +16,8 @@ export type ValidatedContext<
 >;
 
 export type MultiValidatedContext<
-  TParam extends z.ZodSchema,
-  TBody extends z.ZodSchema,
+  TParam extends z.ZodType,
+  TBody extends z.ZodType,
   A extends Env = Env,
   Path extends string = '/',
 > = Context<

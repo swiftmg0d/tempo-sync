@@ -11,7 +11,7 @@ import { http } from '@tempo-sync/shared/lib';
 
 export const authApi = {
   strava: {
-    fetchAccessToken: (request: StravaTokenRequestParams) =>
+    fetchAccessToken: async (request: StravaTokenRequestParams) =>
       http<StravaTokenResponse>(
         STRAVA_TOKEN_URL,
         {
@@ -23,7 +23,7 @@ export const authApi = {
       ),
   },
   spotify: {
-    fetchAccessToken: (request: SpotifyTokenRequestParams) =>
+    fetchAccessToken: async (request: SpotifyTokenRequestParams) =>
       http<SpotifyTokenResponse>(
         SPOTFIY_TOKEN_URL,
         {

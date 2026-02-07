@@ -4,8 +4,8 @@ import { validate } from '@tempo-sync/shared/middleware';
 import * as handlers from './webhook.handlers';
 import { stravaVerifySchema, stravaWebhookSchema } from './webhook.schema';
 
-import type { AppEnv } from '@/shared/types/bindings';
 import { subscriptionMiddleware } from '@/shared/middleware/subscription.middleware';
+import type { AppEnv } from '@/shared/types/bindings';
 
 const webhook = createRouter<AppEnv>()
   .post(

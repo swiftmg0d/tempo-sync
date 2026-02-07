@@ -1,9 +1,11 @@
-import type { Next } from 'hono';
-import type { AppEnv } from '../types';
 import type { ValidatedContext } from '@tempo-sync/shared';
+import type { Next } from 'hono';
+
+import type { AppEnv } from '../types';
+
 import type { StravaWebhookValidation } from '@/features/webhook/webhook.schema';
 
-export const subscriptionMiddleware = (
+export const subscriptionMiddleware = async (
   c: ValidatedContext<StravaWebhookValidation, 'json', AppEnv>,
   next: Next
 ) => {
@@ -11,7 +13,7 @@ export const subscriptionMiddleware = (
 
   const subscriptionIdFromBody = body.subscription_id;
 
-  if (subscriptionIdFromBody !== Number(c.env.SUBSCRIPTION_ID)) {
+  if (subscriptionIdFromBody !== c.env.SUBSCRIPTION_ID) {
     return c.json({ message: 'Unauthorized subscription ID' }, 401);
   }
 

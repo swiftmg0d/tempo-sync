@@ -9,6 +9,7 @@ import {
 } from '@tempo-sync/db';
 import type { PoolDatabase } from '@tempo-sync/db/client';
 import { generetePrompt, type PromptKeys } from '@tempo-sync/llm';
+import { decrypt, encrypt, incrementDateBySeconds } from '@tempo-sync/shared';
 import { DatabaseError } from '@tempo-sync/shared/errors';
 import type {
   CombinedRefreshTokensRequestParams,
@@ -20,10 +21,10 @@ import type {
 
 import { webhookApi } from './api';
 import { syncToken } from './lib';
-import { decrypt, encrypt, incrementDateBySeconds } from '@tempo-sync/shared';
+
+import type { Bindings } from '@/shared/types/bindings';
 import type { StreamData } from '@/shared/types/strava';
 import { velocityToPace } from '@/shared/utils';
-import type { AppEnv, Bindings } from '@/shared/types/bindings';
 
 export const resyncWithToken = async (
   provider: TokenProvider,
@@ -141,7 +142,7 @@ export const saveActivity = async (
       stravaId: activity.athlete.id,
     });
 
-    return db.transaction(async (tx) => {
+    return await db.transaction(async (tx) => {
       const [{ id }] = await tx
         .insert(activitySchema)
         .values({
@@ -247,7 +248,7 @@ export const handleStravaWebhook = async ({
     };
   } catch (e) {
     console.error('Error while handling Strava webhook:', e);
-    throw e;
+    throw new DatabaseError(500, 'Failed to handle Strava webhook event');
   }
 };
 
@@ -266,6 +267,8 @@ export const getRecentlyPlayedSongsDuringActivity = async ({
     accessToken: accessToken,
     after: Math.floor(startDate.getTime()),
   });
+
+  console.log('Recently played tracks during activity:', data);
 
   // *  Spotify's recently played tracks endpoint returns tracks in reverse chronological order,
   // *  so we can stop fetching more tracks as soon as we encounter a track that was played before the activity start time.

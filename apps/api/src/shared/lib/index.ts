@@ -12,8 +12,9 @@ import {
   incrementDateBySeconds,
   type RefreshTokenRequestParams,
 } from '@tempo-sync/shared';
-import type { Bindings } from '../types/bindings';
 import { refreshToken } from '@tempo-sync/shared/api';
+
+import type { Bindings } from '../types/bindings';
 
 export const decodeActivityMap = (polyline: null | string) => {
   if (!polyline) return null;
@@ -39,7 +40,7 @@ export const resetToken = async ({
       type: 'access',
     });
 
-    if (expiresAt! < new Date()) {
+    if (expiresAt && expiresAt < new Date()) {
       const [{ value: refresh_token }] = await tokenQueries.findTokenByProviderAndId(db)({
         provider,
         id: id,
@@ -95,7 +96,7 @@ export const resetToken = async ({
     }
 
     return decrypt(oldAccessToken, env.KEY);
-  } catch (e) {
+  } catch {
     throw new FetchError(400, 'Failed to reset token');
   }
 };
