@@ -38,9 +38,6 @@ export const activity = pgTable('activity', {
 
   startDateLocal: timestamp('start_date_local').notNull(),
   type: varchar({ length: 255 }),
-
-  hearBeatData: json('heart_beat_data').$type<number[]>(),
-  candaceData: json('cadance_data').$type<number[]>(),
 });
 
 export const activityRelations = relations(activity, ({ one }) => ({

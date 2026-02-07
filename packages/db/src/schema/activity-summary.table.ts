@@ -1,5 +1,13 @@
 import { relations } from 'drizzle-orm';
-import { boolean, doublePrecision, integer, pgTable, real, varchar } from 'drizzle-orm/pg-core';
+import {
+  boolean,
+  doublePrecision,
+  integer,
+  json,
+  pgTable,
+  real,
+  varchar,
+} from 'drizzle-orm/pg-core';
 import { nanoid } from 'nanoid';
 
 import { activity } from './activity.table';
@@ -31,6 +39,10 @@ export const activitySummary = pgTable('activity_summary', {
 
   hasHeartrate: boolean('has_heartrate').notNull(),
   maxHeartrate: real('max_heartrate'),
+
+  hearBeatData: json('heart_beat_data').$type<number[]>(),
+  cadenceData: json('cadence_data').$type<number[]>(),
+  paceData: json('pace_data').$type<(number | null)[]>(),
 });
 
 export const activitySummaryRelations = relations(activitySummary, ({ one }) => ({
