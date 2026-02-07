@@ -55,7 +55,7 @@ export const LineChart = ({ data, isLoading, chartType }: LineChartProps) => {
 					cursor={false}
 					content={<Chart.Tooltip />}
 					labelFormatter={(label) =>
-						`Minute of activity: ${typeof label === 'number' && !isNaN(label) ? label : 0}m`
+						`Minute of activity: ${typeof label === 'number' ? label : 0}m`
 					}
 				/>
 				<ReferenceDot
