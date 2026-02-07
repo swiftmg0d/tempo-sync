@@ -71,6 +71,7 @@ Evaluate and provide insights on:
    - Consider: pacing, effort appropriateness, completion, consistency
 
 Be direct and honest. No sugarcoating. Constructive criticism helps runners improve.
+Always refer to the person as "the runner" or "the athlete" - never use "user".
 Output as structured bullet points under each category. Max 200 words total.`,
 
     user: (data: unknown) =>
@@ -95,7 +96,8 @@ RULES:
 - No markdown code fences (\`\`\`json or \`\`\`)
 - No text before or after the JSON
 - Each description: 1-3 sentences, direct and concise
-- Be honest in rating - 7+ means genuinely well-executed`,
+- Be honest in rating - 7+ means genuinely well-executed
+- Always refer to the person as "the runner" or "the athlete" - never use "user"`,
 
     user: (data: unknown) =>
       `Format this analysis into the JSON structure:\n${JSON.stringify(data, null, 2)}`,
