@@ -14,3 +14,17 @@ export type ValidatedContext<
     out: Record<Target, z.infer<T>>;
   }
 >;
+
+export type MultiValidatedContext<
+  TParam extends z.ZodSchema,
+  TBody extends z.ZodSchema,
+  A extends Env = Env,
+  Path extends string = '/',
+> = Context<
+  A,
+  Path,
+  {
+    in: { param: z.infer<TParam>; json: z.infer<TBody> };
+    out: { param: z.infer<TParam>; json: z.infer<TBody> };
+  }
+>;
