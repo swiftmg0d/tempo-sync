@@ -1,7 +1,9 @@
-import type { ValidatedContext } from '@tempo-sync/shared/types';
+import type { MultiValidatedContext, ValidatedContext } from '@tempo-sync/shared/types';
 
 import type {
   ActivityLLMInsightsValidation,
+  ActivityStreamsBodyValidation,
+  ActivityStreamsParamsValidation,
   ActivitySummaryValidation,
   ActivityValidation,
 } from './activity.schema';
@@ -11,8 +13,9 @@ import {
   getAthleteActivities,
 } from './activity.service';
 
+import { activity, activityMap, activitySummary, eq } from '@tempo-sync/db';
 import type { AppContext, AppEnv } from '@/shared/types/bindings';
-import { activity, activityMap, eq } from '@tempo-sync/db';
+import { aggregateActivityStreams } from './utils';
 
 export const getActivities = async (c: ValidatedContext<ActivityValidation, 'query', AppEnv>) => {
   const db = c.get('db');
@@ -55,9 +58,9 @@ export const getActivitiesPolylines = async (c: AppContext) => {
   return c.json(maps);
 };
 
-export async function getActivityLLMInsights(
+export const getActivityLLMInsights = async (
   c: ValidatedContext<ActivityLLMInsightsValidation, 'param', AppEnv>
-) {
+) => {
   const { id } = c.req.valid('param');
 
   const db = c.get('db');
@@ -68,4 +71,40 @@ export async function getActivityLLMInsights(
     .where(eq(activity.id, id));
 
   return c.json(insight);
-}
+};
+
+export const getActivityStreams = async (
+  c: MultiValidatedContext<ActivityStreamsParamsValidation, ActivityStreamsBodyValidation, AppEnv>
+) => {
+  const { id } = c.req.valid('param');
+  const { streamTypes } = c.req.valid('json');
+
+  const db = c.get('db');
+
+  const [data] = await db
+    .select({
+      activityId: activitySummary.id,
+      hearBeatData: activitySummary.hearBeatData,
+      cadenceData: activitySummary.cadenceData,
+      paceData: activitySummary.paceData,
+    })
+    .from(activitySummary)
+    .where(eq(activitySummary.activityId, id));
+
+  if (streamTypes.includes('cadence') && streamTypes.includes('pace')) {
+    if (!data.cadenceData || !data.paceData) {
+      return c.json([]);
+    }
+    const aggregatedCadence = aggregateActivityStreams(data.cadenceData, 'cadence');
+    const aggregatedPace = aggregateActivityStreams(data.paceData, 'pace');
+
+    const combined = aggregatedCadence.map((item, i) => ({
+      ...item,
+      ...aggregatedPace[i],
+    }));
+
+    return c.json(combined);
+  }
+
+  return c.json([]);
+};

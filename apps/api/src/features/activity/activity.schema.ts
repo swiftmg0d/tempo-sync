@@ -5,12 +5,23 @@ export const activitySchema = z.object({
   limit: z.coerce.number().default(6),
 });
 
-export const getActivitySummaryShema = z.object({
+export const getActivitySummarySchema = z.object({
   id: z.string().min(1),
 });
 
 export type ActivityValidation = typeof activitySchema;
-export type ActivitySummaryValidation = typeof getActivitySummaryShema;
+export type ActivitySummaryValidation = typeof getActivitySummarySchema;
 
-export const getActivityLLMInsightsSchema = getActivitySummaryShema;
+export const getActivityLLMInsightsSchema = getActivitySummarySchema;
 export type ActivityLLMInsightsValidation = typeof getActivityLLMInsightsSchema;
+
+export const getActivityStreamsParamsSchema = z.object({
+  id: z.string().min(1),
+});
+
+export const getActivityStreamsBodySchema = z.object({
+  streamTypes: z.array(z.enum(['heartrate', 'cadence', 'pace', 'tempo'])).min(1),
+});
+
+export type ActivityStreamsParamsValidation = typeof getActivityStreamsParamsSchema;
+export type ActivityStreamsBodyValidation = typeof getActivityStreamsBodySchema;

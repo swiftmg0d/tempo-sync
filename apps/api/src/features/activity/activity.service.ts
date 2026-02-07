@@ -5,10 +5,9 @@ import {
   sql,
   type PoolDatabase,
 } from '@tempo-sync/db';
+import { decodeActivityMap } from '@tempo-sync/shared';
 import { DatabaseError } from '@tempo-sync/shared/errors';
 import type { Activities, ActivitySummary } from '@tempo-sync/shared/types';
-
-import { decodeActivityMap } from '@/shared/lib';
 
 export const getAthleteActivities = async (
   db: PoolDatabase,
