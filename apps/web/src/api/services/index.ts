@@ -6,6 +6,7 @@ import type {
 	LLMActivityInsightResponse,
 	Profile
 } from '@tempo-sync/shared/types';
+import type { ChartData as StreamsResponse } from 'recharts/types/state/chartDataSlice';
 
 import api from '../client';
 import type { ApiResponse } from '../types';
@@ -23,7 +24,11 @@ export const apiService = {
 		getActivitiesPolylines: () =>
 			api.get<ApiResponse<{ polyline: string; activityId: string }[]>>('/activity/polylines'),
 		getActivityLLMInsights: (id: string) =>
-			api.get<ApiResponse<LLMActivityInsightResponse>>(`/activity/${id}/llm-insights`)
+			api.get<ApiResponse<LLMActivityInsightResponse>>(`/activity/${id}/llm-insights`),
+		getActivityStreams: (id: string, streamTypes: string[]) =>
+			api.post<ApiResponse<StreamsResponse>>(`/activity/${id}/streams`, {
+				streamTypes
+			})
 	},
 	athlete: {
 		getMe: () => api.get<ApiResponse<{ athlete: Athlete }>>('/athlete')

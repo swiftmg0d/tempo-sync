@@ -93,6 +93,15 @@ const useAthleteTotalActivities = createQuery({
 	}
 });
 
+const useActivityStreams = (id: string, streamTypes: string[]) =>
+	createQuery({
+		queryFn: () => apiService.activity.getActivityStreams(id, streamTypes),
+		queryKey: queryKeys.activity.streams(id, streamTypes),
+		options: {
+			select: (res) => res.data
+		}
+	});
+
 export const Queries = {
 	useActivities,
 	useActivitySummary,
@@ -103,5 +112,6 @@ export const Queries = {
 	useLLMActivityInsights,
 	useProfiles,
 	useAthleteTopArtist,
-	useAthleteTotalActivities
+	useAthleteTotalActivities,
+	useActivityStreams
 };

@@ -13,7 +13,9 @@ export const queryKeys = {
 		summaries: () => [...queryKeys.activity.list, 'summaries'] as const,
 		polylines: () => [...queryKeys.activity.list, 'polylines'] as const,
 		LLMInsights: (id: string) => [...queryKeys.activity.list, id, 'llm-insights'] as const,
-		profile: () => [...queryKeys.activity.list, 'profiles'] as const
+		profile: () => [...queryKeys.activity.list, 'profiles'] as const,
+		streams: (id: string, streamTypes: string[]) =>
+			[...queryKeys.activity.list, id, 'streams', ...streamTypes] as const
 	},
 	profile: {
 		list: ['profiles'] as const

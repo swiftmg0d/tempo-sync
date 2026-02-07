@@ -5,6 +5,7 @@ import { InsightCarousel } from '../Insight/Carousel/InsightCarousel';
 
 import { getMetricList } from './AnalyistGrid.utils';
 
+import { WorkoutMetricsChart } from '@/components/WorkoutMetricsChart';
 import { Queries } from '@/hooks/quieries';
 import { useActivityCardsStore } from '@/store';
 import { Padded, theme } from '@/styles';
@@ -37,12 +38,7 @@ export const AnalyistGrid = () => {
 					gap={theme.spacing.md}
 				>
 					<Box flex={1} minWidth={0} padding={theme.spacing.lg}>
-						<div>Placeholder for Future Analysis Component</div>
-						<h3>
-							Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatem deleniti voluptas
-							distinctio sint fuga placeat beatae atque tenetur ullam dolor nihil, eum velit neque,
-							numquam ad doloremque culpa cum dignissimos.
-						</h3>
+						<WorkoutMetricsChart />
 					</Box>
 					<Box flex={1 / 2} minWidth={0} padding={theme.spacing.lg}>
 						<div>Placeholder for Future Analysis Component</div>
