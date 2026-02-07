@@ -1,25 +1,20 @@
-import { relations } from 'drizzle-orm';
-import {
-  boolean,
-  doublePrecision,
-  integer,
-  json,
-  pgTable,
-  real,
-  varchar,
-} from 'drizzle-orm/pg-core';
+import { boolean, doublePrecision, integer, json, real, varchar } from 'drizzle-orm/pg-core';
 import { nanoid } from 'nanoid';
 
 import { activity } from './activity.table';
+import { tempoSyncSchema } from './schema';
 
-export const activitySummary = pgTable('activity_summary', {
+export const activitySummary = tempoSyncSchema.table('activity_summary', {
   id: varchar('id', { length: 21 })
     .primaryKey()
     .$defaultFn(() => nanoid()),
 
-  activityId: varchar('activity_id', { length: 21 }).references(() => activity.id, {
-    onDelete: 'cascade',
-  }),
+  activityId: varchar('activity_id', { length: 21 })
+    .references(() => activity.id, {
+      onDelete: 'cascade',
+    })
+    .notNull()
+    .unique(),
 
   distance: real('distance').notNull(),
   elapsedTime: integer('elapsed_time').notNull(),
@@ -44,14 +39,6 @@ export const activitySummary = pgTable('activity_summary', {
   cadenceData: json('cadence_data').$type<number[]>(),
   paceData: json('pace_data').$type<(number | null)[]>(),
 });
-
-export const activitySummaryRelations = relations(activitySummary, ({ one }) => ({
-  activity: one(activity, {
-    fields: [activitySummary.activityId],
-    references: [activity.id],
-    relationName: 'activity-summary',
-  }),
-}));
 
 export type ActivitySummary = typeof activitySummary.$inferSelect;
 export type NewActivitySummary = typeof activitySummary.$inferInsert;

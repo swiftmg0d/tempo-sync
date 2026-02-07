@@ -1,7 +1,9 @@
-import { pgTable, timestamp, varchar } from 'drizzle-orm/pg-core';
+import { timestamp, varchar } from 'drizzle-orm/pg-core';
 import { nanoid } from 'nanoid';
 
-export const sync = pgTable('sync', {
+import { tempoSyncSchema } from './schema';
+
+export const sync = tempoSyncSchema.table('sync', {
   id: varchar('id', { length: 21 })
     .primaryKey()
     .$defaultFn(() => nanoid()),

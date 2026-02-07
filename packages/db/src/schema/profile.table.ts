@@ -1,10 +1,10 @@
-import { relations } from 'drizzle-orm';
-import { pgTable, varchar } from 'drizzle-orm/pg-core';
+import { varchar } from 'drizzle-orm/pg-core';
 import { nanoid } from 'nanoid';
 
 import { athlete } from './athlete.table';
+import { tempoSyncSchema } from './schema';
 
-export const profile = pgTable('profile', {
+export const profile = tempoSyncSchema.table('profile', {
   id: varchar('id', { length: 21 })
     .primaryKey()
     .$defaultFn(() => nanoid()),
@@ -16,14 +16,6 @@ export const profile = pgTable('profile', {
   name: varchar('name', { length: 255 }).notNull(),
   url: varchar('url', { length: 255 }).notNull(),
 });
-
-export const profileRelations = relations(profile, ({ one }) => ({
-  athlete: one(athlete, {
-    fields: [profile.athleteId],
-    references: [athlete.id],
-    relationName: 'athlete-profile',
-  }),
-}));
 
 export type Profile = typeof profile.$inferSelect;
 export type NewProfile = typeof profile.$inferInsert;

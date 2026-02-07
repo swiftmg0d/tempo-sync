@@ -1,12 +1,9 @@
-import { relations } from 'drizzle-orm';
-import { integer, pgTable, varchar } from 'drizzle-orm/pg-core';
+import { integer, varchar } from 'drizzle-orm/pg-core';
 import { nanoid } from 'nanoid';
 
-import { activity } from './activity.table';
-import { profile } from './profile.table';
-import { token } from './token.table';
+import { tempoSyncSchema } from './schema';
 
-export const athlete = pgTable('athlete', {
+export const athlete = tempoSyncSchema.table('athlete', {
   id: varchar('id', { length: 21 })
     .primaryKey()
     .$defaultFn(() => nanoid()),
@@ -18,12 +15,6 @@ export const athlete = pgTable('athlete', {
   lastName: varchar('last_name', { length: 100 }),
   profilePhoto: varchar('profile_photo', { length: 255 }),
 });
-
-export const athleteRelations = relations(athlete, ({ many }) => ({
-  activities: many(activity, { relationName: 'activity-athlete' }),
-  profiles: many(profile, { relationName: 'athlete-profile' }),
-  tokens: many(token, { relationName: 'athlete-token' }),
-}));
 
 export type Athlete = typeof athlete.$inferSelect;
 export type NewAthlete = typeof athlete.$inferInsert;

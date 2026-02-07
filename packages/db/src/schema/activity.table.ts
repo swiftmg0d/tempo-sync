@@ -6,15 +6,13 @@ import type {
   SplitMetric,
   SplitStandard,
 } from '@tempo-sync/types';
-import { relations } from 'drizzle-orm';
-import { bigint, json, pgTable, timestamp, varchar } from 'drizzle-orm/pg-core';
+import { bigint, json, timestamp, varchar } from 'drizzle-orm/pg-core';
 import { nanoid } from 'nanoid';
 
-import { activityMap } from './activity-map.table';
-import { activitySummary } from './activity-summary.table';
 import { athlete } from './athlete.table';
+import { tempoSyncSchema } from './schema';
 
-export const activity = pgTable('activity', {
+export const activity = tempoSyncSchema.table('activity', {
   id: varchar('id', { length: 21 })
     .primaryKey()
     .$defaultFn(() => nanoid()),
@@ -27,6 +25,7 @@ export const activity = pgTable('activity', {
 
   bestEfforts: json('best_efforts').$type<Effort[]>(),
   deviceName: varchar('device_name', { length: 255 }),
+
   gear: json().$type<Gear>(),
   laps: json().$type<Lap[]>(),
   llmActivityInsight: json('llm_activity_insight').$type<LLMActivityInsightResponse>(),
@@ -38,24 +37,6 @@ export const activity = pgTable('activity', {
   startDateLocal: timestamp('start_date_local').notNull(),
   type: varchar({ length: 255 }),
 });
-
-export const activityRelations = relations(activity, ({ one }) => ({
-  acitivtySummary: one(activitySummary, {
-    fields: [activity.id],
-    references: [activitySummary.activityId],
-    relationName: 'activity-summary',
-  }),
-  activityMap: one(activityMap, {
-    fields: [activity.id],
-    references: [activityMap.activityId],
-    relationName: 'activity-map',
-  }),
-  athlete: one(athlete, {
-    fields: [activity.athleteId],
-    references: [athlete.id],
-    relationName: 'activity-athlete',
-  }),
-}));
 
 export type Activity = typeof activity.$inferSelect;
 export type NewActivity = typeof activity.$inferInsert;
