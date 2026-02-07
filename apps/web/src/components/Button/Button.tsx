@@ -7,7 +7,8 @@ export const Button = ({
 	active,
 	onClick,
 	variant = 'transparent',
-	disabled
+	disabled,
+	$inversed
 }: ButtonProps) => {
 	return (
 		<StyledButton
@@ -21,6 +22,7 @@ export const Button = ({
 			$paddingY={style.paddingY}
 			$active={active}
 			onClick={onClick}
+			$inversed={$inversed}
 			title='Button'
 		>
 			{children}

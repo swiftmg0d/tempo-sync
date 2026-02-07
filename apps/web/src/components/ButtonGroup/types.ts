@@ -10,6 +10,7 @@ export interface Group {
 }
 
 export interface ButtonGroupProps {
+	inversed?: boolean;
 	group: Group[];
 	onChange?: (index: number) => void;
 	disabled?: boolean;

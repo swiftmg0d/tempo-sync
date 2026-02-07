@@ -5,7 +5,7 @@ import type { ButtonGroupProps } from './types';
 
 import { Button } from '@/components/Button';
 import { Icons } from '@/components/icons';
-export const ButtonGroup = ({ group, onChange, disabled }: ButtonGroupProps) => {
+export const ButtonGroup = ({ group, onChange, disabled, inversed }: ButtonGroupProps) => {
 	const [selectedIndex, setSelectedIndex] = useState<number | null>(0);
 
 	return (
@@ -18,6 +18,7 @@ export const ButtonGroup = ({ group, onChange, disabled }: ButtonGroupProps) => 
 						active={selectedIndex === index}
 						style={{ paddingX: 'sm', paddingY: 'sm' }}
 						disabled={disabled}
+						$inversed={inversed}
 						onClick={() => {
 							setSelectedIndex(index === selectedIndex ? selectedIndex : index);
 							onChange?.(index === selectedIndex ? selectedIndex : index);

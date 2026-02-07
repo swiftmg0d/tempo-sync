@@ -5,6 +5,7 @@ export interface ButtonProps {
 	variant?: 'border' | 'transparent';
 	active: boolean;
 	disabled?: boolean;
+	$inversed?: boolean;
 
 	onClick?: () => void;
 	style?: {
@@ -23,4 +24,5 @@ export interface StyledButtonProps {
 	$paddingY?: Spacings;
 	$disabled?: boolean;
 	$height?: string;
+	$inversed?: boolean;
 }

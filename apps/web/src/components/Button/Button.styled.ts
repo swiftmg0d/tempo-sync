@@ -8,14 +8,14 @@ import { theme, flex, defaultBorderState, transitionAll } from '@/styles';
 export const StyledButton = styled.button<StyledButtonProps>`
 	${transitionAll}
 
-	${({ $active, $disabled }) =>
+	${({ $active, $disabled, $inversed }) =>
 		$active
 			? css`
-					color: ${theme.colors.text.alabaster};
-					background-color: ${theme.colors.bg.teal};
+					color: ${$inversed ? theme.colors.text.teal : theme.colors.text.alabaster};
+					background-color: ${$inversed ? theme.colors.bg.white() : theme.colors.bg.teal};
 					box-shadow: ${theme.shadows.button.activeGlow};
-
 					&:hover {
+						
 						opacity: 0.95;
 						box-shadow: ${theme.shadows.lg};
 
@@ -53,7 +53,6 @@ export const StyledButton = styled.button<StyledButtonProps>`
 		opacity: ${$disabled ? '0.5' : '1'};
 	`}
 
-	max-height: 35px;
 	border-radius: ${theme.radii.sm};
 	font-size: clamp(${theme.fontSizes.xxs}, 2vw, ${theme.fontSizes.xs});
 	font-weight: ${theme.fontWeights.bold};
