@@ -5,6 +5,7 @@ import {
   activity as activitySchema,
   activityMap,
   activitySummary,
+  syncQueries,
 } from '@tempo-sync/db';
 import type { PoolDatabase } from '@tempo-sync/db/client';
 import { generetePrompt, type PromptKeys } from '@tempo-sync/llm';
@@ -21,6 +22,8 @@ import { webhookApi } from './api';
 import { syncToken } from './lib';
 import { decrypt, encrypt, incrementDateBySeconds } from '@tempo-sync/shared';
 import type { StreamData } from '@/shared/types/strava';
+import { velocityToPace } from '@/shared/utils';
+import type { AppEnv, Bindings } from '@/shared/types/bindings';
 
 export const resyncWithToken = async (
   provider: TokenProvider,
@@ -155,8 +158,6 @@ export const saveActivity = async (
           startDate: new Date(activity.start_date),
           startDateLocal: new Date(activity.start_date_local),
           type: activity.type,
-          hearBeatData: activityStreams.heartrate.data,
-          candaceData: activityStreams.cadence.data,
         })
         .returning({ id: activitySchema.id });
 
@@ -184,6 +185,9 @@ export const saveActivity = async (
         movingTime: activity.moving_time,
         startLatlng: activity.start_latlng,
         totalElevationGain: activity.total_elevation_gain,
+        hearBeatData: activityStreams.heartrate.data,
+        cadenceData: activityStreams.cadence.data,
+        paceData: activityStreams.velocity_smooth.data.map((v) => velocityToPace(v)),
       });
 
       return {
@@ -195,4 +199,79 @@ export const saveActivity = async (
     console.error(e);
     throw new DatabaseError(500, 'Error occurred while saving activity');
   }
+};
+
+export const handleStravaWebhook = async ({
+  db,
+  activity,
+  accessToken,
+  env,
+}: {
+  db: PoolDatabase;
+  activity: StravaActivity;
+  accessToken: string;
+  env: Bindings;
+}) => {
+  try {
+    const activityStreams = await webhookApi.strava.getActivityStreams({
+      activityId: activity.id.toString(),
+      accessToken,
+    });
+
+    const LLMEnv: LLMEnv = {
+      GEMINI_API_KEY: env.GEMINI_API_KEY,
+      GROQ_API_KEY: env.GROQ_API_KEY,
+      OPENROUTER_API_KEY: env.OPENROUTER_API_KEY,
+      CEREBRAS_API_KEY: env.CEREBRAS_API_KEY,
+      SAMBANOVA_API_KEY: env.SAMBANOVA_API_KEY,
+    };
+
+    const { updatedActivity, activityInsight } = await analyizeStravaActivityWithLLM(
+      activity,
+      accessToken,
+      LLMEnv
+    );
+
+    const { message, success } = await saveActivity(
+      updatedActivity,
+      db,
+      activityStreams,
+      activityInsight
+    );
+
+    await syncQueries.updateLastSyncTime(db, new Date());
+
+    return {
+      message,
+      success,
+    };
+  } catch (e) {
+    console.error('Error while handling Strava webhook:', e);
+    throw e;
+  }
+};
+
+export const getRecentlyPlayedSongsDuringActivity = async ({
+  accessToken,
+  startDate,
+  endDate,
+}: {
+  accessToken: string;
+  startDate: Date;
+  endDate: Date;
+}) => {
+  console.log({ startDate, endDate });
+
+  const data = await webhookApi.spotify.fetchRecentlyPlayedTracks({
+    accessToken: accessToken,
+    after: Math.floor(startDate.getTime()),
+  });
+
+  // *  Spotify's recently played tracks endpoint returns tracks in reverse chronological order,
+  // *  so we can stop fetching more tracks as soon as we encounter a track that was played before the activity start time.
+  // !  REMOVE THIS COMMENT AFTER IMPLEMENTING PAGINATION TO FETCH ALL RECENTLY PLAYED TRACKS DURING THE ACTIVITY
+
+  // const filteredItems = data.items.filter(
+  //   (item) => new Date(item.played_at) >= startDate && new Date(item.played_at) <= endDate
+  // );
 };

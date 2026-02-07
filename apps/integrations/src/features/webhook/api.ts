@@ -1,5 +1,6 @@
+import type { RecentlyPlayedTracksResponse } from '@/shared/types/spotify';
 import type { StreamData } from '@/shared/types/strava';
-import { STRAVA_API_URL } from '@tempo-sync/shared';
+import { STRAVA_API_URL, SPOTIFY_API_URL } from '@tempo-sync/shared';
 import { http } from '@tempo-sync/shared/lib';
 import type { StravaActivity } from '@tempo-sync/shared/types';
 
@@ -46,7 +47,7 @@ export const webhookApi = {
       accessToken: string;
     }) => {
       const params = new URLSearchParams({
-        keys: 'heartrate,cadence',
+        keys: 'heartrate,cadence,velocity_smooth',
         key_by_type: 'true',
       }).toString();
 
@@ -60,6 +61,34 @@ export const webhookApi = {
           },
         },
         'Failed to fetch Strava activity streams by ID'
+      );
+    },
+  },
+  spotify: {
+    fetchRecentlyPlayedTracks: ({
+      accessToken,
+      after,
+      before,
+    }: {
+      accessToken: string;
+      after?: number;
+      before?: number;
+    }) => {
+      const params = new URLSearchParams({
+        limit: '50',
+        ...(after ? { after: after.toString() } : {}),
+        ...(before ? { before: before.toString() } : {}),
+      }).toString();
+
+      return http<RecentlyPlayedTracksResponse>(
+        `${SPOTIFY_API_URL}/me/player/recently-played?${params}`,
+        {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        },
+        'Failed to fetch Spotify recently played tracks'
       );
     },
   },

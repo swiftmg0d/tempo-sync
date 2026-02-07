@@ -7,10 +7,22 @@ import type {
 
 import { webhookApi } from './api';
 import type { StravaVerifyValidation, StravaWebhookValidation } from './webhook.schema';
-import { resyncWithToken, analyizeStravaActivityWithLLM, saveActivity } from './webhook.service';
+import {
+  resyncWithToken,
+  analyizeStravaActivityWithLLM,
+  saveActivity,
+  getRecentlyPlayedSongsDuringActivity,
+  handleStravaWebhook,
+} from './webhook.service';
 
 import type { AppEnv } from '@/shared/types';
-import { decrypt } from '@tempo-sync/shared';
+import {
+  decrypt,
+  http,
+  incrementDateBySeconds,
+  SPOTIFY_API_URL,
+  STRAVA_API_URL,
+} from '@tempo-sync/shared';
 
 export const verifyWebhook = (c: ValidatedContext<StravaVerifyValidation, 'query', AppEnv>) => {
   const {
@@ -23,7 +35,7 @@ export const verifyWebhook = (c: ValidatedContext<StravaVerifyValidation, 'query
 
   if (mode && token) {
     if (mode === 'subscribe' && token === VERIFY_TOKEN) {
-      return c.json({ messege: 'Webhook verified', 'hub.challenge': challenge }, 200);
+      return c.json({ message: 'Webhook verified', 'hub.challenge': challenge }, 200);
     } else {
       return c.text('Forbidden', 403);
     }
@@ -35,18 +47,16 @@ export const handleWebhookEvent = async (
   c: ValidatedContext<StravaWebhookValidation, 'json', AppEnv>
 ) => {
   const body = c.req.valid('json');
-  const stravaId = body.owner_id;
-
-  console.log('Received Strava webhook event:', body);
 
   if (body.updates?.title && !body.updates.title.includes('AI-ASSISTED')) {
     return c.text('No update needed for this activity', 200);
   }
 
-  const db = c.get('db');
+  console.log('Received Strava webhook event:', body);
 
-  const findAthlete = athleteQueries.findAthleteByStravaId(db);
-  const [{ id }] = await findAthlete({ stravaId });
+  const stravaId = body.owner_id;
+  const activityId = body.object_id;
+  const db = c.get('db');
 
   const request: CombinedRefreshTokensRequestParams = {
     client_id: c.env.SPOTIFY_CLIENT_ID,
@@ -58,49 +68,28 @@ export const handleWebhookEvent = async (
   };
 
   const { result: stravaAccessToken } = await resyncWithToken('strava', request, stravaId, db);
-
-  const activityStreams = await webhookApi.strava.getActivityStreams({
-    activityId: body.object_id.toString(),
-    accessToken: stravaAccessToken,
-  });
-
-  // // const { result: spotifyAccessToken } = await resyncWithToken(
-  // //   'spotify',
-  // //   request,
-  // //   stravaId,
-  // //   c.get('db')
-  // // );
-
-  const activityId = body.object_id;
-  const athleteId = body.owner_id;
+  const { result: spotifyAccessToken } = await resyncWithToken('spotify', request, stravaId, db);
 
   const activity = await webhookApi.strava.fetchActivityById({
     activityId: activityId.toString(),
     accessToken: stravaAccessToken,
   });
 
-  const LLMEnv: LLMEnv = {
-    GEMINI_API_KEY: c.env.GEMINI_API_KEY,
-    GROQ_API_KEY: c.env.GROQ_API_KEY,
-    OPENROUTER_API_KEY: c.env.OPENROUTER_API_KEY,
-    CEREBRAS_API_KEY: c.env.CEREBRAS_API_KEY,
-    SAMBANOVA_API_KEY: c.env.SAMBANOVA_API_KEY,
-  };
+  const startDate = new Date(activity.start_date);
+  const endDate = incrementDateBySeconds(activity.elapsed_time, new Date(startDate));
 
-  const { updatedActivity, activityInsight } = await analyizeStravaActivityWithLLM(
+  // await getRecentlyPlayedSongsDuringActivity({
+  //   accessToken: spotifyAccessToken,
+  //   startDate,
+  //   endDate,
+  // });
+
+  const { message } = await handleStravaWebhook({
+    db,
     activity,
-    stravaAccessToken,
-    LLMEnv
-  );
+    accessToken: stravaAccessToken,
+    env: c.env,
+  });
 
-  const { message, success } = await saveActivity(
-    updatedActivity,
-    c.get('db'),
-    activityStreams,
-    activityInsight
-  );
-
-  await syncQueries.updateLastSyncTime(db, new Date());
-
-  return c.json({ message, success }, 200);
+  return c.text(message, 200);
 };
