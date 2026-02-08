@@ -5,6 +5,7 @@ import type {
   LLMActivityInsightResponse,
   SplitMetric,
   SplitStandard,
+  TrackLeaderboardResponse,
 } from '@tempo-sync/types';
 import { bigint, json, timestamp, varchar } from 'drizzle-orm/pg-core';
 import { nanoid } from 'nanoid';
@@ -29,6 +30,7 @@ export const activity = tempoSyncSchema.table('activity', {
   gear: json().$type<Gear>(),
   laps: json().$type<Lap[]>(),
   llmActivityInsight: json('llm_activity_insight').$type<LLMActivityInsightResponse>(),
+  llmTrackLeaderboard: json('llm_track_leaderboard').$type<TrackLeaderboardResponse>(),
   name: varchar({ length: 255 }).notNull(),
   splitsMetric: json('splits_metric').$type<SplitMetric[]>(),
   splitsStandard: json('splits_standard').$type<SplitStandard[]>(),
