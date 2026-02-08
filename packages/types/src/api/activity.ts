@@ -12,6 +12,10 @@ export interface Activity {
   date: Date;
   polyline: number[][] | null;
   time: number;
+  lastTrack: {
+    name: string;
+    image: string | null;
+  } | null;
 }
 
 export interface Activities {

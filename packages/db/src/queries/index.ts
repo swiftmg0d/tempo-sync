@@ -9,6 +9,7 @@ import {
   profile,
   sync,
   token,
+  track,
   type NewToken,
   type TokenProvider,
   type TokenType,
@@ -69,6 +70,17 @@ export const tokenQueries = {
 
 export const activityQueries = {
   getAllActivities: ({ db, page, limit }: { db: AnyDatabase; page: number; limit: number }) => {
+    const lastTrack = db
+      .selectDistinctOn([track.activityId], {
+        activityId: track.activityId,
+        name: track.name,
+        images: track.images,
+        artists: track.artists,
+      })
+      .from(track)
+      .orderBy(track.activityId, sql`${track.playedAt} DESC`)
+      .as('lastTrack');
+
     return db
       .select({
         date: activity.startDate,
@@ -76,10 +88,15 @@ export const activityQueries = {
         polyline: activityMap.polyline,
         time: activitySummary.elapsedTime,
         title: activity.name,
+        lastTrack: {
+          name: lastTrack.name,
+          image: sql<string>`${lastTrack.images}->-1->>'url'`,
+        },
       })
       .from(activity)
       .innerJoin(activityMap, eq(activityMap.activityId, activity.id))
       .innerJoin(activitySummary, eq(activitySummary.activityId, activity.id))
+      .innerJoin(lastTrack, eq(lastTrack.activityId, activity.id))
       .limit(limit)
       .offset((page - 1) * limit)
       .orderBy(sql`start_date DESC`);
