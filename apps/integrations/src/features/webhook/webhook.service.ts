@@ -6,10 +6,17 @@ import {
   activityMap,
   activitySummary,
   syncQueries,
+  track,
 } from '@tempo-sync/db';
 import type { PoolDatabase } from '@tempo-sync/db/client';
 import { generetePrompt, type PromptKeys } from '@tempo-sync/llm';
-import { decrypt, encrypt, incrementDateBySeconds } from '@tempo-sync/shared';
+import {
+  decrypt,
+  encrypt,
+  http,
+  incrementDateBySeconds,
+  RECCOBEATS_API_URL,
+} from '@tempo-sync/shared';
 import { DatabaseError } from '@tempo-sync/shared/errors';
 import type {
   CombinedRefreshTokensRequestParams,
@@ -22,6 +29,7 @@ import type {
 import { webhookApi } from './api';
 import { syncToken } from './lib';
 
+import type { AudioAnalysisResponse } from '@/shared/types';
 import type { Bindings } from '@/shared/types/bindings';
 import type { StreamData } from '@/shared/types/strava';
 import { velocityToPace } from '@/shared/utils';
@@ -106,7 +114,7 @@ export const analyizeStravaActivityWithLLM = async (
   const [title, description] = [splitedResponse[0], splitedResponse.slice(1).join('\n')];
 
   const updatedActivity = await webhookApi.strava.updateActivityById({
-    activityId: activity.id.toString(),
+    stravaActivityId: activity.id.toString(),
     accessToken,
     data: {
       name: title,
@@ -191,13 +199,10 @@ export const saveActivity = async (
         paceData: activityStreams.velocity_smooth.data.map((v) => velocityToPace(v)),
       });
 
-      return {
-        message: 'Successfully saved activity!',
-        success: true,
-      };
+      return id;
     });
   } catch (e) {
-    console.error(e);
+    console.error('Error while saving activity to the database:', e);
     throw new DatabaseError(500, 'Error occurred while saving activity');
   }
 };
@@ -215,7 +220,7 @@ export const handleStravaWebhook = async ({
 }) => {
   try {
     const activityStreams = await webhookApi.strava.getActivityStreams({
-      activityId: activity.id.toString(),
+      stravaActivityId: activity.id.toString(),
       accessToken,
     });
 
@@ -233,19 +238,11 @@ export const handleStravaWebhook = async ({
       LLMEnv
     );
 
-    const { message, success } = await saveActivity(
-      updatedActivity,
-      db,
-      activityStreams,
-      activityInsight
-    );
+    const id = await saveActivity(updatedActivity, db, activityStreams, activityInsight);
 
     await syncQueries.updateLastSyncTime(db, new Date());
 
-    return {
-      message,
-      success,
-    };
+    return id;
   } catch (e) {
     console.error('Error while handling Strava webhook:', e);
     throw new DatabaseError(500, 'Failed to handle Strava webhook event');
@@ -253,28 +250,109 @@ export const handleStravaWebhook = async ({
 };
 
 export const getRecentlyPlayedSongsDuringActivity = async ({
+  activityId,
   accessToken,
   startDate,
-  endDate,
+  // endDate,
+  db,
 }: {
+  activityId: string;
   accessToken: string;
   startDate: Date;
   endDate: Date;
+  db: PoolDatabase;
 }) => {
-  console.log({ startDate, endDate });
+  try {
+    const data = await webhookApi.spotify.fetchRecentlyPlayedTracks({
+      accessToken: accessToken,
+      after: Math.floor(startDate.getTime()),
+    });
 
-  const data = await webhookApi.spotify.fetchRecentlyPlayedTracks({
-    accessToken: accessToken,
-    after: Math.floor(startDate.getTime()),
-  });
+    // *  Spotify's recently played tracks endpoint returns tracks in reverse chronological order,
+    // *  so we can stop fetching more tracks as soon as we encounter a track that was played before the activity start time.
+    // !  REMOVE THIS COMMENT AFTER IMPLEMENTING PAGINATION TO FETCH ALL RECENTLY PLAYED TRACKS DURING THE ACTIVITY
 
-  console.log('Recently played tracks during activity:', data);
+    // const filteredItems = data.items.filter(
+    //   (item) => new Date(item.played_at) >= startDate && new Date(item.played_at) <= endDate
+    // );
 
-  // *  Spotify's recently played tracks endpoint returns tracks in reverse chronological order,
-  // *  so we can stop fetching more tracks as soon as we encounter a track that was played before the activity start time.
-  // !  REMOVE THIS COMMENT AFTER IMPLEMENTING PAGINATION TO FETCH ALL RECENTLY PLAYED TRACKS DURING THE ACTIVITY
+    const middleLength = Math.ceil(data.items.length / 2);
 
-  // const filteredItems = data.items.filter(
-  //   (item) => new Date(item.played_at) >= startDate && new Date(item.played_at) <= endDate
-  // );
+    const firstBatch = data.items.slice(0, middleLength).map((item) => item.track.id);
+    const secondBatch = data.items
+      .slice(middleLength, data.items.length)
+      .map((item) => item.track.id);
+
+    const firstBatchResponse = await http<{ content: AudioAnalysisResponse[] }>(
+      `${RECCOBEATS_API_URL}/audio-features?ids=${firstBatch.join(',')}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    const secondBatchResponse = await http<{ content: AudioAnalysisResponse[] }>(
+      `${RECCOBEATS_API_URL}/audio-features?ids=${secondBatch.join(',')}`,
+      {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      }
+    );
+
+    const combinedAudioAnalysis: AudioAnalysisResponse[] = [
+      ...(Array.isArray(firstBatchResponse.content)
+        ? firstBatchResponse.content
+        : [firstBatchResponse.content]),
+      ...(Array.isArray(secondBatchResponse.content)
+        ? secondBatchResponse.content
+        : [secondBatchResponse.content]),
+    ];
+
+    await db.transaction(async (tx) => {
+      for (const item of data.items) {
+        const audioAnalysis = combinedAudioAnalysis.find(
+          (analysis) => analysis.href === item.track.external_urls.spotify
+        );
+
+        console.log('Audio analysis for track', item.track.name, ':', audioAnalysis);
+
+        await tx.insert(track).values({
+          activityId,
+          trackId: item.track.id,
+          name: item.track.name,
+          durationMs: parseInt(item.track.duration_ms.toString(), 0),
+          spotifyUrl: item.track.external_urls.spotify,
+          artists: item.track.artists.map((artist) => ({
+            id: artist.id,
+            name: artist.name,
+            href: artist.external_urls.spotify,
+          })),
+          images: item.track.album.images.map((image) => ({
+            url: image.url,
+            height: image.height,
+            width: image.width,
+          })),
+          playedAt: new Date(item.played_at),
+          acousticness: audioAnalysis?.acousticness,
+          danceability: audioAnalysis?.danceability,
+          energy: audioAnalysis?.energy,
+          instrumentalness: audioAnalysis?.instrumentalness,
+          key: audioAnalysis?.key,
+          liveness: audioAnalysis?.liveness,
+          loudness: audioAnalysis?.loudness,
+          mode: audioAnalysis?.mode,
+          speechiness: audioAnalysis?.speechiness,
+          tempo: audioAnalysis?.tempo,
+          valence: audioAnalysis?.valence,
+        });
+      }
+    });
+  } catch (e) {
+    console.error('Error while fetching recently played tracks:', e);
+    throw new DatabaseError(500, 'Failed to fetch recently played tracks during activity');
+  }
 };

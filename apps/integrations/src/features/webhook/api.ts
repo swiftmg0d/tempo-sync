@@ -8,14 +8,14 @@ import type { StreamData } from '@/shared/types/strava';
 export const webhookApi = {
   strava: {
     fetchActivityById: async ({
-      activityId,
+      stravaActivityId,
       accessToken,
     }: {
-      activityId: string;
+      stravaActivityId: string;
       accessToken: string;
     }) =>
       http<StravaActivity>(
-        `${STRAVA_API_URL}/activities/${activityId}`,
+        `${STRAVA_API_URL}/activities/${stravaActivityId}`,
         {
           method: 'GET',
           headers: {
@@ -25,16 +25,16 @@ export const webhookApi = {
         'Failed to fetch Strava activity by ID'
       ),
     updateActivityById: async ({
-      activityId,
+      stravaActivityId,
       accessToken,
       data,
     }: {
-      activityId: string;
+      stravaActivityId: string;
       accessToken: string;
       data: Partial<StravaActivity>;
     }) => {
       return http<StravaActivity>(
-        `${STRAVA_API_URL}/activities/${activityId}`,
+        `${STRAVA_API_URL}/activities/${stravaActivityId}`,
         {
           method: 'PUT',
           headers: {
@@ -47,10 +47,10 @@ export const webhookApi = {
       );
     },
     getActivityStreams: async ({
-      activityId,
+      stravaActivityId,
       accessToken,
     }: {
-      activityId: string;
+      stravaActivityId: string;
       accessToken: string;
     }) => {
       const params = new URLSearchParams({
@@ -59,7 +59,7 @@ export const webhookApi = {
       }).toString();
 
       return http<StreamData>(
-        `${STRAVA_API_URL}/activities/${activityId}/streams?${params}`,
+        `${STRAVA_API_URL}/activities/${stravaActivityId}/streams?${params}`,
         {
           method: 'GET',
           headers: {

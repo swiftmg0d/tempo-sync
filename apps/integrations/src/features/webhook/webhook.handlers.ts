@@ -45,7 +45,7 @@ export const handleWebhookEvent = async (
   console.log('Received Strava webhook event:', body);
 
   const stravaId = body.owner_id;
-  const activityId = body.object_id;
+  const stravaActivityId = body.object_id;
   const db = c.get('db');
 
   const request: CombinedRefreshTokensRequestParams = {
@@ -61,24 +61,26 @@ export const handleWebhookEvent = async (
   const { result: spotifyAccessToken } = await resyncWithToken('spotify', request, stravaId, db);
 
   const activity = await webhookApi.strava.fetchActivityById({
-    activityId: activityId.toString(),
+    stravaActivityId: stravaActivityId.toString(),
     accessToken: stravaAccessToken,
   });
 
   const startDate = new Date(activity.start_date);
   const endDate = incrementDateBySeconds(activity.elapsed_time, new Date(startDate));
 
-  await getRecentlyPlayedSongsDuringActivity({
-    accessToken: spotifyAccessToken,
-    startDate,
-    endDate,
-  });
-
-  await handleStravaWebhook({
+  const activityId = await handleStravaWebhook({
     db,
     activity,
     accessToken: stravaAccessToken,
     env: c.env,
+  });
+
+  await getRecentlyPlayedSongsDuringActivity({
+    accessToken: spotifyAccessToken,
+    startDate,
+    endDate,
+    activityId,
+    db,
   });
 
   return c.text('Webhook event handled', 200);
