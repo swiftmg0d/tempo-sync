@@ -2,6 +2,7 @@ import { Box as BaseBox, Box, Image } from '@chakra-ui/react';
 import prettyMilliseconds from 'pretty-ms';
 
 import * as A from './ActivityCard.styled';
+import { noTracksImage } from './constants';
 import type { ActivityCardProps } from './types';
 
 import { PolylinePreview } from '@/components/PolylinePreview/PolylinePreview';
@@ -60,10 +61,7 @@ export const ActivityCard = ({
 										borderRadius={theme.radii.xs}
 										opacity={active ? 1 : 0.6}
 										border='transparent'
-										src={
-											lastTrack?.image ??
-											'https://tse4.mm.bing.net/th/id/OIP.opYyEXl2x1TyK_XF1DdwlwHaHa?rs=1&pid=ImgDetMain&o=7&rm=300x300'
-										}
+										src={lastTrack?.image ?? noTracksImage}
 										alt={lastTrack?.name ?? 'No track data'}
 									/>
 

@@ -4,6 +4,7 @@ import { FlagIcon } from './Flag';
 import { Globe } from './Globe';
 import { Grid } from './Grid';
 import { Hamburger } from './Hamburger';
+import { HeadphoneSync } from './HeadPhoneSync';
 import { HeadphoneIcon } from './Headphone';
 import { HeartIcon } from './Heart';
 import { HistoryIcon } from './History';
@@ -35,7 +36,8 @@ export const Icons = {
 	headphone: HeadphoneIcon,
 	flag: FlagIcon,
 	strava: StravaIcon,
-	spotify: SpotifyIcon
+	spotify: SpotifyIcon,
+	headphoneSync: HeadphoneSync
 } as const;
 
 export type IconName = keyof typeof Icons;

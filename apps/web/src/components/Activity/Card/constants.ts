@@ -1,0 +1,2 @@
+export const noTracksImage =
+	'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="%232dd4bf" stroke-width="2" stroke-linecap="round" stroke-dasharray="4 1"%3E%3Cpath d="M3 14v-2a9 9 0 0 1 5-8M12 2a9 9 0 0 1 9 9v3"/%3E%3Cpath d="M19 21a2 2 0 0 1-2-2v-1a2 2 0 0 1 4 0v1a2 2 0 0 1-2 2"/%3E%3Cpath d="M4 17a2 2 0 0 0 2-2v-1a2 2 0 0 0-4 0v1a2 2 0 0 0 2 2"/%3E%3Cpath d="M10 12h4" stroke-opacity=".4"/%3E%3C/svg%3E';
