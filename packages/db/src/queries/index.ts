@@ -89,14 +89,14 @@ export const activityQueries = {
         time: activitySummary.elapsedTime,
         title: activity.name,
         lastTrack: {
-          name: lastTrack.name,
+          name: sql<string>`${lastTrack.name} || ' - ' || (${lastTrack.artists}->0->>'name')`,
           image: sql<string>`${lastTrack.images}->-1->>'url'`,
         },
       })
       .from(activity)
       .innerJoin(activityMap, eq(activityMap.activityId, activity.id))
       .innerJoin(activitySummary, eq(activitySummary.activityId, activity.id))
-      .innerJoin(lastTrack, eq(lastTrack.activityId, activity.id))
+      .leftJoin(lastTrack, eq(lastTrack.activityId, activity.id))
       .limit(limit)
       .offset((page - 1) * limit)
       .orderBy(sql`start_date DESC`);
