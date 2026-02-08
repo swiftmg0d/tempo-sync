@@ -27,7 +27,7 @@ export const series = (chartType: ChartType) => {
 		];
 	}
 	return [
-		{ name: 'heart_rate' as const, color: 'teal.solid', label: 'Heart Rate' },
+		{ name: 'heartrate' as const, color: 'teal.solid', label: 'Heart Rate' },
 		{ name: 'tempo' as const, color: 'gray.emphasized', label: 'Tempo' }
 	];
 };

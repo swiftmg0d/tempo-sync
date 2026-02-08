@@ -16,7 +16,8 @@ export const ActivityCard = ({
 	date,
 	title,
 	polyline,
-	time
+	time,
+	lastTrack
 }: ActivityCardProps) => {
 	const dateOffset = formatDateDistance(new Date(date));
 
@@ -47,7 +48,7 @@ export const ActivityCard = ({
 										borderRadius='100%'
 										backgroundColor={theme.colors.bg.doveGray}
 									/>
-									<A.ActivityCard.Metrics>Predictive</A.ActivityCard.Metrics>
+									<A.ActivityCard.Metrics />
 								</Box>
 							</A.ActivityCard.Header>
 							<Padded $p='sm' $side='top'>
@@ -59,12 +60,15 @@ export const ActivityCard = ({
 										borderRadius={theme.radii.xs}
 										opacity={active ? 1 : 0.6}
 										border='transparent'
-										src='https://tse4.mm.bing.net/th/id/OIP.opYyEXl2x1TyK_XF1DdwlwHaHa?rs=1&pid=ImgDetMain&o=7&rm=300x300'
-										alt='John Doe'
+										src={
+											lastTrack?.image ??
+											'https://tse4.mm.bing.net/th/id/OIP.opYyEXl2x1TyK_XF1DdwlwHaHa?rs=1&pid=ImgDetMain&o=7&rm=300x300'
+										}
+										alt={lastTrack?.name ?? 'No track data'}
 									/>
 
 									<A.ActivityCard.MusicInfoText $active={active}>
-										Hight BPM Detection - 128 BPM
+										{lastTrack?.name ?? 'No track data'}
 									</A.ActivityCard.MusicInfoText>
 									<TrendingUpIcon active={active} />
 								</A.ActivityCard.MusicInfoContainer>

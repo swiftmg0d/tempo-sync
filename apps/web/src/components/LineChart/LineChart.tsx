@@ -33,7 +33,7 @@ export const LineChart = ({ data, isLoading, chartType }: LineChartProps) => {
 		);
 	}
 
-	const primaryKey = chartType === 'pace_cadence' ? 'cadence' : 'heart_rate';
+	const primaryKey = chartType === 'pace_cadence' ? 'cadence' : 'heartrate';
 	const latest = chart.data.findLast(
 		(item) => (item as Record<string, number | null>)[primaryKey] !== null
 	);
@@ -54,9 +54,9 @@ export const LineChart = ({ data, isLoading, chartType }: LineChartProps) => {
 					animationDuration={100}
 					cursor={false}
 					content={<Chart.Tooltip />}
-					labelFormatter={(label) =>
-						`Minute of activity: ${typeof label === 'number' ? label : 0}m`
-					}
+					labelFormatter={(label) => {
+						return `Minute of activity: ${label === 'cadence' || label === 'tempo' ? 0 : label}m`;
+					}}
 				/>
 				<ReferenceDot
 					x={latest?.minute}

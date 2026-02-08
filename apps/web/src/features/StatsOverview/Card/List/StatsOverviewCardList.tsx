@@ -15,14 +15,6 @@ const StatsOverviewCardListComponent = ({ data }: { data: ActivitySummaryStats[]
 			{data.map((props) => (
 				<StatsOverviewCard key={props.id} {...props} />
 			))}
-
-			<StatsOverviewCard
-				title='Music'
-				icon='headphone'
-				value={642}
-				info='Time streamed'
-				label='hrs'
-			/>
 		</Box>
 	);
 };
