@@ -6,6 +6,7 @@ import type {
   ActivityStreamsBodyValidation,
   ActivityStreamsParamsValidation,
   ActivitySummaryValidation,
+  ActivityTrackLeaderboardValidation,
   ActivityValidation,
 } from './activity.schema';
 import {
@@ -144,9 +145,24 @@ export const getActivityStreams = async (
       tempo: tempoByMinute[i] ?? null,
     }));
 
-    console.log('Combined heartrate and tempo data:', combined);
     return c.json(combined);
   }
 
   return c.json([]);
+};
+
+export const getActivityTrackLeaderboard = async (
+  c: ValidatedContext<ActivityTrackLeaderboardValidation, 'param', AppEnv>
+) => {
+  const { id } = c.req.valid('param');
+
+  const db = c.get('db');
+
+  const [{ leaderboard }] = await db
+    .select({ leaderboard: activity.llmTrackLeaderboard })
+    .from(activity)
+    .where(eq(activity.id, id))
+    .limit(3);
+
+  return c.json(leaderboard?.slice(0, 3) ?? []);
 };

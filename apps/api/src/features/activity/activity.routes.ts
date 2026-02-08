@@ -8,6 +8,7 @@ import {
   getActivityStreamsBodySchema,
   getActivityStreamsParamsSchema,
   getActivitySummarySchema,
+  getActivityTrackLeaderboardSchema,
 } from './activity.schema';
 
 import type { AppEnv } from '@/shared/types/bindings';
@@ -26,6 +27,11 @@ const activity = createRouter<AppEnv>()
     '/:id/llm-insights',
     validate('param', getActivityLLMInsightsSchema),
     handlers.getActivityLLMInsights
+  )
+  .get(
+    '/:id/track-leaderboard',
+    validate('param', getActivityTrackLeaderboardSchema),
+    handlers.getActivityTrackLeaderboard
   )
   .get('/summary/overall', handlers.getOverallActivitySummary)
   .get('/polylines', handlers.getActivitiesPolylines);

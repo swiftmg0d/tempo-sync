@@ -25,3 +25,6 @@ export const getActivityStreamsBodySchema = z.object({
 
 export type ActivityStreamsParamsValidation = typeof getActivityStreamsParamsSchema;
 export type ActivityStreamsBodyValidation = typeof getActivityStreamsBodySchema;
+
+export const getActivityTrackLeaderboardSchema = getActivitySummarySchema;
+export type ActivityTrackLeaderboardValidation = typeof getActivityTrackLeaderboardSchema;
