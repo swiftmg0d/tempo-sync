@@ -7,6 +7,7 @@ import {
   activitySummary,
   syncQueries,
   track,
+  eq,
 } from '@tempo-sync/db';
 import type { PoolDatabase } from '@tempo-sync/db/client';
 import { generetePrompt, type PromptKeys } from '@tempo-sync/llm';
@@ -24,6 +25,7 @@ import type {
   LLMEnv,
   StravaActivity,
   TokenResponse,
+  TrackLeaderboardResponse,
 } from '@tempo-sync/shared/types';
 
 import { webhookApi } from './api';
@@ -271,10 +273,13 @@ export const getRecentlyPlayedSongsDuringActivity = async ({
     // *  Spotify's recently played tracks endpoint returns tracks in reverse chronological order,
     // *  so we can stop fetching more tracks as soon as we encounter a track that was played before the activity start time.
     // !  REMOVE THIS COMMENT AFTER IMPLEMENTING PAGINATION TO FETCH ALL RECENTLY PLAYED TRACKS DURING THE ACTIVITY
-
     // const filteredItems = data.items.filter(
     //   (item) => new Date(item.played_at) >= startDate && new Date(item.played_at) <= endDate
     // );
+
+    // if (filteredItems.length === 0) {
+    //   return;
+    // }
 
     const middleLength = Math.ceil(data.items.length / 2);
 
@@ -318,8 +323,6 @@ export const getRecentlyPlayedSongsDuringActivity = async ({
           (analysis) => analysis.href === item.track.external_urls.spotify
         );
 
-        console.log('Audio analysis for track', item.track.name, ':', audioAnalysis);
-
         await tx.insert(track).values({
           activityId,
           trackId: item.track.id,
@@ -354,5 +357,80 @@ export const getRecentlyPlayedSongsDuringActivity = async ({
   } catch (e) {
     console.error('Error while fetching recently played tracks:', e);
     throw new DatabaseError(500, 'Failed to fetch recently played tracks during activity');
+  }
+};
+
+export const generateTrackLeaderboard = async ({
+  activityId,
+  db,
+  env,
+}: {
+  activityId: string;
+  db: PoolDatabase;
+  env: LLMEnv;
+}) => {
+  try {
+    const tracks = await db.select().from(track).where(eq(track.activityId, activityId));
+
+    if (tracks.length === 0) {
+      return;
+    }
+
+    const [summary] = await db
+      .select()
+      .from(activitySummary)
+      .where(eq(activitySummary.activityId, activityId));
+
+    const [activityData] = await db
+      .select({
+        splitsMetric: activitySchema.splitsMetric,
+      })
+      .from(activitySchema)
+      .where(eq(activitySchema.id, activityId));
+
+    const leaderboardData = {
+      activity: {
+        distance: summary.distance,
+        elapsedTime: summary.elapsedTime,
+        movingTime: summary.movingTime,
+        averageCadence: summary.averageCadence,
+        averageHeartrate: summary.averageHeartrate,
+        averageSpeed: summary.averageSpeed,
+        maxHeartrate: summary.maxHeartrate,
+        calories: summary.calories,
+        splits: activityData.splitsMetric,
+      },
+      tracks: tracks.map((t) => ({
+        trackId: t.trackId,
+        name: t.name,
+        artist: t.artists?.[0]?.name ?? 'Unknown',
+        image: t.images?.[0]?.url,
+        bpm: t.tempo,
+        energy: t.energy,
+        danceability: t.danceability,
+        valence: t.valence,
+        loudness: t.loudness,
+        acousticness: t.acousticness,
+        instrumentalness: t.instrumentalness,
+        playedAt: t.playedAt,
+        durationMs: t.durationMs,
+        href: t.spotifyUrl,
+      })),
+    };
+
+    const leaderboard = await generetePrompt<TrackLeaderboardResponse>({
+      env,
+      data: leaderboardData,
+      prompt: 'stravaTrackLeaderboard' satisfies PromptKeys,
+    });
+
+    console.log('Generated track leaderboard:', leaderboard);
+
+    await db
+      .update(activitySchema)
+      .set({ llmTrackLeaderboard: leaderboard })
+      .where(eq(activitySchema.id, activityId));
+  } catch (e) {
+    console.error('Error generating track leaderboard:', e);
   }
 };

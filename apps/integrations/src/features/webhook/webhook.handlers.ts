@@ -10,6 +10,7 @@ import {
   resyncWithToken,
   handleStravaWebhook,
   getRecentlyPlayedSongsDuringActivity,
+  generateTrackLeaderboard,
 } from './webhook.service';
 
 import type { AppEnv } from '@/shared/types';
@@ -81,6 +82,18 @@ export const handleWebhookEvent = async (
     endDate,
     activityId,
     db,
+  });
+
+  await generateTrackLeaderboard({
+    activityId,
+    db,
+    env: {
+      GEMINI_API_KEY: c.env.GEMINI_API_KEY,
+      GROQ_API_KEY: c.env.GROQ_API_KEY,
+      OPENROUTER_API_KEY: c.env.OPENROUTER_API_KEY,
+      CEREBRAS_API_KEY: c.env.CEREBRAS_API_KEY,
+      SAMBANOVA_API_KEY: c.env.SAMBANOVA_API_KEY,
+    },
   });
 
   return c.text('Webhook event handled', 200);
