@@ -10,7 +10,7 @@ export const getSyncStatus = async (c: AppContext) => {
 
   // eslint-disable-next-line @typescript-eslint/no-unnecessary-condition
   if (!syncStatus) {
-    return c.json({ status: 'No syncs have been performed yet.' });
+    return c.json({ status: 'Never' });
   }
 
   return c.json({ status: formatDateDistance(syncStatus.date) });

@@ -1,4 +1,4 @@
-import { activity, activityMap, activitySummary, eq } from '@tempo-sync/db';
+import { activity, activityMap, activitySummary, eq, track } from '@tempo-sync/db';
 import type { MultiValidatedContext, ValidatedContext } from '@tempo-sync/shared/types';
 
 import type {
@@ -103,6 +103,48 @@ export const getActivityStreams = async (
       ...aggregatedPace[i],
     }));
 
+    return c.json(combined);
+  }
+
+  if (streamTypes.includes('heartrate') && streamTypes.includes('tempo')) {
+    const tracks = await db.select().from(track).where(eq(track.activityId, id));
+
+    const tracksDuration = tracks
+      .map((track, index) => {
+        if (index === tracks.length - 1) {
+          return;
+        }
+        const nextTrack = tracks[index + 1];
+
+        return Math.floor(
+          Math.abs(nextTrack.playedAt.getTime() - track.playedAt.getTime()) / 60000
+        );
+      })
+      .filter((duration) => duration !== undefined);
+
+    if (!data.hearBeatData) {
+      return c.json([]);
+    }
+
+    const aggregatedHeartrate = aggregateActivityStreams(data.hearBeatData, 'heartrate');
+
+    let tempoByMinute: (number | null)[] = [];
+    tracksDuration.forEach((duration, index) => {
+      const currentTrack = tracks[index];
+      for (let i = 0; i < duration; i++) {
+        tempoByMinute.push(currentTrack.tempo);
+      }
+    });
+
+    // ! REMOVE THIS LATER - TO SHOW SOME DATA ON THE FRONTEND WHILE TESTING
+    tempoByMinute = tempoByMinute.filter((tempo) => tempo !== null);
+
+    const combined = aggregatedHeartrate.map((item, i) => ({
+      ...item,
+      tempo: tempoByMinute[i] ?? null,
+    }));
+
+    console.log('Combined heartrate and tempo data:', combined);
     return c.json(combined);
   }
 

@@ -3,6 +3,7 @@ import {
   activityQueries,
   activitySummaryQueries,
   sql,
+  track,
   type PoolDatabase,
 } from '@tempo-sync/db';
 import { decodeActivityMap } from '@tempo-sync/shared';
@@ -75,6 +76,13 @@ export const getActivitiesSummaryStats = async (db: PoolDatabase) => {
       db,
     });
 
+    const tracks = await db.select({ seconds: track.durationMs }).from(track);
+
+    const totalStreamedTracksMilliseconds = tracks.reduce((acc, track) => {
+      acc += track.seconds;
+      return acc;
+    }, 0);
+
     return [
       {
         icon: 'runner',
@@ -106,6 +114,14 @@ export const getActivitiesSummaryStats = async (db: PoolDatabase) => {
         label: 'bpm',
         title: 'All time',
         value: Math.round(result.totalAvgHr),
+      },
+      {
+        icon: 'headphone',
+        id: crypto.randomUUID(),
+        info: 'streamed',
+        label: 'hrs',
+        title: 'Music',
+        value: Math.round(totalStreamedTracksMilliseconds / (1000 * 60 * 60)),
       },
     ];
   } catch (e) {
