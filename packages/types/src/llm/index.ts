@@ -26,6 +26,19 @@ export interface LLMHeartbeatAnalysisResponse {
 
 export type LLMHeartbeatSongsAnalysis = LLMHeartbeatAnalysisResponse;
 
+export interface TrackLeaderboardEntry {
+  trackName: string;
+  artist: string;
+  score: number;
+  bpm: number;
+  insightLabel: string;
+  insightDescription: string;
+  trackId?: string;
+  image?: string;
+}
+
+export type TrackLeaderboardResponse = TrackLeaderboardEntry[];
+
 export interface LLMEnv {
   GEMINI_API_KEY: string;
   GROQ_API_KEY: string;
