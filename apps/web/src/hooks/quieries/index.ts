@@ -102,6 +102,16 @@ const useActivityStreams = (id: string, streamTypes: string[]) =>
 		}
 	});
 
+const useTrackLeaderboard = (id: string) =>
+	createQuery({
+		queryFn: () => apiService.activity.getTrackLeaderboard(id),
+		queryKey: queryKeys.activity.trackLeaderboard(id),
+		options: {
+			enabled: !!id,
+			select: (res) => res.data
+		}
+	});
+
 export const Queries = {
 	useActivities,
 	useActivitySummary,
@@ -113,5 +123,6 @@ export const Queries = {
 	useProfiles,
 	useAthleteTopArtist,
 	useAthleteTotalActivities,
-	useActivityStreams
+	useActivityStreams,
+	useTrackLeaderboard
 };

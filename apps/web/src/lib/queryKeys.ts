@@ -15,7 +15,8 @@ export const queryKeys = {
 		LLMInsights: (id: string) => [...queryKeys.activity.list, id, 'llm-insights'] as const,
 		profile: () => [...queryKeys.activity.list, 'profiles'] as const,
 		streams: (id: string, streamTypes: string[]) =>
-			[...queryKeys.activity.list, id, 'streams', ...streamTypes] as const
+			[...queryKeys.activity.list, id, 'streams', ...streamTypes] as const,
+		trackLeaderboard: (id: string) => [...queryKeys.activity.list, id, 'track-leaderboard'] as const
 	},
 	profile: {
 		list: ['profiles'] as const

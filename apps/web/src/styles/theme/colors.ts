@@ -14,7 +14,8 @@ export const colors = {
 		blackAlpha2: baseColors.blackAlpha2,
 		teal: baseColors.teal(),
 		white: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-		alto2: `rgba(224, 224, 224, 0.2)`
+		alto2: `rgba(224, 224, 224, 0.2)`,
+		slate: (opacity = 1) => `rgba(96, 125, 139, ${opacity})`
 	} as const,
 	text: {
 		primary: '#333333',

@@ -4,7 +4,8 @@ import type {
 	ActivitySummaryStats,
 	Athlete,
 	LLMActivityInsightResponse,
-	Profile
+	Profile,
+	TrackLeaderboardResponse
 } from '@tempo-sync/shared/types';
 import type { ChartData as StreamsResponse } from 'recharts/types/state/chartDataSlice';
 
@@ -28,7 +29,9 @@ export const apiService = {
 		getActivityStreams: (id: string, streamTypes: string[]) =>
 			api.post<ApiResponse<StreamsResponse>>(`/activity/${id}/streams`, {
 				streamTypes
-			})
+			}),
+		getTrackLeaderboard: (id: string) =>
+			api.get<ApiResponse<TrackLeaderboardResponse>>(`/activity/${id}/track-leaderboard`)
 	},
 	athlete: {
 		getMe: () => api.get<ApiResponse<{ athlete: Athlete }>>('/athlete')
