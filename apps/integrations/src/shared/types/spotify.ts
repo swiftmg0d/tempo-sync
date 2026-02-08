@@ -6,15 +6,20 @@ interface Track {
     external_urls: {
       spotify: string;
     };
-    images: {
-      height: number;
-      url: string;
-      width: number;
-    }[];
+    album: {
+      images: {
+        height: number;
+        url: string;
+        width: number;
+      }[];
+    };
+
     artists: {
       id: string;
       name: string;
-      href: string;
+      external_urls: {
+        spotify: string;
+      };
     }[];
   };
   played_at: Date;
@@ -30,4 +35,21 @@ interface Track {
 
 export interface RecentlyPlayedTracksResponse {
   items: Track[];
+}
+
+export interface AudioAnalysisResponse {
+  id: string;
+  href: string;
+  isrc: string;
+  acousticness: number;
+  danceability: number;
+  energy: number;
+  instrumentalness: number;
+  key: number;
+  liveness: number;
+  loudness: number;
+  mode: number;
+  speechiness: number;
+  tempo: number;
+  valence: number;
 }
