@@ -22,7 +22,7 @@ export const MapTypeControl = ({
 			<IconButton
 				aria-label='Toggle Map Type'
 				backgroundColor='transparent'
-				color='black'
+				color={theme.colors.text.primary}
 				_hover={{ color: theme.colors.bg.teal }}
 				onClick={() => {
 					const newMapType = type === 'normal' ? 'heat' : 'normal';

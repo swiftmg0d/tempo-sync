@@ -2,18 +2,24 @@ import { Map, type MapRef, NavigationControl, ScaleControl } from '@vis.gl/react
 import 'maplibre-gl/dist/maplibre-gl.css';
 import { useEffect, useRef, useState } from 'react';
 
+import { MapContainer } from './GlobalMap.styled';
 import { renderActivitiesByMapType } from './GlobalMap.utils';
 import { MapTypeControl } from './GlobalMapControls';
 import { GlobalMapLoading } from './GlobalMapLoading';
 
 import { Queries } from '@/hooks/quieries';
-import { useActivityCardsStore } from '@/store';
+import { useActivityCardsStore, useThemeStore } from '@/store';
+// Accessing the map key from environment variables
+
+const mapKey = import.meta.env.VITE_MAP_KEY;
 
 export const GlobalMap = () => {
 	const [isMapLoading, setIsMapLoading] = useState(true);
 	const [mapType, setMapType] = useState<'heat' | 'normal'>('normal');
 
 	const activityId = useActivityCardsStore((state) => state.activityId);
+	const themeMode = useThemeStore((state) => state.mode);
+	const mapVariant = themeMode === 'dark' ? 'dataviz-v4-dark' : 'dataviz-v4-light';
 
 	const { data, isLoading } = Queries.useActivities();
 	const activities = data?.pages.flatMap((page) => page.data.activities);
@@ -47,7 +53,7 @@ export const GlobalMap = () => {
 	}, [dataToShow, isMapLoading]);
 
 	return (
-		<>
+		<MapContainer>
 			<Map
 				ref={mapRef}
 				initialViewState={{
@@ -55,7 +61,7 @@ export const GlobalMap = () => {
 					latitude: 54,
 					zoom: 2
 				}}
-				mapStyle='https://api.maptiler.com/maps/dataviz-v4-light/style.json?key=fMnEWFD9MB3WFE48MIIx'
+				mapStyle={`https://api.maptiler.com/maps/${mapVariant}/style.json?key=${mapKey}`}
 				onLoad={() => {
 					setIsMapLoading(false);
 				}}
@@ -80,6 +86,6 @@ export const GlobalMap = () => {
 			</Map>
 
 			{isMapLoading || isLoading ? <GlobalMapLoading /> : null}
-		</>
+		</MapContainer>
 	);
 };

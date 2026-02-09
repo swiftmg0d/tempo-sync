@@ -111,7 +111,12 @@ const EndOfList = styled.div`
 const EndOfListDivider = styled.div`
 	height: 1px;
 	flex: 1;
-	background: linear-gradient(to right, transparent, rgba(0, 0, 0, 0.1), transparent);
+	background: linear-gradient(
+		to right,
+		transparent,
+		${({ theme }) => theme.colors.border.primaryRgb(0.1)},
+		transparent
+	);
 `;
 
 const EndOfListIconRow = styled.div`

@@ -33,10 +33,13 @@ const Label = styled.p`
 	${flex({ direction: 'row', gap: 'xs', justifyContent: 'center', alignItems: 'center' })}
 	${text({ size: 'xs', weight: 'bold' })}
 
-
-	background-color: rgba(240, 253, 244, 1);
-	color: #10b981;
-	padding: ${({ theme }) => `${theme.spacing.xs} ${theme.spacing.sm}`};
+	${({ theme }) => css`
+		background-color: ${theme.mode === 'dark'
+			? 'rgba(16, 185, 129, 0.1)'
+			: 'rgba(240, 253, 244, 1)'};
+		color: #10b981;
+		padding: ${theme.spacing.xs} ${theme.spacing.sm};
+	`}
 `;
 
 const InfoContainer = styled.div`
