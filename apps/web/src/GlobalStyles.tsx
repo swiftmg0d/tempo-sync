@@ -10,6 +10,12 @@ export const GlobalStyles = () => {
 					box-sizing: border-box;
 				}
 
+				::view-transition-old(root),
+				::view-transition-new(root) {
+					animation-duration: 200ms;
+					animation-timing-function: ease-in-out;
+				}
+
 				html,
 				body {
 					height: 100%;
@@ -19,6 +25,7 @@ export const GlobalStyles = () => {
 					margin: 0;
 					font-family: ${theme.fonts.sans};
 					color: ${theme.colors.text.primary};
+					background-color: ${theme.colors.bg.lightPrimary()};
 					-webkit-font-smoothing: antialiased;
 					-moz-osx-font-smoothing: grayscale;
 				}
