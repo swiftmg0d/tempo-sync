@@ -18,7 +18,8 @@ export const ActivityCard = ({
 	title,
 	polyline,
 	time,
-	lastTrack
+	lastTrack,
+	totalElevationGain
 }: ActivityCardProps) => {
 	const dateOffset = formatDateDistance(new Date(date));
 
@@ -48,8 +49,11 @@ export const ActivityCard = ({
 										height='4px'
 										borderRadius='100%'
 										backgroundColor={theme.colors.bg.doveGray}
+										marginX={theme.spacing.s}
 									/>
-									<A.ActivityCard.Metrics />
+									<A.ActivityCard.Metrics $active={active}>
+										{totalElevationGain ? `↑ ${totalElevationGain}m` : '—'}
+									</A.ActivityCard.Metrics>
 								</Box>
 							</A.ActivityCard.Header>
 							<Padded $p='sm' $side='top'>

@@ -143,8 +143,10 @@ const Type = styled.p`
 	${text({ size: 'xs', weight: 'regular', color: 'secondary' })}
 `;
 
-const Metrics = styled.p`
-	${text({ size: 'xs', weight: 'regular', color: 'secondary' })}
+const Metrics = styled.p<{ $active?: boolean }>`
+	${text({ size: 'xs', weight: 'regular' })}
+	${({ theme, $active }) =>
+		$active ? `color: ${theme.colors.bg.teal};` : `color: ${theme.colors.text.primary};`}
 `;
 
 export const ActivityCard = {
