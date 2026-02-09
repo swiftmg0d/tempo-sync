@@ -12,6 +12,7 @@ import { ActivityListEmptyState } from '@/components/Activity/List/EmptyState/Ac
 import { ActivityListLoadMore } from '@/components/Activity/List/LoadMore';
 import { ActivityListNoMore } from '@/components/Activity/List/NoMore';
 import { Avatar } from '@/components/Avatar';
+import { ThemeToggle } from '@/components/ThemeToggle';
 import { Queries, useActivities } from '@/hooks/quieries';
 import { useActivityCardsStore, useUIStore } from '@/store';
 import { theme } from '@/styles';
@@ -128,6 +129,7 @@ export const Sidebar = () => {
 						header={name ?? 'Athlete Name'}
 						subHeader='Software Engineer'
 					/>
+					<ThemeToggle />
 				</S.Footer>
 			</S.Sidebar.Section>
 		</S.Sidebar.Aside>

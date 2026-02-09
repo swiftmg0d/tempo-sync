@@ -9,7 +9,7 @@ const Aside = styled.aside<{ $isOpen: boolean }>`
 	${flex({ direction: 'column' })}
 
 	z-index: 5;
-	background-color: white;
+	background-color: ${({ theme }) => theme.colors.bg.white()};
 	position: fixed;
 	bottom: 0;
 	width: 100%;
@@ -21,7 +21,8 @@ const Aside = styled.aside<{ $isOpen: boolean }>`
 		overflow-y: ${$isOpen ? 'auto' : 'hidden'};
 	`}
 
-	border-radius: 35px;
+	border-top-left-radius: 35px;
+	border-top-right-radius: 35px;
 	box-shadow: ${({ theme }) => theme.shadows.upwards};
 
 	@media (min-width: ${({ theme }) => theme.breakpoints.md}) {
@@ -94,6 +95,11 @@ export const Footer = styled.div`
 		gap: ${theme.spacing.md};
 		padding: ${theme.spacing.sm};
 		border-radius: ${theme.radii.md};
+		align-items: center;
+
+		> *:last-child {
+			margin-left: auto;
+		}
 
 		&:hover {
 			background-color: ${theme.colors.bg.blackAlpha2};

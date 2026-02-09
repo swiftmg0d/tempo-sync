@@ -17,7 +17,7 @@ export const scrollbar = css`
 	}
 
 	&::-webkit-scrollbar-thumb {
-		background-color: rgba(0, 0, 0, 0.18);
+		background-color: ${theme.colors.border.primaryRgb(0.18)};
 		border-radius: 999px;
 		border: 3px solid transparent;
 
@@ -26,6 +26,6 @@ export const scrollbar = css`
 	}
 
 	&::-webkit-scrollbar-thumb:hover {
-		background-color: rgba(0, 0, 0, 0.28);
+		background-color: ${theme.colors.border.primaryRgb(0.28)};
 	}
 `;
