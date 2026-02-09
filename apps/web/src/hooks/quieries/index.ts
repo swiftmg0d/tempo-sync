@@ -112,6 +112,15 @@ const useTrackLeaderboard = (id: string) =>
 		}
 	});
 
+const useTrackRecommendations = (id: string) =>
+	useInfiniteQuery({
+		queryKey: queryKeys.activity.trackRecommendations(id),
+		queryFn: ({ pageParam }) => apiService.activity.getTrackRecommendations(id, pageParam),
+		initialPageParam: 1,
+		getNextPageParam: (lastPage) => lastPage.data.pagination.nextPage,
+		enabled: !!id
+	});
+
 export const Queries = {
 	useActivities,
 	useActivitySummary,
@@ -124,5 +133,6 @@ export const Queries = {
 	useAthleteTopArtist,
 	useAthleteTotalActivities,
 	useActivityStreams,
-	useTrackLeaderboard
+	useTrackLeaderboard,
+	useTrackRecommendations
 };

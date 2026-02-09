@@ -2,6 +2,7 @@ import { Box } from '@chakra-ui/react';
 
 import { MetricList } from '../../components/Metric';
 import { InsightCarousel } from '../Insight/Carousel/InsightCarousel';
+import { SessionRecommendations } from '../SessionRecommendations';
 import { TrackLeaderboard } from '../TrackLeaderboard';
 
 import { getMetricList } from './AnalyistGrid.utils';
@@ -52,12 +53,7 @@ export const AnalyistGrid = () => {
 					gap={theme.spacing.md}
 				>
 					<Box flex={1 / 2} minWidth={0}>
-						<div>Placeholder for Future Analysis Component</div>
-						<h3>
-							Lorem ipsum dolor sit amet consectetur, adipisicing elit. Voluptatem deleniti voluptas
-							distinctio sint fuga placeat beatae atque tenetur ullam dolor nihil, eum velit neque,
-							numquam ad doloremque culpa cum dignissimos.
-						</h3>
+						<SessionRecommendations />
 					</Box>
 					<InsightCarousel flex={1} />
 				</Box>

@@ -1,0 +1,1 @@
+export { SessionRecommendations } from './SessionRecommendations';

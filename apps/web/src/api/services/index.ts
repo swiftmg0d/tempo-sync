@@ -4,6 +4,7 @@ import type {
 	ActivitySummaryStats,
 	Athlete,
 	LLMActivityInsightResponse,
+	PaginatedTrackRecommendations,
 	Profile,
 	TrackLeaderboardResponse
 } from '@tempo-sync/shared/types';
@@ -31,7 +32,11 @@ export const apiService = {
 				streamTypes
 			}),
 		getTrackLeaderboard: (id: string) =>
-			api.get<ApiResponse<TrackLeaderboardResponse>>(`/activity/${id}/track-leaderboard`)
+			api.get<ApiResponse<TrackLeaderboardResponse>>(`/activity/${id}/track-leaderboard`),
+		getTrackRecommendations: (id: string, page?: number) =>
+			api.get<ApiResponse<PaginatedTrackRecommendations>>(`/activity/${id}/track-recommendations`, {
+				params: { page, limit: 4 }
+			})
 	},
 	athlete: {
 		getMe: () => api.get<ApiResponse<{ athlete: Athlete }>>('/athlete')
