@@ -1,7 +1,7 @@
 import { breakpoints } from './breakpoints';
-import { colors } from './colors';
+import { colors, darkColors } from './colors';
 import { layout } from './layout';
-import { shadows } from './shadows';
+import { darkShadows, shadows } from './shadows';
 import { typography } from './typography';
 
 declare module '@emotion/react' {
@@ -9,9 +9,7 @@ declare module '@emotion/react' {
 	export interface Theme extends AppTheme {}
 }
 
-export const theme = {
-	colors: { ...colors },
-	shadows: { ...shadows },
+const shared = {
 	spacing: { ...layout.spacing },
 	radii: { ...layout.radii },
 	fonts: { ...typography.fonts },
@@ -20,14 +18,34 @@ export const theme = {
 	breakpoints: { ...breakpoints }
 } as const;
 
-export type AppTheme = typeof theme;
+export const lightTheme = {
+	mode: 'light' as const,
+	colors: { ...colors },
+	shadows: { ...shadows },
+	...shared
+} as const;
 
-export type Spacings = keyof typeof theme.spacing;
+export const darkTheme = {
+	mode: 'dark' as const,
+	colors: { ...darkColors },
+	shadows: { ...darkShadows },
+	...shared
+} as const;
 
-export type Colors = keyof typeof theme.colors.bg;
+export let theme: AppTheme = lightTheme;
 
-export type FontWeight = keyof typeof theme.fontWeights;
+export const setActiveTheme = (mode: 'light' | 'dark') => {
+	theme = (mode === 'light' ? lightTheme : darkTheme) as AppTheme;
+};
 
-export type FontSize = keyof typeof theme.fontSizes;
+export type AppTheme = Omit<typeof lightTheme, 'mode'> & { mode: 'light' | 'dark' };
 
-export type TextColor = keyof typeof theme.colors.text;
+export type Spacings = keyof typeof lightTheme.spacing;
+
+export type Colors = keyof typeof lightTheme.colors.bg;
+
+export type FontWeight = keyof typeof lightTheme.fontWeights;
+
+export type FontSize = keyof typeof lightTheme.fontSizes;
+
+export type TextColor = keyof typeof lightTheme.colors.text;
