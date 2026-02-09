@@ -30,7 +30,7 @@ export const resetToken = async ({
   db: PoolDatabase;
   env: Bindings;
   provider: TokenProvider;
-}) => {
+}): Promise<string> => {
   try {
     const [{ id }] = await athleteQueries.getAthleteProfile({ db });
 

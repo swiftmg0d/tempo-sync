@@ -1,7 +1,9 @@
 import {
   activity,
   activityQueries,
+  activitySummary,
   activitySummaryQueries,
+  eq,
   sql,
   track,
   type PoolDatabase,
@@ -26,11 +28,23 @@ export const getAthleteActivities = async (
 
     const hasMore = page * limit < total;
 
+    const updatedActivities = await Promise.all(
+      activities.map(async (activity) => {
+        const [summary] = await db
+          .select()
+          .from(activitySummary)
+          .where(eq(activitySummary.activityId, activity.id));
+
+        return {
+          ...activity,
+          polyline: decodeActivityMap(activity.polyline),
+          totalElevationGain: summary.totalElevationGain,
+        };
+      })
+    );
+
     return {
-      activities: activities.map((activity) => ({
-        ...activity,
-        polyline: decodeActivityMap(activity.polyline),
-      })),
+      activities: updatedActivities,
       pagination: {
         hasMore,
         limit,
@@ -50,8 +64,16 @@ export const getActivitySummaryById = async (
   db: PoolDatabase
 ): Promise<ActivitySummary> => {
   try {
-    const convertToPace = (speed: number) => {
-      return 1000 / speed / 60;
+    const formatPace = (speed: number) => {
+      if (!speed || speed <= 0) {
+        return '0:00';
+      }
+
+      const totalSeconds = Math.round(1000 / speed);
+      const minutes = Math.floor(totalSeconds / 60);
+      const seconds = totalSeconds % 60;
+
+      return `${minutes}:${seconds.toString().padStart(2, '0')}`;
     };
 
     const [summary] = await activitySummaryQueries.getActivitySummaryById({
@@ -61,7 +83,7 @@ export const getActivitySummaryById = async (
 
     return {
       ...summary,
-      avgPace: Math.round(convertToPace(summary.avgPace) * 100) / 100,
+      avgPace: formatPace(summary.avgPace),
       distance: Math.round((summary.distance / 1000) * 100) / 100,
     };
   } catch (e) {
