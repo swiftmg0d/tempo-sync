@@ -6,13 +6,15 @@ import { ErrorBoundary } from 'react-error-boundary';
 import { GlobalStyles } from './GlobalStyles';
 import { ErrorPage } from './components/ErrorPage';
 import { QueryProvider } from './providers/QueryProvider';
-import { theme } from './styles';
+import { useThemeStore } from './store';
 
 export const Providers = ({ children }: { children: React.ReactNode }) => {
+	const themeObject = useThemeStore((state) => state.themeObject);
+
 	return (
 		<StrictMode>
 			<ChakraProvider value={defaultSystem}>
-				<ThemeProvider theme={theme}>
+				<ThemeProvider theme={themeObject}>
 					<GlobalStyles />
 					<ErrorBoundary FallbackComponent={ErrorPage}>
 						<QueryProvider>{children}</QueryProvider>
