@@ -12,6 +12,7 @@ export interface Activity {
   date: Date;
   polyline: number[][] | null;
   time: number;
+  totalElevationGain: number | null;
   lastTrack: {
     name: string;
     image: string | null;
@@ -31,7 +32,7 @@ export interface Athlete {
 export interface ActivitySummary {
   id: string;
   title: string;
-  avgPace: number;
+  avgPace: string;
   avgHr: number | null;
   distance: number;
   calories: number | null;

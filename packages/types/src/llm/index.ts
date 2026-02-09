@@ -39,6 +39,38 @@ export interface TrackLeaderboardEntry {
 
 export type TrackLeaderboardResponse = TrackLeaderboardEntry[];
 
+export interface RecommendedTrackArtist {
+  id: string;
+  name: string;
+  href: string;
+}
+
+export interface RecommendedTrack {
+  id: string;
+  trackTitle: string;
+  artists: RecommendedTrackArtist[];
+  durationMs: number;
+  isrc: string;
+  ean: string | null;
+  upc: string | null;
+  href: string;
+  availableCountries: string;
+  popularity: number;
+  image: string;
+}
+
+export type TrackRecommendationsResponse = RecommendedTrack[];
+
+export interface PaginatedTrackRecommendations {
+  recommendations: RecommendedTrack[];
+  pagination: {
+    hasMore: boolean;
+    nextPage: number | null;
+    page: number;
+    total: number;
+  };
+}
+
 export interface LLMEnv {
   GEMINI_API_KEY: string;
   GROQ_API_KEY: string;

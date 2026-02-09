@@ -28,3 +28,17 @@ export type MultiValidatedContext<
     out: { param: z.infer<TParam>; json: z.infer<TBody> };
   }
 >;
+
+export type ParamQueryValidatedContext<
+  TParam extends z.ZodType,
+  TQuery extends z.ZodType,
+  A extends Env = Env,
+  Path extends string = '/',
+> = Context<
+  A,
+  Path,
+  {
+    in: { param: z.infer<TParam>; query: z.infer<TQuery> };
+    out: { param: z.infer<TParam>; query: z.infer<TQuery> };
+  }
+>;
