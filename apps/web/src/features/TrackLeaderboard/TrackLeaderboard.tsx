@@ -1,11 +1,10 @@
-import { BarChart3 } from 'lucide-react';
+import { BarChart3, TrendingDown } from 'lucide-react';
 
 import { TrackItem } from './TrackItem';
 import { TrackLeaderboardSkeleton } from './TrackLeaderboard.skeleton';
 import { TrackLeaderboardStyled as S } from './TrackLeaderboard.styled';
 import type { TrackLeaderboardProps } from './types';
 
-import { Icons } from '@/components/icons';
 import { Queries } from '@/hooks/quieries';
 import { useActivityCardsStore } from '@/store';
 import { theme } from '@/styles';
@@ -31,7 +30,15 @@ export const TrackLeaderboard = ({ flex }: TrackLeaderboardProps) => {
 					))}
 				</S.TrackList>
 			) : (
-				<S.EmptyState>{Icons.headphoneSync()}</S.EmptyState>
+				<S.EmptyState>
+					<div>
+						<TrendingDown size={40} color={theme.colors.text.secondary} />
+					</div>
+					<S.EmptyStateTitle>No Track Data</S.EmptyStateTitle>
+					<S.EmptyStateText>
+						Track data will appear once you listen to music during activities
+					</S.EmptyStateText>
+				</S.EmptyState>
 			)}
 		</S.Container>
 	);

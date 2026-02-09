@@ -1,7 +1,22 @@
-import { css } from '@emotion/react';
+import { css, keyframes } from '@emotion/react';
 import styled from '@emotion/styled';
 
 import { blur, flex, text } from '@/styles';
+
+const slideDown = keyframes`
+	0% {
+		transform: translateY(-4px);
+		opacity: 0.6;
+	}
+	50% {
+		transform: translateY(4px);
+		opacity: 1;
+	}
+	100% {
+		transform: translateY(-4px);
+		opacity: 0.6;
+	}
+`;
 
 const Container = styled.div<{ $flex?: number }>`
 	${blur(24)}
@@ -10,6 +25,9 @@ const Container = styled.div<{ $flex?: number }>`
 	min-width: 0;
 
 	flex: ${({ $flex }) => $flex ?? 1};
+	display: flex;
+	flex-direction: column;
+	min-height: 360px;
 
 	${({ theme }) => css`
 		background-color: ${theme.colors.bg.white(0.8)};
@@ -39,16 +57,32 @@ const HeaderTitle = styled.h2`
 
 const TrackList = styled.div`
 	${flex({ direction: 'column', gap: 'md' })}
+	flex: 1;
 `;
 
 const EmptyState = styled.div`
-	${flex({ direction: 'column', alignItems: 'center', justifyContent: 'center' })}
-	${text({ size: 'sm', weight: 'regular', color: 'secondary' })}
+	${flex({ direction: 'column', alignItems: 'center', justifyContent: 'center', gap: 'md' })}
 	height: 100%;
 	flex: 1;
 
 	text-align: center;
-	padding: ${({ theme }) => theme.spacing.xxl} 0;
+	padding: ${({ theme }) => theme.spacing.xxl};
+
+	> div {
+		opacity: 0.4;
+		animation: ${slideDown} 2.5s ease-in-out infinite;
+	}
+`;
+
+const EmptyStateTitle = styled.h3`
+	${text({ size: 'sm', weight: 'semibold', color: 'primary' })}
+	margin: 0;
+`;
+
+const EmptyStateText = styled.p`
+	${text({ size: 'xs', weight: 'regular', color: 'secondary' })}
+	margin: 0;
+	max-width: 220px;
 `;
 
 export const TrackLeaderboardStyled = {
@@ -56,5 +90,7 @@ export const TrackLeaderboardStyled = {
 	HeaderSection,
 	HeaderTitle,
 	TrackList,
-	EmptyState
+	EmptyState,
+	EmptyStateTitle,
+	EmptyStateText
 };

@@ -12,6 +12,7 @@ const SkeletonItem = styled(Skeleton)`
 
 const Container = styled.div`
 	${flex({ direction: 'column', gap: 'md' })}
+	flex: 1;
 `;
 
 export const TrackLeaderboardSkeleton = () => (
