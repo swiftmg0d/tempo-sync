@@ -1,5 +1,8 @@
 import { create } from 'zustand';
 
+import { darkTheme, lightTheme, setActiveTheme } from '@/styles';
+import type { AppTheme } from '@/styles';
+
 // Loading State
 
 interface LoadingState {
@@ -57,5 +60,59 @@ export const useUIStore = create<UIState>((set) => ({
 	isSidebarOpen: false,
 	toggleSidebar: () => {
 		set((state) => ({ isSidebarOpen: !state.isSidebarOpen }));
+	}
+}));
+
+// Theme State
+
+type ThemeMode = 'light' | 'dark';
+
+const THEME_STORAGE_KEY = 'tempo-sync-theme-mode';
+
+const getInitialMode = (): ThemeMode => {
+	try {
+		const stored = localStorage.getItem(THEME_STORAGE_KEY);
+		if (stored === 'light' || stored === 'dark') return stored;
+	} catch {
+		// localStorage unavailable
+	}
+	if (typeof window !== 'undefined' && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+		return 'dark';
+	}
+	return 'light';
+};
+
+interface ThemeState {
+	mode: ThemeMode;
+	themeObject: AppTheme;
+	toggleTheme: () => void;
+}
+
+const initialMode = getInitialMode();
+setActiveTheme(initialMode);
+
+const applyTheme = (set: (fn: (state: ThemeState) => Partial<ThemeState>) => void) => {
+	set((state) => {
+		const newMode = state.mode === 'light' ? 'dark' : 'light';
+		setActiveTheme(newMode);
+		try {
+			localStorage.setItem(THEME_STORAGE_KEY, newMode);
+		} catch {
+			// silently fail
+		}
+		return {
+			mode: newMode,
+			themeObject: (newMode === 'light' ? lightTheme : darkTheme) as AppTheme
+		};
+	});
+};
+
+export const useThemeStore = create<ThemeState>((set) => ({
+	mode: initialMode,
+	themeObject: (initialMode === 'light' ? lightTheme : darkTheme) as AppTheme,
+	toggleTheme: () => {
+		document.startViewTransition(() => {
+			applyTheme(set);
+		});
 	}
 }));
