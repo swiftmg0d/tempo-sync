@@ -48,17 +48,6 @@ export const HeadphoneSync = () => {
 				/>
 				<path d='M34 32V46M62 32V46' stroke='#008080' strokeLinecap='round' strokeWidth='2.5' />
 			</g>
-
-			<text
-				x='50%'
-				y='170'
-				textAnchor='middle'
-				fill='#666666'
-				fontFamily='Inter, system-ui'
-				fontSize='12px'
-			>
-				Rythnm Not Yet In Sync
-			</text>
 		</svg>
 	);
 };
