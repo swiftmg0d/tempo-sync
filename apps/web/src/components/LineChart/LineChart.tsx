@@ -27,8 +27,8 @@ export const LineChart = ({ data, isLoading, chartType }: LineChartProps) => {
 
 	if (isLoading) {
 		return (
-			<Box height='200px' display='flex' justifyContent='center' alignItems='center'>
-				<Spinner size='xl' color='teal' />
+			<Box maxH='sm' height='full' display='flex' justifyContent='center' alignItems='center'>
+				<Spinner size='xl' color='teal' marginTop='100px' />
 			</Box>
 		);
 	}
