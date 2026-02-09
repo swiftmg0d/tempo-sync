@@ -43,3 +43,51 @@ export const colors = {
 		secondary: baseColors.alabaster()
 	} as const
 };
+
+// Dark mode
+
+export const darkBaseColors = {
+	doveGray: '#A0A0A0',
+	blackAlpha2: 'rgba(255,255,255,0.02)',
+	alabaster: (opacity = 1) => `rgba(26, 26, 26, ${opacity})`,
+	teal: (opacity = 1) => `rgba(0, 179, 179, ${opacity})`
+} as const;
+
+export const darkColors = {
+	bg: {
+		lightPrimary: (opacity = 1) => darkBaseColors.alabaster(opacity),
+		lightSecondary: '#1E1E1E',
+		doveGray: darkBaseColors.doveGray,
+		surfaceSubtle: 'rgba(40, 40, 40, 0.3)',
+		blackAlpha2: darkBaseColors.blackAlpha2,
+		teal: darkBaseColors.teal(),
+		white: (opacity = 1) => `rgba(30, 30, 30, ${opacity})`,
+		alto2: `rgba(50, 50, 50, 0.2)`,
+		slate: (opacity = 1) => `rgba(140, 160, 170, ${opacity})`
+	} as const,
+	text: {
+		primary: '#E8E8E8',
+		secondary: darkBaseColors.doveGray,
+		alabaster: darkBaseColors.alabaster(),
+		teal: darkBaseColors.teal()
+	} as const,
+
+	accent: {
+		primary: darkBaseColors.teal(),
+		teal50: darkBaseColors.teal(0.5)
+	} as const,
+
+	border: {
+		primaryRgb: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
+		secondaryRgb: (opacity = 1) => `rgba(0, 179, 179, ${opacity})`
+	} as const,
+
+	skeleton: {
+		base: '#2D2D2D'
+	} as const,
+
+	icon: {
+		primary: darkBaseColors.doveGray,
+		secondary: darkBaseColors.alabaster()
+	} as const
+};
