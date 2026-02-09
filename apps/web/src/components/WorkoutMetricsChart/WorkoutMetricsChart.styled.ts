@@ -2,7 +2,10 @@ import styled from '@emotion/styled';
 
 import { text } from '@/styles';
 
-const Container = styled.div``;
+const Container = styled.div`
+	width: 100%;
+	overflow: hidden;
+`;
 
 const HeaderSection = styled.section``;
 
