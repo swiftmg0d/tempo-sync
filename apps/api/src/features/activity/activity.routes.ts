@@ -9,6 +9,8 @@ import {
   getActivityStreamsParamsSchema,
   getActivitySummarySchema,
   getActivityTrackLeaderboardSchema,
+  getActivityTrackRecommendationsParamSchema,
+  getActivityTrackRecommendationsQuerySchema,
 } from './activity.schema';
 
 import type { AppEnv } from '@/shared/types/bindings';
@@ -32,6 +34,12 @@ const activity = createRouter<AppEnv>()
     '/:id/track-leaderboard',
     validate('param', getActivityTrackLeaderboardSchema),
     handlers.getActivityTrackLeaderboard
+  )
+  .get(
+    '/:id/track-recommendations',
+    validate('param', getActivityTrackRecommendationsParamSchema),
+    validate('query', getActivityTrackRecommendationsQuerySchema),
+    handlers.getActivityTrackRecommendations
   )
   .get('/summary/overall', handlers.getOverallActivitySummary)
   .get('/polylines', handlers.getActivitiesPolylines);

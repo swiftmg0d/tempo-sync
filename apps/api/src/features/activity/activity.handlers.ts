@@ -1,5 +1,11 @@
 import { activity, activityMap, activitySummary, eq, track } from '@tempo-sync/db';
-import type { MultiValidatedContext, ValidatedContext } from '@tempo-sync/shared/types';
+import { http, RECCOBEATS_API_URL, SPOTIFY_API_URL } from '@tempo-sync/shared';
+import type {
+  MultiValidatedContext,
+  ParamQueryValidatedContext,
+  TrackRecommendationsResponse,
+  ValidatedContext,
+} from '@tempo-sync/shared/types';
 
 import type {
   ActivityLLMInsightsValidation,
@@ -7,6 +13,8 @@ import type {
   ActivityStreamsParamsValidation,
   ActivitySummaryValidation,
   ActivityTrackLeaderboardValidation,
+  ActivityTrackRecommendationsParamValidation,
+  ActivityTrackRecommendationsQueryValidation,
   ActivityValidation,
 } from './activity.schema';
 import {
@@ -16,6 +24,7 @@ import {
 } from './activity.service';
 import { aggregateActivityStreams } from './utils';
 
+import { resetToken } from '@/shared/lib';
 import type { AppContext, AppEnv } from '@/shared/types/bindings';
 
 export const getActivities = async (c: ValidatedContext<ActivityValidation, 'query', AppEnv>) => {
@@ -165,4 +174,107 @@ export const getActivityTrackLeaderboard = async (
     .limit(3);
 
   return c.json(leaderboard?.slice(0, 3) ?? []);
+};
+
+export const getActivityTrackRecommendations = async (
+  c: ParamQueryValidatedContext<
+    ActivityTrackRecommendationsParamValidation,
+    ActivityTrackRecommendationsQueryValidation,
+    AppEnv
+  >
+) => {
+  const { id } = c.req.valid('param');
+  const { page, limit } = c.req.valid('query');
+
+  const db = c.get('db');
+
+  const [{ leaderboard }] = await db
+    .select({ leaderboard: activity.llmTrackLeaderboard })
+    .from(activity)
+    .where(eq(activity.id, id));
+
+  if (!leaderboard || leaderboard.length === 0) {
+    return c.json({
+      recommendations: [],
+      pagination: { hasMore: false, nextPage: null, page, total: 0 },
+    });
+  }
+
+  const seedIds = leaderboard
+    .slice(0, 5)
+    .map((entry) => entry.trackId)
+    .filter(Boolean) as string[];
+
+  if (seedIds.length === 0) {
+    return c.json({
+      recommendations: [],
+      pagination: { hasMore: false, nextPage: null, page, total: 0 },
+    });
+  }
+
+  const tracks = await db.select().from(track).where(eq(track.activityId, id));
+
+  const seedTracks = tracks.filter((t) => seedIds.includes(t.trackId));
+
+  const avg = (values: (number | null)[]) => {
+    const valid = values.filter((v): v is number => v !== null);
+    return valid.length > 0 ? valid.reduce((a, b) => a + b, 0) / valid.length : undefined;
+  };
+
+  const avgEnergy = avg(seedTracks.map((t) => t.energy));
+  const avgDanceability = avg(seedTracks.map((t) => t.danceability));
+  const avgTempo = avg(seedTracks.map((t) => t.tempo));
+  const avgValence = avg(seedTracks.map((t) => t.valence));
+
+  const params = new URLSearchParams({
+    size: '20',
+    seeds: seedIds.join(','),
+  });
+
+  if (avgEnergy !== undefined) params.set('energy', avgEnergy.toFixed(2));
+  if (avgDanceability !== undefined) params.set('danceability', avgDanceability.toFixed(2));
+  if (avgTempo !== undefined) params.set('tempo', avgTempo.toFixed(2));
+  if (avgValence !== undefined) params.set('valence', avgValence.toFixed(2));
+
+  const recommendations = await http<{ content: TrackRecommendationsResponse }>(
+    `${RECCOBEATS_API_URL}/track/recommendation?${params.toString()}`,
+    { method: 'GET' }
+  );
+
+  const accessToken = await resetToken({ db, env: c.env, provider: 'spotify' });
+
+  const allResults = await Promise.all(
+    recommendations.content.map(async (track) => {
+      const trackId = /[a-zA-Z0-9]{22}/.exec(track.href)?.[0];
+
+      const response = await http<{
+        album: { images: { url: string }[] };
+      }>(`${SPOTIFY_API_URL}/tracks/${trackId}`, {
+        method: 'GET',
+        headers: {
+          Authorization: `Bearer ${accessToken}`,
+        },
+      });
+
+      return {
+        ...track,
+        image: response.album.images[2]?.url ?? '',
+      };
+    })
+  );
+
+  const total = allResults.length;
+  const start = (page - 1) * limit;
+  const paginatedResults = allResults.slice(start, start + limit);
+  const hasMore = start + limit < total;
+
+  return c.json({
+    recommendations: paginatedResults,
+    pagination: {
+      hasMore,
+      nextPage: hasMore ? page + 1 : null,
+      page,
+      total,
+    },
+  });
 };

@@ -28,3 +28,14 @@ export type ActivityStreamsBodyValidation = typeof getActivityStreamsBodySchema;
 
 export const getActivityTrackLeaderboardSchema = getActivitySummarySchema;
 export type ActivityTrackLeaderboardValidation = typeof getActivityTrackLeaderboardSchema;
+
+export const getActivityTrackRecommendationsParamSchema = getActivitySummarySchema;
+export type ActivityTrackRecommendationsParamValidation =
+  typeof getActivityTrackRecommendationsParamSchema;
+
+export const getActivityTrackRecommendationsQuerySchema = z.object({
+  page: z.coerce.number().default(1),
+  limit: z.coerce.number().default(3),
+});
+export type ActivityTrackRecommendationsQueryValidation =
+  typeof getActivityTrackRecommendationsQuerySchema;
