@@ -7,6 +7,7 @@
     "check-types": "turbo run check-types",
     "reset": "find . -name \"node_modules\" -type d -prune -exec rm -rf '{}' +\n",
     "db:studio": "turbo run --filter=@tempo-sync/db db:studio",
+    "deploy": "turbo run deploy",
     "cf-typegen": "turbo run cf-typegen",
     "lint": "turbo run lint",
     "lint:fix": "turbo run lint -- --fix",

@@ -18,6 +18,10 @@
     "lint": {
       "dependsOn": ["^lint"]
     },
+    "deploy": {
+      "dependsOn": ["build"],
+      "cache": false
+    },
     "cf-typegen": {
       "cache": false
     }
