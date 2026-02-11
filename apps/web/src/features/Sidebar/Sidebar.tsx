@@ -102,7 +102,9 @@ export const Sidebar = () => {
 
 	useEffect(() => {
 		if (inView && !isFetchingNextPage && !isEmpty) {
-			await fetchNextPage();
+			fetchNextPage().catch(() => {
+				// Placeholder
+			});
 		}
 	}, [inView, fetchNextPage, isFetchingNextPage, isEmpty]);
 
