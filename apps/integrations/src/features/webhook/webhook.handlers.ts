@@ -40,11 +40,13 @@ export const handleWebhookEvent = async (
 ) => {
   const body = c.req.valid('json');
 
-  if (body.updates?.title && !body.updates.title.includes('AI-ASSISTED')) {
+  const shouldProcess =
+    body.aspect_type === 'create' ||
+    (body.aspect_type === 'update' && body.updates?.title?.includes('AI-ASSISTED'));
+
+  if (!shouldProcess) {
     return c.text('No update needed for this activity', 200);
   }
-
-  console.log('Received Strava webhook event:', body);
 
   const stravaId = body.owner_id;
   const stravaActivityId = body.object_id;
@@ -89,7 +91,6 @@ export const handleWebhookEvent = async (
     activityId,
     db,
     env: {
-      GEMINI_API_KEY: c.env.GEMINI_API_KEY,
       GROQ_API_KEY: c.env.GROQ_API_KEY,
       OPENROUTER_API_KEY: c.env.OPENROUTER_API_KEY,
       CEREBRAS_API_KEY: c.env.CEREBRAS_API_KEY,

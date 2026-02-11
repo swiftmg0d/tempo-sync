@@ -230,7 +230,6 @@ export const handleStravaWebhook = async ({
     });
 
     const LLMEnv: LLMEnv = {
-      GEMINI_API_KEY: env.GEMINI_API_KEY,
       GROQ_API_KEY: env.GROQ_API_KEY,
       OPENROUTER_API_KEY: env.OPENROUTER_API_KEY,
       CEREBRAS_API_KEY: env.CEREBRAS_API_KEY,
@@ -429,8 +428,6 @@ export const generateTrackLeaderboard = async ({
       data: leaderboardData,
       prompt: 'stravaTrackLeaderboard' satisfies PromptKeys,
     });
-
-    console.log('Generated track leaderboard:', leaderboard);
 
     await db
       .update(activitySchema)
