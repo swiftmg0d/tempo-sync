@@ -4,6 +4,13 @@ export const GlobalStyles = () => {
 	return (
 		<Global
 			styles={(theme: Theme) => css`
+				:root {
+					--sai-top: env(safe-area-inset-top, 0px);
+					--sai-bottom: env(safe-area-inset-bottom, 0px);
+					--sai-left: env(safe-area-inset-left, 0px);
+					--sai-right: env(safe-area-inset-right, 0px);
+				}
+
 				*,
 				*::before,
 				*::after {

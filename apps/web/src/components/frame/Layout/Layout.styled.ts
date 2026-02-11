@@ -10,6 +10,7 @@ const Main = styled.main<{ $isSidebarOpen: boolean }>`
 	right: 0;
 	height: 100dvh;
 	overflow-y: auto;
+	padding-bottom: var(--sai-bottom);
 
 	${transitionAll}
 
@@ -29,6 +30,7 @@ const Main = styled.main<{ $isSidebarOpen: boolean }>`
 		top: 0;
 		right: 0;
 		filter: none;
+		padding-bottom: 0;
 	}
 `;
 
