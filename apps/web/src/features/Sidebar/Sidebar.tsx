@@ -1,11 +1,11 @@
 import { Box, Text } from '@chakra-ui/react';
 import { useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
-import { useSwipeable } from 'react-swipeable';
 import { useShallow } from 'zustand/shallow';
 
 import { BrandHeader } from './BrandHeader';
 import * as S from './Sidebar.styled';
+import { useSidebarDrag } from './useSidebarDrag';
 
 import { AccountInfo } from '@/components/AccountInfo';
 import { ActivityList } from '@/components/Activity/List';
@@ -21,8 +21,6 @@ import { theme } from '@/styles';
 import { DesktopOnly, MobileOnly, Padded } from '@/styles/patterns';
 import { showWhen } from '@/utils';
 
-const SWIPE_DELTA = 50;
-
 export const Sidebar = () => {
 	const { activityId, setActiveCardId, setIsEmpty, isEmpty } = useActivityCardsStore(
 		useShallow((state) => ({
@@ -33,44 +31,22 @@ export const Sidebar = () => {
 		}))
 	);
 
-	const { toggleSidebar, sidebarOpen, setSidebarOpen, isSidebarDragging, setIsSidebarDragging } =
-		useUIStore(
-			useShallow((state) => ({
-				toggleSidebar: state.toggleSidebar,
-				sidebarOpen: state.isSidebarOpen,
-				setSidebarOpen: state.setSidebarOpen,
-				isSidebarDragging: state.isSidebarDragging,
-				setIsSidebarDragging: state.setIsSidebarDragging
-			}))
-		);
+	const { toggleSidebar, sidebarOpen } = useUIStore(
+		useShallow((state) => ({
+			toggleSidebar: state.toggleSidebar,
+			sidebarOpen: state.isSidebarOpen
+		}))
+	);
 
 	const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.md})`);
+	const { targetRef, y, syncPosition } = useSidebarDrag();
 
-	const swipeHandlers = useSwipeable({
-		onSwipedUp: (eventData) => {
-			if (!sidebarOpen && eventData.absY > SWIPE_DELTA) {
-				setSidebarOpen(true);
-			}
-		},
-		onSwipedDown: (eventData) => {
-			if (sidebarOpen && eventData.absY > SWIPE_DELTA) {
-				setSidebarOpen(false);
-			}
-		},
-		onSwiping: (eventData) => {
-			if (!isSidebarDragging && Math.abs(eventData.deltaY) > 10) {
-				setIsSidebarDragging(true);
-			}
-		},
-		onTouchEndOrOnMouseUp: () => {
-			setIsSidebarDragging(false);
-		},
-		delta: SWIPE_DELTA,
-		trackMouse: false,
-		trackTouch: true,
-		preventScrollOnSwipe: false,
-		rotationAngle: 0
-	});
+	// Sync motion value when sidebar state changes externally (grab handle click, backdrop tap)
+	useEffect(() => {
+		if (isMobile) {
+			syncPosition();
+		}
+	}, [sidebarOpen, isMobile, syncPosition]);
 
 	const { data, isLoading: isCurrentAthleteLoading } = Queries.useCurrentAthlete();
 
@@ -109,13 +85,7 @@ export const Sidebar = () => {
 	}, [inView, fetchNextPage, isFetchingNextPage, isEmpty]);
 
 	return (
-		<S.Sidebar.Aside
-			{...(isMobile ? swipeHandlers : {})}
-			$isOpen={sidebarOpen}
-			$isDragging={isSidebarDragging}
-			animate={{ y: 0 }}
-			transition={{ type: 'spring', stiffness: 300, damping: 30 }}
-		>
+		<S.Sidebar.Aside ref={isMobile ? targetRef : undefined} style={isMobile ? { y } : undefined}>
 			{/* Header */}
 			<S.Sidebar.Section $border='bot' as='header'>
 				<DesktopOnly>
@@ -141,7 +111,12 @@ export const Sidebar = () => {
 			</S.Sidebar.Section>
 
 			{/* Content */}
-			<S.Sidebar.Section $flex={2} $overflow='show' as='main' $disabled={!!isEmpty}>
+			<S.Sidebar.Section
+				$flex={2}
+				$overflow={sidebarOpen ? 'show' : 'hidden'}
+				as='main'
+				$disabled={!!isEmpty}
+			>
 				<ActivityList
 					isLoading={isActivitiesLoading}
 					isActiveCard={(id) => id === activityId}

@@ -4,9 +4,9 @@ import { motion } from 'motion/react';
 
 import { scrollbar } from './Sidebar.styles';
 
-import { flex, SIDEBAR_OFFSET, text, transitionAll } from '@/styles';
+import { flex, SIDEBAR_OFFSET, text } from '@/styles';
 
-const Aside = styled(motion.aside)<{ $isOpen: boolean; $isDragging?: boolean }>`
+const Aside = styled(motion.aside)`
 	${flex({ direction: 'column' })}
 
 	z-index: 5;
@@ -14,18 +14,15 @@ const Aside = styled(motion.aside)<{ $isOpen: boolean; $isDragging?: boolean }>`
 	position: fixed;
 	bottom: 0;
 	width: 100%;
-
-	${({ $isDragging }) => !$isDragging && transitionAll}
-	transition-duration: 100ms;
-
-	${({ $isOpen }) => css`
-		height: ${$isOpen ? '60dvh' : '7dvh'};
-		overflow-y: ${$isOpen ? 'auto' : 'hidden'};
-	`}
+	height: 60dvh;
+	overflow: hidden;
+	touch-action: pan-x;
 
 	border-top-left-radius: 35px;
 	border-top-right-radius: 35px;
 	box-shadow: ${({ theme }) => theme.shadows.upwards};
+
+	padding-bottom: var(--sai-bottom);
 
 	@media (min-width: ${({ theme }) => theme.breakpoints.md}) {
 		${flex({ direction: 'column' })}
@@ -35,10 +32,13 @@ const Aside = styled(motion.aside)<{ $isOpen: boolean; $isDragging?: boolean }>`
 		width: ${SIDEBAR_OFFSET}px;
 		position: fixed;
 		height: 100dvh;
+		overflow-y: auto;
+		touch-action: auto;
 
 		top: 0;
 		bottom: auto;
 		border-radius: 0;
+		padding-bottom: 0;
 	}
 `;
 
@@ -70,6 +70,7 @@ const Section = styled.div<{
 			overflow-y: auto;
 			${scrollbar}
 		`}
+		${$overflow === 'hidden' && `overflow-y: hidden;`}
 		${$disabled && `pointer-events: none; opacity: 0.6;`}
 	`}
 `;

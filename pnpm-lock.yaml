@@ -132,6 +132,9 @@ importers:
       '@tempo-sync/shared':
         specifier: workspace:*
         version: link:../../packages/shared
+      '@use-gesture/react':
+        specifier: ^10.3.1
+        version: 10.3.1(react@19.2.3)
       '@vis.gl/react-maplibre':
         specifier: ^8.1.0
         version: 8.1.0(maplibre-gl@5.16.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
@@ -165,9 +168,6 @@ importers:
       react-intersection-observer:
         specifier: ^10.0.2
         version: 10.0.2(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      react-swipeable:
-        specifier: ^7.0.2
-        version: 7.0.2(react@19.2.3)
       recharts:
         specifier: ^3.7.0
         version: 3.7.0(@types/react@19.2.8)(react-dom@19.2.3(react@19.2.3))(react-is@16.13.1)(react@19.2.3)(redux@5.0.1)
@@ -2621,6 +2621,20 @@ packages:
         integrity: sha512-91fp6CAAJSRtH5ja95T1FHSKa8aPW9/Zw6cta81jlZTUw/+Vq8jM/AfF/14h2b71wwR84JUTW/3Y8QPhDAawFA==,
       }
     engines: { node: '>=20.0.0' }
+
+  '@use-gesture/core@10.3.1':
+    resolution:
+      {
+        integrity: sha512-WcINiDt8WjqBdUXye25anHiNxPc0VOrlT8F6LLkU6cycrOGUDyY/yyFmsg3k8i5OLvv25llc0QC45GhR/C8llw==,
+      }
+
+  '@use-gesture/react@10.3.1':
+    resolution:
+      {
+        integrity: sha512-Yy19y6O2GJq8f7CHf7L0nxL8bf4PZCPaVOCgJrusOeFHY1LvHgYXnmnXg6N5iwAnbgbZCDjo60SiM6IPJi9C5g==,
+      }
+    peerDependencies:
+      react: '>= 16.8.0'
 
   '@vis.gl/react-maplibre@8.1.0':
     resolution:
@@ -5837,14 +5851,6 @@ packages:
       }
     engines: { node: '>=0.10.0' }
 
-  react-swipeable@7.0.2:
-    resolution:
-      {
-        integrity: sha512-v1Qx1l+aC2fdxKa9aKJiaU/ZxmJ5o98RMoFwUqAAzVWUcxgfHFXDDruCKXhw6zIYXm6V64JiHgP9f6mlME5l8w==,
-      }
-    peerDependencies:
-      react: ^16.8.3 || ^17 || ^18 || ^19.0.0 || ^19.0.0-rc
-
   react@19.2.3:
     resolution:
       {
@@ -8363,6 +8369,13 @@ snapshots:
     transitivePeerDependencies:
       - supports-color
 
+  '@use-gesture/core@10.3.1': {}
+
+  '@use-gesture/react@10.3.1(react@19.2.3)':
+    dependencies:
+      '@use-gesture/core': 10.3.1
+      react: 19.2.3
+
   '@vis.gl/react-maplibre@8.1.0(maplibre-gl@5.16.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)':
     dependencies:
       '@maplibre/maplibre-gl-style-spec': 19.3.3
@@ -10599,10 +10612,6 @@ snapshots:
       redux: 5.0.1
 
   react-refresh@0.18.0: {}
-
-  react-swipeable@7.0.2(react@19.2.3):
-    dependencies:
-      react: 19.2.3
 
   react@19.2.3: {}
 
