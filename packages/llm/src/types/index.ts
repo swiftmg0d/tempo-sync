@@ -22,6 +22,8 @@ export type CerebrasModel = 'llama-3.3-70b' | 'qwen-3-32b';
 
 export type SambanovaModel = 'Meta-Llama-3.3-70B-Instruct' | 'DeepSeek-R1-0528';
 
+export type Providers = 'groq' | 'openrouter' | 'cerebras' | 'sambanova';
+
 export type LLMModel =
   | { provider: 'groq'; model: GroqModel }
   | { provider: 'openrouter'; model: OpenRouterModel }
@@ -33,13 +35,14 @@ export type LLMPhase = 'processing' | 'analysis' | 'formatting';
 export type LLMPipeline = Record<LLMPhase, LLMModel[]>;
 
 export type LLMProvider = Record<
-  'groq' | 'openrouter' | 'gemini' | 'cerebras' | 'sambanova',
+  Providers,
   {
     client: OpenAI;
   }
 >;
 
 export interface LLMChatCompletionParams {
+  llmProvider: Providers;
   provider: OpenAI;
   prompts: {
     system: string;

@@ -25,6 +25,7 @@ export const generetePrompt = async <T = string>({
       const prompts = promptsMap[prompt];
 
       const response = await createChatCompletion({
+        llmProvider: llm.provider,
         provider: client,
         prompts: {
           system: prompts[round as LLMPhase].system,

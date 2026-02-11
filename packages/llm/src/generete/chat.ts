@@ -5,6 +5,7 @@ function isApiError(error: unknown): error is { status: number } {
 }
 
 export const createChatCompletion = async ({
+  llmProvider,
   provider,
   prompts,
   temp = 0.7,
@@ -24,19 +25,29 @@ export const createChatCompletion = async ({
   } catch (error) {
     if (isApiError(error)) {
       if (error.status === 429) {
-        console.warn('Rate limit exceeded... trying next provider if available.');
+        console.warn(
+          `Provider: ${llmProvider} Rate limit exceeded... trying next provider if available.`
+        );
         return ChatCompletionResponse.RATE_LIMITED;
       } else if (error.status === 413) {
-        console.warn('Request payload too large... trying next provider if available.');
+        console.warn(
+          `Provider: ${llmProvider} Request payload too large... trying next provider if available.`
+        );
         return ChatCompletionResponse.PAYLOAD_TOO_LARGE;
       } else if (error.status === 404) {
-        console.error('Model not found... trying next provider if available.');
+        console.error(
+          `Provider: ${llmProvider} Model not found... trying next provider if available.`
+        );
         return ChatCompletionResponse.MODEL_NOT_FOUND;
       } else if (error.status === 401 || error.status === 403) {
-        console.error('Authentication failed... trying next provider if available.');
+        console.error(
+          `Provider: ${llmProvider} Authentication failed... trying next provider if available.`
+        );
         return ChatCompletionResponse.AUTH_FAILED;
       } else if (error.status >= 500) {
-        console.error('Server error... trying next provider if available.');
+        console.error(
+          `Provider: ${llmProvider} Server error... trying next provider if available.`
+        );
         return ChatCompletionResponse.SERVER_ERROR;
       }
       return '';

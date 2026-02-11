@@ -17,12 +17,6 @@ export const getProviderModels = (env: LLMEnv) => {
         baseURL: 'https://openrouter.ai/api/v1',
       }),
     },
-    gemini: {
-      client: new OpenAI({
-        apiKey: env.GEMINI_API_KEY,
-        baseURL: 'https://generativelanguage.googleapis.com/v1beta/openai/',
-      }),
-    },
     cerebras: {
       client: new OpenAI({
         apiKey: env.CEREBRAS_API_KEY,
