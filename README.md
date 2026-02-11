@@ -1,135 +1,201 @@
-# Turborepo starter
+<p align="center">
+  <h1 align="center">Tempo-Sync</h1>
+  <p align="center">
+    A full-stack fitness and music analytics platform that connects your Strava workouts with Spotify listening data to deliver AI-powered performance insights.
+  </p>
+</p>
 
-This Turborepo starter is maintained by the Turborepo core team.
+<p align="center">
+  <img src="https://img.shields.io/badge/TypeScript-5.9-3178C6?logo=typescript&logoColor=white" alt="TypeScript" />
+  <img src="https://img.shields.io/badge/React-19-61DAFB?logo=react&logoColor=black" alt="React" />
+  <img src="https://img.shields.io/badge/Hono-4-E36002?logo=hono&logoColor=white" alt="Hono" />
+  <img src="https://img.shields.io/badge/Cloudflare_Workers-F38020?logo=cloudflare&logoColor=white" alt="Cloudflare Workers" />
+  <img src="https://img.shields.io/badge/PostgreSQL-Neon-4169E1?logo=postgresql&logoColor=white" alt="PostgreSQL" />
+  <img src="https://img.shields.io/badge/pnpm-9-F69220?logo=pnpm&logoColor=white" alt="pnpm" />
+  <img src="https://img.shields.io/badge/Turborepo-EF4444?logo=turborepo&logoColor=white" alt="Turborepo" />
+</p>
 
-## Using this example
+---
 
-Run the following command:
+## About
 
-```sh
-npx create-turbo@latest
+Tempo-Sync syncs your Strava activity data with your Spotify listening history to surface workout metrics, music-performance correlations, and AI-generated insights. It features interactive map visualization of all your routes, track leaderboards ranked by workout efficiency, and smart playlist recommendations for your next session.
+
+## Features
+
+- **Activity Dashboard** — Detailed metrics for every workout including pace, heart rate, distance, and calories with visual charts
+- **AI Performance Insights** — LLM-powered analysis of your activity performance with multi-provider support (OpenAI, Groq, OpenRouter, SambaNova, Cerebras)
+- **Track Leaderboard** — Ranks the music you listened to during a workout by efficiency correlation
+- **Session Recommendations** — Smart, personalized track suggestions for your next workout based on historical data
+- **Global Map** — Interactive map with route polylines and a heatmap mode for visualizing training intensity by location
+- **Strava Sync** — OAuth integration with real-time webhook updates for automatic activity ingestion
+- **Spotify Sync** — OAuth integration to pull listening history and audio features for tracks played during workouts
+- **Dark Mode** — Light and dark themes with smooth View Transitions API animation, OS preference detection, and localStorage persistence
+- **Mobile Responsive** — Gesture-based sidebar navigation with safe area inset support
+
+## Tech Stack
+
+| Layer        | Technology                                                                                            |
+| ------------ | ----------------------------------------------------------------------------------------------------- |
+| Frontend     | React 19, Vite 7, Emotion, Chakra UI v3, Zustand, TanStack React Query, Motion, Recharts, MapLibre GL |
+| Backend      | Hono, Cloudflare Workers                                                                              |
+| Database     | PostgreSQL (Neon Serverless), Drizzle ORM                                                             |
+| AI / LLM     | OpenAI, Groq, OpenRouter, SambaNova, Cerebras                                                         |
+| Integrations | Strava API, Spotify Web API                                                                           |
+| Build        | pnpm 9, Turborepo, TypeScript 5.9                                                                     |
+
+## Architecture
+
+```mermaid
+graph TB
+    subgraph Client["Client"]
+        Browser["Browser"]
+    end
+
+    subgraph Cloudflare["Cloudflare"]
+        Web["Frontend · Cloudflare Pages"]
+        API["API Service · Hono Workers"]
+        Int["Integrations Service · Hono Workers"]
+    end
+
+    subgraph Data["Data"]
+        DB[("Neon PostgreSQL")]
+    end
+
+    subgraph External["External APIs"]
+        Strava["Strava API"]
+        Spotify["Spotify Web API"]
+        LLM["LLM Providers"]
+    end
+
+    Browser -->|"HTTPS"| Web
+    Browser -->|"API Calls"| API
+    Browser -->|"OAuth"| Int
+
+    API --> DB
+    Int --> DB
+
+    Int -->|"OAuth + Data Fetch"| Strava
+    Int -->|"OAuth + Data Fetch"| Spotify
+    Strava -->|"Webhooks"| Int
+
+    API -->|"Inference"| LLM
 ```
 
-## What's inside?
+## Getting Started
 
-This Turborepo includes the following packages/apps:
+### Prerequisites
 
-### Apps and Packages
+- **Node.js** 20+
+- **pnpm** 9 — enable via `corepack enable`
+- **PostgreSQL** database — [Neon](https://neon.tech) recommended
+- **Strava** developer application — [developers.strava.com](https://developers.strava.com)
+- **Spotify** developer application — [developer.spotify.com](https://developer.spotify.com)
 
-- `docs`: a [Next.js](https://nextjs.org/) app
-- `web`: another [Next.js](https://nextjs.org/) app
-- `@repo/ui`: a stub React component library shared by both `web` and `docs` applications
-- `@repo/eslint-config`: `eslint` configurations (includes `eslint-config-next` and `eslint-config-prettier`)
-- `@repo/typescript-config`: `tsconfig.json`s used throughout the monorepo
+### Installation
 
-Each package/app is 100% [TypeScript](https://www.typescriptlang.org/).
+```bash
+# Clone the repository
+git clone https://github.com/your-username/tempo-sync.git
+cd tempo-sync
 
-### Utilities
+# Install dependencies
+pnpm install
 
-This Turborepo has some additional tools already setup for you:
+# Set up environment variables (see Environment Variables below)
 
-- [TypeScript](https://www.typescriptlang.org/) for static type checking
-- [ESLint](https://eslint.org/) for code linting
-- [Prettier](https://prettier.io) for code formatting
+# Push database schema
+pnpm db:push
 
-### Build
-
-To build all apps and packages, run the following command:
-
-```
-cd my-turborepo
-
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build
-yarn dlx turbo build
-pnpm exec turbo build
+# Start all services in development mode
+pnpm dev
 ```
 
-You can build a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
+The frontend runs on `http://localhost:5173`, the API on `http://localhost:3000`, and the integrations service on `http://localhost:3100`.
+
+## Project Structure
 
 ```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo build --filter=docs
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo build --filter=docs
-yarn exec turbo build --filter=docs
-pnpm exec turbo build --filter=docs
+tempo-sync/
+├── apps/
+│   ├── web/                  # React 19 + Vite frontend
+│   ├── api/                  # Hono API (Cloudflare Workers)
+│   └── integrations/         # OAuth & webhooks (Cloudflare Workers)
+├── packages/
+│   ├── db/                   # Drizzle ORM schema & migrations
+│   ├── types/                # Shared TypeScript types
+│   ├── shared/               # Middleware, errors, utilities
+│   ├── llm/                  # LLM provider integrations
+│   └── config/               # Shared TypeScript configs
+├── scripts/                  # Utility scripts (webhook management)
+├── turbo.json                # Turborepo task pipeline
+└── pnpm-workspace.yaml       # Workspace configuration
 ```
 
-### Develop
+## Environment Variables
 
-To develop all apps and packages, run the following command:
+### Database (`packages/db`)
 
-```
-cd my-turborepo
+| Variable       | Description                  |
+| -------------- | ---------------------------- |
+| `DATABASE_URL` | PostgreSQL connection string |
 
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev
+### Frontend (`apps/web`)
 
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev
-yarn exec turbo dev
-pnpm exec turbo dev
-```
+| Variable       | Description      |
+| -------------- | ---------------- |
+| `VITE_APP_URL` | API base URL     |
+| `VITE_MAP_KEY` | MapTiler API key |
 
-You can develop a specific package by using a [filter](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters):
+### API (`apps/api`)
 
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo dev --filter=web
+| Variable                | Description                  |
+| ----------------------- | ---------------------------- |
+| `DATABASE_URL`          | PostgreSQL connection string |
+| `KEY`                   | Application secret key       |
+| `SPOTIFY_CLIENT_ID`     | Spotify OAuth client ID      |
+| `SPOTIFY_CLIENT_SECRET` | Spotify OAuth client secret  |
+| `STRAVA_CLIENT_ID`      | Strava OAuth client ID       |
+| `STRAVA_CLIENT_SECRET`  | Strava OAuth client secret   |
+| `ALLOWED_ORIGINS`       | Comma-separated CORS origins |
 
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo dev --filter=web
-yarn exec turbo dev --filter=web
-pnpm exec turbo dev --filter=web
-```
+### Integrations (`apps/integrations`)
 
-### Remote Caching
+| Variable                | Description                       |
+| ----------------------- | --------------------------------- |
+| `DATABASE_URL`          | PostgreSQL connection string      |
+| `KEY`                   | Application secret key            |
+| `VERIFY_TOKEN`          | Strava webhook verification token |
+| `SPOTIFY_CLIENT_ID`     | Spotify OAuth client ID           |
+| `SPOTIFY_CLIENT_SECRET` | Spotify OAuth client secret       |
+| `SPOTIFY_REDIRECT_URL`  | Spotify OAuth redirect URI        |
+| `STRAVA_CLIENT_ID`      | Strava OAuth client ID            |
+| `STRAVA_CLIENT_SECRET`  | Strava OAuth client secret        |
+| `STRAVA_REDIRECT_URL`   | Strava OAuth redirect URI         |
+| `GROQ_API_KEY`          | Groq LLM API key                  |
+| `OPENROUTER_API_KEY`    | OpenRouter API key                |
+| `SAMBANOVA_API_KEY`     | SambaNova API key                 |
+| `CEREBRAS_API_KEY`      | Cerebras API key                  |
+| `ALLOWED_ORIGINS`       | Comma-separated CORS origins      |
 
-> [!TIP]
-> Vercel Remote Cache is free for all plans. Get started today at [vercel.com](https://vercel.com/signup?/signup?utm_source=remote-cache-sdk&utm_campaign=free_remote_cache).
+## Scripts
 
-Turborepo can use a technique known as [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching) to share cache artifacts across machines, enabling you to share build caches with your team and CI/CD pipelines.
+| Command               | Description                           |
+| --------------------- | ------------------------------------- |
+| `pnpm dev`            | Start all apps in development mode    |
+| `pnpm build`          | Build all apps and packages via Turbo |
+| `pnpm lint`           | Run ESLint across the monorepo        |
+| `pnpm lint:fix`       | ESLint with auto-fix                  |
+| `pnpm format`         | Format with Prettier                  |
+| `pnpm check-types`    | TypeScript type checking              |
+| `pnpm db:studio`      | Launch Drizzle Studio (database UI)   |
+| `pnpm deploy`         | Deploy all apps                       |
+| `pnpm strava:webhook` | Manage Strava webhook subscriptions   |
 
-By default, Turborepo will cache locally. To enable Remote Caching you will need an account with Vercel. If you don't have an account you can [create one](https://vercel.com/signup?utm_source=turborepo-examples), then enter the following commands:
+## Acknowledgments
 
-```
-cd my-turborepo
+Built with data from [Strava](https://www.strava.com) and [Spotify](https://www.spotify.com).
 
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo login
+## License
 
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo login
-yarn exec turbo login
-pnpm exec turbo login
-```
-
-This will authenticate the Turborepo CLI with your [Vercel account](https://vercel.com/docs/concepts/personal-accounts/overview).
-
-Next, you can link your Turborepo to your Remote Cache by running the following command from the root of your Turborepo:
-
-```
-# With [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation) installed (recommended)
-turbo link
-
-# Without [global `turbo`](https://turborepo.com/docs/getting-started/installation#global-installation), use your package manager
-npx turbo link
-yarn exec turbo link
-pnpm exec turbo link
-```
-
-## Useful Links
-
-Learn more about the power of Turborepo:
-
-- [Tasks](https://turborepo.com/docs/crafting-your-repository/running-tasks)
-- [Caching](https://turborepo.com/docs/crafting-your-repository/caching)
-- [Remote Caching](https://turborepo.com/docs/core-concepts/remote-caching)
-- [Filtering](https://turborepo.com/docs/crafting-your-repository/running-tasks#using-filters)
-- [Configuration Options](https://turborepo.com/docs/reference/configuration)
-- [CLI Usage](https://turborepo.com/docs/reference/command-line-reference)
+All rights reserved. This project is not open source.
