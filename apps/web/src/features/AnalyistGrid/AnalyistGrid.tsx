@@ -36,7 +36,7 @@ export const AnalyistGrid = () => {
 				<Box
 					display='flex'
 					flexDirection='column'
-					lg={{ flexDirection: 'row' }}
+					xl={{ flexDirection: 'row' }}
 					gap={theme.spacing.md}
 				>
 					<Box flex={1} minWidth={0} padding={theme.spacing.lg}>
@@ -49,7 +49,7 @@ export const AnalyistGrid = () => {
 				<Box
 					display='flex'
 					flexDirection='column'
-					lg={{ flexDirection: 'row' }}
+					xl={{ flexDirection: 'row' }}
 					gap={theme.spacing.md}
 				>
 					<Box flex={1 / 2} minWidth={0}>

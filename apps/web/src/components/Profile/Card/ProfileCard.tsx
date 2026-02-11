@@ -36,20 +36,29 @@ export const ProfileCard = ({ icon, header, infoTitle, href }: ProfileCardProps)
 			</P.ProfileCard.Label>
 			<P.ProfileCard.InfoContainer>
 				<P.ProfileCard.InfoTitle>{infoTitle}</P.ProfileCard.InfoTitle>
-				<P.ProfileCard.InfoValue
-					href={infoTitle === 'Top Artist:' && data ? data.href : undefined}
-					target='_blank'
-					rel='noopener noreferrer'
-					onClick={(e) => {
-						e.stopPropagation();
-					}}
-					as='a'
-					isLoading={infoTitle === 'Total Activities:' ? isTotalActivitiesLoading : isLoading}
-				>
-					{infoTitle === 'Total Activities:'
-						? (totalActivitiesData?.count ?? 'N/A')
-						: (data?.name ?? 'N/A')}
-				</P.ProfileCard.InfoValue>
+				{infoTitle === 'Top Artist:' && data?.href ? (
+					<P.ProfileCard.InfoValue
+						href={data.href}
+						target='_blank'
+						rel='noopener noreferrer'
+						onClick={(e) => {
+							e.stopPropagation();
+						}}
+						as='a'
+						isLoading={isLoading}
+					>
+						{data.name}
+					</P.ProfileCard.InfoValue>
+				) : (
+					<P.ProfileCard.InfoValue
+						as='span'
+						isLoading={infoTitle === 'Total Activities:' ? isTotalActivitiesLoading : isLoading}
+					>
+						{infoTitle === 'Total Activities:'
+							? (totalActivitiesData?.count ?? 'N/A')
+							: (data?.name ?? 'N/A')}
+					</P.ProfileCard.InfoValue>
+				)}
 			</P.ProfileCard.InfoContainer>
 		</P.ProfileCard.Container>
 	);

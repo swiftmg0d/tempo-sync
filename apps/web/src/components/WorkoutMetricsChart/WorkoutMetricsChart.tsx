@@ -39,10 +39,10 @@ export const WorkoutMetricsChart = () => {
 
 					<W.WorkoutMetricsChartStyled.HeaderSection>
 						<W.WorkoutMetricsChartStyled.HeaderTitle>
-							Detailed Performace Metrics
+							Detailed Performance Metrics
 						</W.WorkoutMetricsChartStyled.HeaderTitle>
 						<W.WorkoutMetricsChartStyled.HeaderSubtitle>
-							Cross-refrencing biometric and audio aligment data
+							Cross-referencing biometric and audio alignment data
 						</W.WorkoutMetricsChartStyled.HeaderSubtitle>
 					</W.WorkoutMetricsChartStyled.HeaderSection>
 

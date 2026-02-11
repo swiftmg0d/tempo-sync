@@ -1,5 +1,5 @@
 import { CheckCircle2, ChevronsDown, Loader2, Sparkles } from 'lucide-react';
-import { useEffect, useRef } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 
 import { RecommendationCard } from './RecommendationCard';
@@ -19,25 +19,39 @@ export const SessionRecommendations = ({ flex }: SessionRecommendationsProps) =>
 
 	const recommendations = data?.pages.flatMap((page) => page.data.recommendations) ?? [];
 
-	const listRef = useRef<HTMLDivElement | null>(null);
+	const [listElement, setListElement] = useState<HTMLDivElement | null>(null);
+	const [hasScrolled, setHasScrolled] = useState(false);
 	const { ref, inView } = useInView({
-		root: listRef.current,
+		root: listElement,
 		rootMargin: '0px 0px 80px 0px',
-		threshold: 0
+		threshold: 0,
+		skip: !listElement
 	});
 
 	useEffect(() => {
-		if (!inView || !hasNextPage || isFetchingNextPage) {
-			return;
-		}
+		setHasScrolled(false);
+	}, [activityId]);
 
-		const list = listRef.current;
-		if (list && list.scrollHeight <= list.clientHeight) {
+	const listRef = useCallback(
+		(node: HTMLDivElement | null) => {
+			setListElement(node);
+			if (!node) return;
+
+			const onScroll = () => {
+				setHasScrolled(true);
+			};
+			node.addEventListener('scroll', onScroll, { once: true });
+		},
+		[activityId]
+	);
+
+	useEffect(() => {
+		if (!inView || !hasNextPage || isFetchingNextPage || !hasScrolled) {
 			return;
 		}
 
 		void fetchNextPage();
-	}, [inView, hasNextPage, isFetchingNextPage, fetchNextPage]);
+	}, [inView, hasNextPage, isFetchingNextPage, fetchNextPage, hasScrolled]);
 
 	return (
 		<S.Container $flex={flex}>

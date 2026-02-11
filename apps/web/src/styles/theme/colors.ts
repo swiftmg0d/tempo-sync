@@ -21,7 +21,8 @@ export const colors = {
 		primary: '#333333',
 		secondary: baseColors.doveGray,
 		alabaster: baseColors.alabaster(),
-		teal: baseColors.teal()
+		teal: baseColors.teal(),
+		white: (opacity = 1) => `rgba(30, 30, 30, ${opacity})`
 	} as const,
 
 	accent: {
@@ -69,7 +70,8 @@ export const darkColors = {
 		primary: '#E8E8E8',
 		secondary: darkBaseColors.doveGray,
 		alabaster: darkBaseColors.alabaster(),
-		teal: darkBaseColors.teal()
+		teal: darkBaseColors.teal(),
+		white: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`
 	} as const,
 
 	accent: {

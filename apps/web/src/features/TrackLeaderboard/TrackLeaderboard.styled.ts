@@ -58,6 +58,18 @@ const HeaderTitle = styled.h2`
 const TrackList = styled.div`
 	${flex({ direction: 'column', gap: 'md' })}
 	flex: 1;
+	overflow-x: hidden;
+	overflow-y: auto;
+	max-height: 400px;
+	padding: 8px 8px 0;
+
+	mask-image: linear-gradient(to bottom, black calc(100% - 40px), transparent 100%);
+	-webkit-mask-image: linear-gradient(to bottom, black calc(100% - 40px), transparent 100%);
+
+	scrollbar-width: none;
+	&::-webkit-scrollbar {
+		display: none;
+	}
 `;
 
 const EmptyState = styled.div`

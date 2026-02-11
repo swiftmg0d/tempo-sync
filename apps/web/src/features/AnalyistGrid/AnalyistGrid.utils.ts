@@ -21,7 +21,7 @@ export const createMetricCard = (type: CardType, value: string) => {
 	};
 
 	const mapUnits = {
-		pace: 'km/h',
+		pace: 'min/km',
 		heartRate: 'bpm',
 		distance: 'KM',
 		calories: 'kcal'

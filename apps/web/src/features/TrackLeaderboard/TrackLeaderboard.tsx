@@ -26,7 +26,7 @@ export const TrackLeaderboard = ({ flex }: TrackLeaderboardProps) => {
 			) : data && data.length > 0 ? (
 				<S.TrackList>
 					{data.map((entry, index) => (
-						<TrackItem key={`${entry.trackId}-${entry.artist}`} rank={index + 1} {...entry} />
+						<TrackItem key={`${entry.trackId}-${index}`} rank={index + 1} {...entry} />
 					))}
 				</S.TrackList>
 			) : (

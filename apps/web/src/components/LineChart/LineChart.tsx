@@ -1,5 +1,5 @@
 import { Chart, useChart } from '@chakra-ui/charts';
-import { Box, Spinner } from '@chakra-ui/react';
+import { Box, Spinner, Text } from '@chakra-ui/react';
 import {
 	CartesianGrid,
 	Legend,
@@ -39,7 +39,7 @@ export const LineChart = ({ data, isLoading, chartType }: LineChartProps) => {
 	);
 
 	return (
-		<Chart.Root maxH='sm' chart={chart} marginLeft='-30px' paddingTop={theme.spacing.lg}>
+		<Chart.Root maxH='sm' chart={chart} overflow='hidden' paddingTop={theme.spacing.lg}>
 			<RechartsLineChart data={chart.data}>
 				<CartesianGrid stroke={chart.color('border')} vertical={false} />
 				<XAxis
@@ -53,9 +53,15 @@ export const LineChart = ({ data, isLoading, chartType }: LineChartProps) => {
 				<Tooltip
 					animationDuration={100}
 					cursor={false}
+					contentStyle={{ backgroundColor: 'red' }}
 					content={<Chart.Tooltip />}
 					labelFormatter={(label) => {
-						return `Minute of activity: ${label === 'cadence' || label === 'tempo' ? 0 : label}m`;
+						return (
+							<Text color={theme.colors.text.white()}>
+								Minute of activity:{' '}
+								{label === 'cadence' || label === 'tempo' || label === 'heartrate' ? 0 : label}m
+							</Text>
+						);
 					}}
 				/>
 				<ReferenceDot
@@ -67,6 +73,7 @@ export const LineChart = ({ data, isLoading, chartType }: LineChartProps) => {
 				/>
 
 				<Legend content={<Chart.Legend />} />
+
 				{chart.series.map((item) => (
 					<Line
 						key={item.name}

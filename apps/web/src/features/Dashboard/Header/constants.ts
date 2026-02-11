@@ -4,7 +4,7 @@ export const buttonsGroup: Group[] = [
 	{
 		id: 'analyist-grid',
 		text: {
-			lg: 'Analyist grid',
+			lg: 'Analyst grid',
 			base: 'Grid'
 		},
 		iconName: 'grid'
