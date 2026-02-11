@@ -11,7 +11,7 @@
 		"preview": "vite preview",
 		"format": "prettier --write .",
 		"deploy": "pnpm exec wrangler pages deploy dist --project-name=tempo-sync",
-		"deploy:pages": "pnpm build && wrangler pages publish dist --project-name=tempo-sync"
+		"deploy:pages": "pnpm build && wrangler pages deploy dist --project-name=tempo-sync"
 	},
 	"dependencies": {
 		"@chakra-ui/charts": "^3.32.0",

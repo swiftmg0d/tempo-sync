@@ -41,10 +41,9 @@ const SyncLabel = styled.span`
 	${text({ size: 'xs', weight: 'regular', color: 'secondary' })}
 `;
 
-const SyncStatusBase = styled.span<{ $disabled: boolean }>`
+const SyncStatusBase = styled.span`
 	${text({ size: 'xs', weight: 'regular', color: 'secondary' })}
-	${({ $disabled, theme }) =>
-		`color: ${!$disabled ? theme.colors.text.teal : theme.colors.text.secondary};`}
+	${({ theme }) => `color: ${theme.colors.text.teal};`}
 `;
 
 const SyncStatus = withSkeleton(SyncStatusBase, DashboardHeaderSkeleton.SyncStatus);
