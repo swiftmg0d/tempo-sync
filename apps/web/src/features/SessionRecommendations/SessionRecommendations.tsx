@@ -20,7 +20,7 @@ export const SessionRecommendations = ({ flex }: SessionRecommendationsProps) =>
 	const recommendations = data?.pages.flatMap((page) => page.data.recommendations) ?? [];
 
 	const [listElement, setListElement] = useState<HTMLDivElement | null>(null);
-	const [hasScrolled, setHasScrolled] = useState(false);
+	const [hasInteracted, setHasInteracted] = useState(false);
 	const { ref, inView } = useInView({
 		root: listElement,
 		rootMargin: '0px 0px 80px 0px',
@@ -29,7 +29,7 @@ export const SessionRecommendations = ({ flex }: SessionRecommendationsProps) =>
 	});
 
 	useEffect(() => {
-		setHasScrolled(false);
+		setHasInteracted(false);
 	}, [activityId]);
 
 	const listRef = useCallback(
@@ -37,21 +37,24 @@ export const SessionRecommendations = ({ flex }: SessionRecommendationsProps) =>
 			setListElement(node);
 			if (!node) return;
 
-			const onScroll = () => {
-				setHasScrolled(true);
+			const onInteract = () => {
+				setHasInteracted(true);
+				node.removeEventListener('scroll', onInteract);
+				node.removeEventListener('touchstart', onInteract);
 			};
-			node.addEventListener('scroll', onScroll, { once: true });
+			node.addEventListener('scroll', onInteract, { once: true });
+			node.addEventListener('touchstart', onInteract, { once: true });
 		},
 		[activityId]
 	);
 
 	useEffect(() => {
-		if (!inView || !hasNextPage || isFetchingNextPage || !hasScrolled) {
+		if (!inView || !hasNextPage || isFetchingNextPage || !hasInteracted) {
 			return;
 		}
 
 		void fetchNextPage();
-	}, [inView, hasNextPage, isFetchingNextPage, fetchNextPage, hasScrolled]);
+	}, [inView, hasNextPage, isFetchingNextPage, fetchNextPage, hasInteracted]);
 
 	return (
 		<S.Container $flex={flex}>
