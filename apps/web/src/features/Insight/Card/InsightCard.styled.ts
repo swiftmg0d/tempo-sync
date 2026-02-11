@@ -11,7 +11,7 @@ const Container = styled.div`
 	${transitionAll}
 
 	height: 100%;
-	min-height: 150px;
+	min-height: clamp(150px, 18dvh, 180px);
 
 	${({ theme }) => css`
 		padding: ${theme.spacing.md};
@@ -22,12 +22,10 @@ const Container = styled.div`
 
 		@media (min-width: ${theme.breakpoints.md}) {
 			padding: ${theme.spacing.lg};
-			min-height: 160px;
 		}
 
 		@media (min-width: ${theme.breakpoints.xl}) {
 			padding: ${theme.spacing.xl};
-			min-height: 180px;
 		}
 
 		&:hover {

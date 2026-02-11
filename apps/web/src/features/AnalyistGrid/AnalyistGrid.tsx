@@ -22,8 +22,13 @@ export const AnalyistGrid = () => {
 	const metricList = getMetricList(avgPace, avgHr, distance, calories);
 
 	return (
-		<Padded $p='xxl' $side='all'>
-			<Box display='flex' gap={theme.spacing.xxl} flexDirection='column'>
+		<Padded $p='xl' $side='all'>
+			<Box
+				display='flex'
+				gap={theme.spacing.md}
+				flexDirection='column'
+				md={{ gap: theme.spacing.xxl }}
+			>
 				<MetricList
 					title={activitySummary?.title ?? 'Activity Metrics'}
 					list={metricList}
@@ -50,7 +55,7 @@ export const AnalyistGrid = () => {
 					display='flex'
 					flexDirection='column'
 					xl={{ flexDirection: 'row' }}
-					gap={theme.spacing.md}
+					gap={theme.spacing.lg}
 				>
 					<Box flex={1 / 2} minWidth={0}>
 						<SessionRecommendations />

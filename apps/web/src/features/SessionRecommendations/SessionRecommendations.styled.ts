@@ -40,7 +40,7 @@ const HeaderTitle = styled.h2`
 const TrackList = styled.div`
 	${flex({ direction: 'column', gap: 'md' })}
 	overflow-y: auto;
-	max-height: 310px;
+	max-height: clamp(200px, 40dvh, 350px);
 
 	scrollbar-width: none;
 	&::-webkit-scrollbar {

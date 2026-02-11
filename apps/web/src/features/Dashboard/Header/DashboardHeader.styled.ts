@@ -18,7 +18,7 @@ const Container = styled.header`
 	${({ theme }) => css`
 		background-color: ${theme.colors.bg.lightPrimary(0.95)};
 		border-bottom: 1px solid ${theme.colors.border.primaryRgb(0.08)};
-		padding: ${theme.spacing.lg} ${theme.spacing.xxl};
+		padding: ${theme.spacing.md} ${theme.spacing.lg};
 
 		box-shadow: ${theme.shadows.sm};
 	`}

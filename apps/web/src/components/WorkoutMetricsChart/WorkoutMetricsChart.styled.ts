@@ -1,6 +1,6 @@
 import styled from '@emotion/styled';
 
-import { text } from '@/styles';
+import { text, theme } from '@/styles';
 
 const Container = styled.div`
 	width: 100%;
@@ -11,14 +11,22 @@ const HeaderSection = styled.section``;
 
 const HeaderTitle = styled.h2`
 	${text({ size: 'lg', weight: 'bold', color: 'primary' })}
+
+	text-align: center;
+
+	@media (min-width: ${theme.breakpoints.md}) {
+		text-align: left;
+	}
 `;
 const HeaderSubtitle = styled.p`
 	${text({ size: 'sm', weight: 'medium', color: 'secondary' })}
 
-	display: -webkit-box;
-	-webkit-line-clamp: 2;
-	-webkit-box-orient: vertical;
-	overflow: hidden;
+	text-wrap: balance;
+	text-align: center;
+
+	@media (min-width: ${theme.breakpoints.md}) {
+		text-align: left;
+	}
 `;
 
 export const WorkoutMetricsChartStyled = {

@@ -27,7 +27,7 @@ const Container = styled.div<{ $flex?: number }>`
 	flex: ${({ $flex }) => $flex ?? 1};
 	display: flex;
 	flex-direction: column;
-	min-height: 360px;
+	min-height: clamp(280px, 40dvh, 360px);
 
 	${({ theme }) => css`
 		background-color: ${theme.colors.bg.white(0.8)};
@@ -60,7 +60,7 @@ const TrackList = styled.div`
 	flex: 1;
 	overflow-x: hidden;
 	overflow-y: auto;
-	max-height: 400px;
+	max-height: clamp(220px, 45dvh, 440px);
 	padding: 8px 8px 0;
 
 	mask-image: linear-gradient(to bottom, black calc(100% - 40px), transparent 100%);

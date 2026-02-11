@@ -54,7 +54,7 @@ export const StyledButton = styled.button<StyledButtonProps>`
 	`}
 
 	border-radius: ${theme.radii.sm};
-	font-size: clamp(${theme.fontSizes.xxs}, 2vw, ${theme.fontSizes.xs});
+	font-size: clamp(${theme.fontSizes.xs}, 2vw, ${theme.fontSizes.sm});
 	font-weight: ${theme.fontWeights.bold};
 	text-transform: uppercase;
 	cursor: pointer;
