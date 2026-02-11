@@ -17,7 +17,7 @@ const Aside = styled.aside<{ $isOpen: boolean }>`
 	transition-duration: 100ms;
 
 	${({ $isOpen }) => css`
-		height: ${$isOpen ? '60dvh' : '6dvh'};
+		height: ${$isOpen ? '60dvh' : '7dvh'};
 		overflow-y: ${$isOpen ? 'auto' : 'hidden'};
 	`}
 

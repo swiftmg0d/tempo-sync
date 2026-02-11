@@ -34,7 +34,7 @@ const Container = styled.div`
 	`}
 `;
 const HeaderStyled = styled.h3`
-	${text({ size: 'xs', weight: 'bold', color: 'primary' })}
+	${text({ size: 'sm', weight: 'bold', color: 'primary' })}
 
 	${({ theme }) => css`
 		@media (min-width: ${theme.breakpoints.md}) {
@@ -44,13 +44,13 @@ const HeaderStyled = styled.h3`
 `;
 
 const DescriptionStyled = styled.p`
-	${text({ size: 'xs', weight: 'regular', color: 'secondary' })}
+	${text({ size: 'sm', weight: 'regular', color: 'secondary' })}
 
 	${({ theme }) => css`
 		line-height: 1.6;
 		margin: 0;
 		display: -webkit-box;
-		-webkit-line-clamp: 7;
+		-webkit-line-clamp: 8;
 		-webkit-box-orient: vertical;
 		overflow: hidden;
 

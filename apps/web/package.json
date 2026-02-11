@@ -9,7 +9,8 @@
 		"check-types": "tsc --noEmit",
 		"lint": "eslint .",
 		"preview": "vite preview",
-		"format": "prettier --write ."
+		"format": "prettier --write .",
+		"deploy": "pnpm build && wrangler pages deploy apps/web/dist --project-name=tempo-sync"
 	},
 	"dependencies": {
 		"@chakra-ui/charts": "^3.32.0",
