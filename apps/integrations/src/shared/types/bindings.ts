@@ -26,6 +26,9 @@ export interface Bindings {
 
   X_API_KEY: string;
   SUBSCRIPTION_ID: string;
+
+  ALLOWED_ORIGINS: string;
+  RATE_LIMITER: RateLimit;
 }
 
 export interface Variables {

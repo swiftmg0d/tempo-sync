@@ -8,6 +8,8 @@ export interface Bindings {
   SPOTIFY_CLIENT_SECRET: string;
   STRAVA_CLIENT_ID: string;
   STRAVA_CLIENT_SECRET: string;
+  ALLOWED_ORIGINS: string;
+  RATE_LIMITER: RateLimit;
 }
 
 export interface Variables {

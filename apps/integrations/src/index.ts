@@ -1,11 +1,15 @@
 import { createPoolDb } from '@tempo-sync/db';
 import { createApp } from '@tempo-sync/shared/app';
-import { errorHandler } from '@tempo-sync/shared/middleware';
+import { corsMiddleware, errorHandler, rateLimiters } from '@tempo-sync/shared/middleware';
 
 import { auth, webhook } from './features';
 import type { AppEnv } from './shared/types';
 
-const app = createApp<AppEnv>();
+const app = createApp<AppEnv>({ enableCors: false });
+
+app.use('*', corsMiddleware<AppEnv>());
+
+app.use('*', rateLimiters.standard<AppEnv>());
 
 app.use('*', async (c, next) => {
   const db = createPoolDb(c.env.DATABASE_URL);
