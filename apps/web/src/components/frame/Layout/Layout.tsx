@@ -15,7 +15,7 @@ export const Layout = ({ children }: { children: React.ReactNode }) => {
 		}))
 	);
 	return (
-		<div style={{ position: 'relative', width: '100dvw', height: '100dvh' }}>
+		<div style={{ position: 'relative', width: '100%', height: '100dvh' }}>
 			<Background />
 			<Sidebar />
 			<L.Layout.Main

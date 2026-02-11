@@ -39,7 +39,13 @@ export const LineChart = ({ data, isLoading, chartType }: LineChartProps) => {
 	);
 
 	return (
-		<Chart.Root maxH='sm' chart={chart} overflow='hidden' paddingTop={theme.spacing.lg}>
+		<Chart.Root
+			maxH='sm'
+			chart={chart}
+			overflow='hidden'
+			paddingTop={theme.spacing.lg}
+			marginLeft='-15px'
+		>
 			<RechartsLineChart data={chart.data}>
 				<CartesianGrid stroke={chart.color('border')} vertical={false} />
 				<XAxis
