@@ -1,0 +1,7 @@
+# DATABASE_URL - PostgreSQL connection string
+# KEY - Encryption key for token security
+# ALLOWED_ORIGINS - Comma-separated allowed CORS origins
+# SPOTIFY_CLIENT_ID - Spotify application client ID
+# SPOTIFY_CLIENT_SECRET - Spotify application client secret
+# STRAVA_CLIENT_ID - Strava application client ID
+# STRAVA_CLIENT_SECRET - Strava application client secret
