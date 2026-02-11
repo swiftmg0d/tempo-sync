@@ -14,6 +14,12 @@
       },
     },
   ],
+  "observability": {
+    "logs": {
+      "enabled": true,
+      "invocation_logs": true,
+    },
+  },
   // "r2_buckets": [
   //   {
   //     "binding": "MY_BUCKET",
