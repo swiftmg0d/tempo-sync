@@ -12,7 +12,7 @@ const InfoHeaderSkeleton = styled(Skeleton)`
 const InfoSubHeaderSkeleton = styled(Skeleton)`
 	background-color: ${({ theme }) => theme.colors.skeleton.base};
 	height: 100px;
-	width: clamp(200px, 10 vw, 400px);
+	width: clamp(200px, 10vw, 400px);
 	border-radius: ${({ theme }) => theme.radii.md};
 `;
 
