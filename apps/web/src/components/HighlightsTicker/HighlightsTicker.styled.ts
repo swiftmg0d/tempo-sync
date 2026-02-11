@@ -29,8 +29,10 @@ const Track = styled.div<{ $duration: number }>`
 	width: max-content;
 	animation: ${scroll} ${({ $duration }) => $duration}s linear infinite;
 
-	&:hover {
-		animation-play-state: paused;
+	@media (hover: hover) {
+		&:hover {
+			animation-play-state: paused;
+		}
 	}
 `;
 

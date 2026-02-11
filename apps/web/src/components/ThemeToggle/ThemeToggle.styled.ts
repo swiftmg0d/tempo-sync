@@ -5,8 +5,8 @@ export const ToggleButton = styled.button`
 	display: flex;
 	align-items: center;
 	justify-content: center;
-	width: 32px;
-	height: 32px;
+	width: 44px;
+	height: 44px;
 	border-radius: 50%;
 	border: none;
 	cursor: pointer;
@@ -16,8 +16,10 @@ export const ToggleButton = styled.button`
 	${({ theme }) => css`
 		background-color: transparent;
 
-		&:hover {
-			background-color: ${theme.colors.bg.blackAlpha2};
+		@media (hover: hover) {
+			&:hover {
+				background-color: ${theme.colors.bg.blackAlpha2};
+			}
 		}
 	`}
 `;

@@ -30,22 +30,24 @@ const Container = styled.div<{ $active?: boolean }>`
 	${({ theme, $active }) =>
 		$active ? activeContainerState({ theme }) : defaultContainerState({ theme })}
 
-	&:hover {
-		${({ theme }) => `background-color: ${theme.colors.bg.blackAlpha2};`}
+	@media (hover: hover) {
+		&:hover {
+			${({ theme }) => `background-color: ${theme.colors.bg.blackAlpha2};`}
 
-		${MusicInfoContainer} {
-			${({ theme }) => defaultBorderState({ theme })}
-			background-color:${({ theme }) => theme.colors.bg.alto2}
-		}
+			${MusicInfoContainer} {
+				${({ theme }) => defaultBorderState({ theme })}
+				background-color:${({ theme }) => theme.colors.bg.alto2}
+			}
 
-		${MusicInfoText} {
-			color: ${({ theme }) => theme.colors.accent.primary};
+			${MusicInfoText} {
+				color: ${({ theme }) => theme.colors.accent.primary};
+			}
 		}
 	}
 
 	border-radius: ${({ theme }) => theme.radii.sm};
 
-	min-width: 320px;
+	min-width: 0;
 `;
 
 export const PulsingContainer = styled.div`
