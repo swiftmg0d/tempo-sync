@@ -4,6 +4,7 @@ import { validate } from '@tempo-sync/shared/middleware';
 import * as handlers from './activity.handlers';
 import {
   activitySchema,
+  getActivityHighlightsSchema,
   getActivityLLMInsightsSchema,
   getActivityStreamsBodySchema,
   getActivityStreamsParamsSchema,
@@ -40,6 +41,11 @@ const activity = createRouter<AppEnv>()
     validate('param', getActivityTrackRecommendationsParamSchema),
     validate('query', getActivityTrackRecommendationsQuerySchema),
     handlers.getActivityTrackRecommendations
+  )
+  .get(
+    '/:id/highlights',
+    validate('param', getActivityHighlightsSchema),
+    handlers.getActivityHighlights
   )
   .get('/summary/overall', handlers.getOverallActivitySummary)
   .get('/polylines', handlers.getActivitiesPolylines);

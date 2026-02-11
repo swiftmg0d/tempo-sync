@@ -39,3 +39,6 @@ export const getActivityTrackRecommendationsQuerySchema = z.object({
 });
 export type ActivityTrackRecommendationsQueryValidation =
   typeof getActivityTrackRecommendationsQuerySchema;
+
+export const getActivityHighlightsSchema = getActivitySummarySchema;
+export type ActivityHighlightsValidation = typeof getActivityHighlightsSchema;

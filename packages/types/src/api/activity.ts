@@ -1,3 +1,5 @@
+import type { Effort, Gear } from './strava';
+
 export interface Pagination {
   hasMore: boolean;
   limit: number;
@@ -48,4 +50,13 @@ export interface ActivitySummaryStats {
   value: number;
   info: string;
   label?: string;
+}
+
+export interface ActivityHighlights {
+  bestEfforts: Effort[];
+  gear: Gear | null;
+  maxHeartrate: number | null;
+  maxSpeed: number | null;
+  elevHigh: number | null;
+  elevLow: number | null;
 }

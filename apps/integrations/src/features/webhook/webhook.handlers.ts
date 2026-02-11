@@ -11,6 +11,7 @@ import {
   handleStravaWebhook,
   getRecentlyPlayedSongsDuringActivity,
   generateTrackLeaderboard,
+  generateTrackRecommendations,
 } from './webhook.service';
 
 import type { AppEnv } from '@/shared/types';
@@ -94,6 +95,12 @@ export const handleWebhookEvent = async (
       CEREBRAS_API_KEY: c.env.CEREBRAS_API_KEY,
       SAMBANOVA_API_KEY: c.env.SAMBANOVA_API_KEY,
     },
+  });
+
+  await generateTrackRecommendations({
+    activityId,
+    accessToken: spotifyAccessToken,
+    db,
   });
 
   return c.text('Webhook event handled', 200);

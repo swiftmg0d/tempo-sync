@@ -17,15 +17,18 @@ import {
   http,
   incrementDateBySeconds,
   RECCOBEATS_API_URL,
+  SPOTIFY_API_URL,
 } from '@tempo-sync/shared';
 import { DatabaseError } from '@tempo-sync/shared/errors';
 import type {
   CombinedRefreshTokensRequestParams,
   LLMActivityInsightResponse,
   LLMEnv,
+  RecommendedTrack,
   StravaActivity,
   TokenResponse,
   TrackLeaderboardResponse,
+  TrackRecommendationsResponse,
 } from '@tempo-sync/shared/types';
 
 import { webhookApi } from './api';
@@ -255,7 +258,7 @@ export const getRecentlyPlayedSongsDuringActivity = async ({
   activityId,
   accessToken,
   startDate,
-  // endDate,
+  endDate,
   db,
 }: {
   activityId: string;
@@ -270,22 +273,25 @@ export const getRecentlyPlayedSongsDuringActivity = async ({
       after: Math.floor(startDate.getTime()),
     });
 
-    // *  Spotify's recently played tracks endpoint returns tracks in reverse chronological order,
-    // *  so we can stop fetching more tracks as soon as we encounter a track that was played before the activity start time.
-    // !  REMOVE THIS COMMENT AFTER IMPLEMENTING PAGINATION TO FETCH ALL RECENTLY PLAYED TRACKS DURING THE ACTIVITY
-    // const filteredItems = data.items.filter(
-    //   (item) => new Date(item.played_at) >= startDate && new Date(item.played_at) <= endDate
-    // );
+    // Comment this out for having data to generate track leaderboard,
+    // if there are no recently played tracks during the activity.
+    // Will be uncommented in the future when we want to fetch real data from Spotify API.
 
-    // if (filteredItems.length === 0) {
-    //   return;
-    // }
+    const filteredItems = data.items
+      .filter(
+        (item) => new Date(item.played_at) >= startDate && new Date(item.played_at) <= endDate
+      )
+      .sort((a, b) => new Date(a.played_at).getTime() - new Date(b.played_at).getTime());
 
-    const middleLength = Math.ceil(data.items.length / 2);
+    if (filteredItems.length === 0) {
+      return;
+    }
 
-    const firstBatch = data.items.slice(0, middleLength).map((item) => item.track.id);
-    const secondBatch = data.items
-      .slice(middleLength, data.items.length)
+    const middleLength = Math.ceil(filteredItems.length / 2);
+
+    const firstBatch = filteredItems.slice(0, middleLength).map((item) => item.track.id);
+    const secondBatch = filteredItems
+      .slice(middleLength, filteredItems.length)
       .map((item) => item.track.id);
 
     const firstBatchResponse = await http<{ content: AudioAnalysisResponse[] }>(
@@ -318,7 +324,7 @@ export const getRecentlyPlayedSongsDuringActivity = async ({
     ];
 
     await db.transaction(async (tx) => {
-      for (const item of data.items) {
+      for (const item of filteredItems) {
         const audioAnalysis = combinedAudioAnalysis.find(
           (analysis) => analysis.href === item.track.external_urls.spotify
         );
@@ -432,5 +438,92 @@ export const generateTrackLeaderboard = async ({
       .where(eq(activitySchema.id, activityId));
   } catch (e) {
     console.error('Error generating track leaderboard:', e);
+  }
+};
+
+export const generateTrackRecommendations = async ({
+  activityId,
+  accessToken,
+  db,
+}: {
+  activityId: string;
+  accessToken: string;
+  db: PoolDatabase;
+}) => {
+  try {
+    const [{ leaderboard }] = await db
+      .select({ leaderboard: activitySchema.llmTrackLeaderboard })
+      .from(activitySchema)
+      .where(eq(activitySchema.id, activityId));
+
+    if (!leaderboard || leaderboard.length === 0) {
+      return;
+    }
+
+    const seedIds = leaderboard
+      .slice(0, 5)
+      .map((entry) => entry.trackId)
+      .filter(Boolean) as string[];
+
+    if (seedIds.length === 0) {
+      return;
+    }
+
+    const tracks = await db.select().from(track).where(eq(track.activityId, activityId));
+    const seedTracks = tracks.filter((t) => seedIds.includes(t.trackId));
+
+    const avg = (values: (number | null)[]) => {
+      const valid = values.filter((v): v is number => v !== null);
+      return valid.length > 0 ? valid.reduce((a, b) => a + b, 0) / valid.length : undefined;
+    };
+
+    const avgEnergy = avg(seedTracks.map((t) => t.energy));
+    const avgDanceability = avg(seedTracks.map((t) => t.danceability));
+    const avgTempo = avg(seedTracks.map((t) => t.tempo));
+    const avgValence = avg(seedTracks.map((t) => t.valence));
+
+    const params = new URLSearchParams({
+      size: '20',
+      seeds: seedIds.join(','),
+    });
+
+    if (avgEnergy !== undefined) params.set('energy', avgEnergy.toFixed(2));
+    if (avgDanceability !== undefined) params.set('danceability', avgDanceability.toFixed(2));
+    if (avgTempo !== undefined) params.set('tempo', avgTempo.toFixed(2));
+    if (avgValence !== undefined) params.set('valence', avgValence.toFixed(2));
+
+    const recommendations = await http<{ content: TrackRecommendationsResponse }>(
+      `${RECCOBEATS_API_URL}/track/recommendation?${params.toString()}`,
+      { method: 'GET' }
+    );
+
+    const results: RecommendedTrack[] = [];
+
+    for (const rec of recommendations.content) {
+      const trackId = /[a-zA-Z0-9]{22}/.exec(rec.href)?.[0];
+
+      let image = '';
+      if (trackId) {
+        const response = await http<{
+          album: { images: { url: string }[] };
+        }>(`${SPOTIFY_API_URL}/tracks/${trackId}`, {
+          method: 'GET',
+          headers: {
+            Authorization: `Bearer ${accessToken}`,
+          },
+        });
+        image = response.album.images[1]?.url ?? '';
+      }
+
+      results.push({ ...rec, image });
+    }
+
+    await db
+      .update(activitySchema)
+      .set({ llmTrackRecommendations: results })
+      .where(eq(activitySchema.id, activityId));
+  } catch (e) {
+    console.error('Error generating track recommendations:', e);
+    throw new DatabaseError(500, 'Failed to generate track recommendations');
   }
 };
