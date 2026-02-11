@@ -34,6 +34,7 @@
 		"react-dom": "^19.2.0",
 		"react-error-boundary": "^6.1.0",
 		"react-intersection-observer": "^10.0.2",
+		"react-swipeable": "^7.0.2",
 		"recharts": "^3.7.0",
 		"zustand": "^5.0.9"
 	},
@@ -45,7 +46,6 @@
 		"@types/react": "^19.2.5",
 		"@types/react-dom": "^19.2.3",
 		"@vitejs/plugin-react": "^5.1.1",
-		"babel-plugin-react-compiler": "^1.0.0",
 		"eslint": "^9.39.1",
 		"eslint-config-prettier": "^10.1.8",
 		"eslint-plugin-jsx-a11y": "^6.10.2",
@@ -60,7 +60,6 @@
 		"typescript-eslint": "^8.46.4",
 		"vite": "^7.2.4",
 		"vite-tsconfig-paths": "^6.0.3",
-		"webpack-bundle-analyzer": "^5.1.1",
 		"wrangler": "^4.59.1"
 	}
 }
