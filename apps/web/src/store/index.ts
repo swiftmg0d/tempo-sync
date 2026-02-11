@@ -53,13 +53,23 @@ export const useActivityCardsStore = create<ActivityCardsState>((set) => ({
 
 interface UIState {
 	isSidebarOpen: boolean;
+	isSidebarDragging: boolean;
 	toggleSidebar: () => void;
+	setSidebarOpen: (open: boolean) => void;
+	setIsSidebarDragging: (dragging: boolean) => void;
 }
 
 export const useUIStore = create<UIState>((set) => ({
 	isSidebarOpen: false,
+	isSidebarDragging: false,
 	toggleSidebar: () => {
 		set((state) => ({ isSidebarOpen: !state.isSidebarOpen }));
+	},
+	setSidebarOpen: (open) => {
+		set({ isSidebarOpen: open });
+	},
+	setIsSidebarDragging: (dragging) => {
+		set({ isSidebarDragging: dragging });
 	}
 }));
 

@@ -1,6 +1,7 @@
 import { Box, Text } from '@chakra-ui/react';
 import { useEffect } from 'react';
 import { useInView } from 'react-intersection-observer';
+import { useSwipeable } from 'react-swipeable';
 import { useShallow } from 'zustand/shallow';
 
 import { BrandHeader } from './BrandHeader';
@@ -14,10 +15,13 @@ import { ActivityListNoMore } from '@/components/Activity/List/NoMore';
 import { Avatar } from '@/components/Avatar';
 import { ThemeToggle } from '@/components/ThemeToggle';
 import { Queries, useActivities } from '@/hooks/quieries';
+import { useMediaQuery } from '@/hooks/useMediaQuery';
 import { useActivityCardsStore, useUIStore } from '@/store';
 import { theme } from '@/styles';
 import { DesktopOnly, MobileOnly, Padded } from '@/styles/patterns';
 import { showWhen } from '@/utils';
+
+const SWIPE_DELTA = 50;
 
 export const Sidebar = () => {
 	const { activityId, setActiveCardId, setIsEmpty, isEmpty } = useActivityCardsStore(
@@ -29,12 +33,45 @@ export const Sidebar = () => {
 		}))
 	);
 
-	const { toggleSidebar, sidebarOpen } = useUIStore(
-		useShallow((state) => ({
-			toggleSidebar: state.toggleSidebar,
-			sidebarOpen: state.isSidebarOpen
-		}))
-	);
+	const { toggleSidebar, sidebarOpen, setSidebarOpen, isSidebarDragging, setIsSidebarDragging } =
+		useUIStore(
+			useShallow((state) => ({
+				toggleSidebar: state.toggleSidebar,
+				sidebarOpen: state.isSidebarOpen,
+				setSidebarOpen: state.setSidebarOpen,
+				isSidebarDragging: state.isSidebarDragging,
+				setIsSidebarDragging: state.setIsSidebarDragging
+			}))
+		);
+
+	const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.md})`);
+
+	const swipeHandlers = useSwipeable({
+		onSwipedUp: (eventData) => {
+			if (!sidebarOpen && eventData.absY > SWIPE_DELTA) {
+				setSidebarOpen(true);
+			}
+		},
+		onSwipedDown: (eventData) => {
+			if (sidebarOpen && eventData.absY > SWIPE_DELTA) {
+				setSidebarOpen(false);
+			}
+		},
+		onSwiping: (eventData) => {
+			if (!isSidebarDragging && Math.abs(eventData.deltaY) > 10) {
+				setIsSidebarDragging(true);
+			}
+		},
+		onTouchEndOrOnMouseUp: () => {
+			setIsSidebarDragging(false);
+		},
+		delta: SWIPE_DELTA,
+		trackMouse: false,
+		trackTouch: true,
+		preventScrollOnSwipe: false,
+		rotationAngle: 0
+	});
+
 	const { data, isLoading: isCurrentAthleteLoading } = Queries.useCurrentAthlete();
 
 	const {
@@ -65,12 +102,18 @@ export const Sidebar = () => {
 
 	useEffect(() => {
 		if (inView && !isFetchingNextPage && !isEmpty) {
-			void fetchNextPage();
+			await fetchNextPage();
 		}
 	}, [inView, fetchNextPage, isFetchingNextPage, isEmpty]);
 
 	return (
-		<S.Sidebar.Aside $isOpen={sidebarOpen}>
+		<S.Sidebar.Aside
+			{...(isMobile ? swipeHandlers : {})}
+			$isOpen={sidebarOpen}
+			$isDragging={isSidebarDragging}
+			animate={{ y: 0 }}
+			transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+		>
 			{/* Header */}
 			<S.Sidebar.Section $border='bot' as='header'>
 				<DesktopOnly>

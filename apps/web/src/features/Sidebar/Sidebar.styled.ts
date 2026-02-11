@@ -1,11 +1,12 @@
 import { css } from '@emotion/react';
 import styled from '@emotion/styled';
+import { motion } from 'motion/react';
 
 import { scrollbar } from './Sidebar.styles';
 
 import { flex, SIDEBAR_OFFSET, text, transitionAll } from '@/styles';
 
-const Aside = styled.aside<{ $isOpen: boolean }>`
+const Aside = styled(motion.aside)<{ $isOpen: boolean; $isDragging?: boolean }>`
 	${flex({ direction: 'column' })}
 
 	z-index: 5;
@@ -13,7 +14,8 @@ const Aside = styled.aside<{ $isOpen: boolean }>`
 	position: fixed;
 	bottom: 0;
 	width: 100%;
-	${transitionAll}
+
+	${({ $isDragging }) => !$isDragging && transitionAll}
 	transition-duration: 100ms;
 
 	${({ $isOpen }) => css`
