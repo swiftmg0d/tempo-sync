@@ -16,3 +16,4 @@
 # KEY - Encryption key for token security
 # X_API_KEY - Internal API authentication key
 # SUBSCRIPTION_ID - Strava webhook subscription ID
+# PROD_CALLBACK_URL - Production webhook callback URL for strava:webhook script
