@@ -19,7 +19,8 @@ export const queryKeys = {
 		trackLeaderboard: (id: string) =>
 			[...queryKeys.activity.list, id, 'track-leaderboard'] as const,
 		trackRecommendations: (id: string) =>
-			[...queryKeys.activity.list, id, 'track-recommendations'] as const
+			[...queryKeys.activity.list, id, 'track-recommendations'] as const,
+		highlights: (id: string) => [...queryKeys.activity.list, id, 'highlights'] as const
 	},
 	profile: {
 		list: ['profiles'] as const

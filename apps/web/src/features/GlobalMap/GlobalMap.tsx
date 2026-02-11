@@ -1,5 +1,4 @@
 import { Map, type MapRef, NavigationControl, ScaleControl } from '@vis.gl/react-maplibre';
-import 'maplibre-gl/dist/maplibre-gl.css';
 import { useEffect, useRef, useState } from 'react';
 
 import { MapContainer } from './GlobalMap.styled';
@@ -16,6 +15,10 @@ const mapKey = import.meta.env.VITE_MAP_KEY;
 export const GlobalMap = () => {
 	const [isMapLoading, setIsMapLoading] = useState(true);
 	const [mapType, setMapType] = useState<'heat' | 'normal'>('normal');
+
+	useEffect(() => {
+		void import('maplibre-gl/dist/maplibre-gl.css');
+	}, []);
 
 	const activityId = useActivityCardsStore((state) => state.activityId);
 	const themeMode = useThemeStore((state) => state.mode);

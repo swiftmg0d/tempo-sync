@@ -121,6 +121,16 @@ const useTrackRecommendations = (id: string) =>
 		enabled: !!id
 	});
 
+const useActivityHighlights = (id: string) =>
+	createQuery({
+		queryFn: () => apiService.activity.getActivityHighlights(id),
+		queryKey: queryKeys.activity.highlights(id),
+		options: {
+			enabled: !!id,
+			select: (res) => res.data
+		}
+	});
+
 export const Queries = {
 	useActivities,
 	useActivitySummary,
@@ -134,5 +144,6 @@ export const Queries = {
 	useAthleteTotalActivities,
 	useActivityStreams,
 	useTrackLeaderboard,
-	useTrackRecommendations
+	useTrackRecommendations,
+	useActivityHighlights
 };

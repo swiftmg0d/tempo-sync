@@ -1,11 +1,17 @@
 import { Box } from '@chakra-ui/react/box';
+import { lazy, Suspense } from 'react';
 
-import { GlobalMap } from '../GlobalMap';
 import { StatsOverview, StatsOverviewEmpty } from '../StatsOverview';
 
-import { AnalyistGrid } from '@/features/AnalyistGrid';
 import { MobileOnly } from '@/styles';
 import { showWhen } from '@/utils';
+
+const GlobalMap = lazy(() =>
+	import('../GlobalMap/GlobalMap').then((m) => ({ default: m.GlobalMap }))
+);
+const AnalyistGrid = lazy(() =>
+	import('@/features/AnalyistGrid/AnalyistGrid').then((m) => ({ default: m.AnalyistGrid }))
+);
 
 export const showActiveScreen = (
 	activeScreenIndex: number,
@@ -20,8 +26,18 @@ export const showActiveScreen = (
 
 	return (
 		<>
-			{activeScreenIndex === 0 && showWhen(!!activityCardId, <AnalyistGrid />)}
-			{activeScreenIndex === 1 && <GlobalMap />}
+			{activeScreenIndex === 0 &&
+				showWhen(
+					!!activityCardId,
+					<Suspense>
+						<AnalyistGrid />
+					</Suspense>
+				)}
+			{activeScreenIndex === 1 && (
+				<Suspense>
+					<GlobalMap />
+				</Suspense>
+			)}
 			{showWhen(isStatsOverviewScreenNotEmpty, <StatsOverview />)}
 			{showWhen(isStatsOverviewScreenEmpty, <StatsOverviewEmpty />)}
 

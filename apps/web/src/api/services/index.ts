@@ -1,5 +1,6 @@
 import type {
 	Activities,
+	ActivityHighlights,
 	ActivitySummary,
 	ActivitySummaryStats,
 	Athlete,
@@ -35,8 +36,10 @@ export const apiService = {
 			api.get<ApiResponse<TrackLeaderboardResponse>>(`/activity/${id}/track-leaderboard`),
 		getTrackRecommendations: (id: string, page?: number) =>
 			api.get<ApiResponse<PaginatedTrackRecommendations>>(`/activity/${id}/track-recommendations`, {
-				params: { page, limit: 4 }
-			})
+				params: { page, limit: 3 }
+			}),
+		getActivityHighlights: (id: string) =>
+			api.get<ApiResponse<ActivityHighlights>>(`/activity/${id}/highlights`)
 	},
 	athlete: {
 		getMe: () => api.get<ApiResponse<{ athlete: Athlete }>>('/athlete')

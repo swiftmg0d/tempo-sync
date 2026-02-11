@@ -6,6 +6,7 @@ import { InsightCardList } from '../List/InsightCardList';
 
 import * as I from './InsightCarousel.styled';
 
+import { HighlightsTicker } from '@/components/HighlightsTicker/HighlightsTicker';
 import { Queries } from '@/hooks/quieries';
 import { useActivityCardsStore } from '@/store';
 import { theme } from '@/styles';
@@ -13,6 +14,7 @@ import { theme } from '@/styles';
 export const InsightCarousel = ({ flex }: { flex?: number }) => {
 	const activityId = useActivityCardsStore((state) => state.activityId);
 	const { isLoading, data } = Queries.useLLMActivityInsights(activityId ?? '')();
+	const { data: highlights } = Queries.useActivityHighlights(activityId ?? '')();
 
 	const [currentSlide, setCurrentSlide] = useState(0);
 
@@ -55,6 +57,7 @@ export const InsightCarousel = ({ flex }: { flex?: number }) => {
 					/>
 				))}
 			</I.InsightCarousel.DotsContainer>
+			<HighlightsTicker data={highlights} />
 		</I.InsightCarousel.Container>
 	);
 };

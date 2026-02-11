@@ -64,6 +64,8 @@ const ButtonText = styled.span`
 const Image = styled.img`
 	${({ theme }) => css`
 		flex: 1;
+		max-width: 100%;
+		height: auto;
 		padding: ${theme.spacing['3xl']};
 		filter: ${theme.mode === 'dark' ? 'invert(1) hue-rotate(180deg)' : 'none'};
 	`}

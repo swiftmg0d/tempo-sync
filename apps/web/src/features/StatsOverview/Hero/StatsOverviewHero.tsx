@@ -2,7 +2,6 @@ import { StatsOverviewHeroSkeleton } from './StatsOverviewHero.skeleton';
 import * as S from './StatsOverviewHero.styled';
 import type { SummaryHeroProps } from './types';
 
-import analysisIllustration from '@/assets/images/analysis-illustration.svg';
 import { Button } from '@/components/Button';
 import { transition } from '@/styles';
 import { withSkeleton } from '@/utils';
@@ -31,9 +30,11 @@ const StatsOverviewHeroComponent = ({ buttonText, variant = 'primary' }: Summary
 			</S.StatsOverviewHero.InfoContainer>
 
 			<S.StatsOverviewHero.Image
-				src={analysisIllustration}
+				src='/analysis-illustration.svg'
 				alt='Analysis Illustration'
 				fetchPriority='high'
+				width={432}
+				height={272}
 			/>
 		</S.StatsOverviewHero.Container>
 	);

@@ -5,6 +5,8 @@ import { blur, flex, size, text, transitionAll } from '@/styles';
 
 const Container = styled.div<{ $flex?: number }>`
 	${blur(24)}
+	${flex({ direction: 'column' })}
+
 	box-sizing: border-box;
 	width: 100%;
 	min-width: 0;
@@ -45,6 +47,7 @@ const DotsContainer = styled.div`
 	${flex({ direction: 'row', justifyContent: 'center', gap: 's' })}
 
 	padding-top: ${({ theme }) => theme.spacing.md};
+	padding-bottom: ${({ theme }) => theme.spacing.md};
 `;
 
 const Dot = styled.button<{ isActive: boolean; isFirst?: boolean }>`
