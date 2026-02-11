@@ -46,7 +46,7 @@ export const DashboardHeader = () => {
 				<Box alignItems='center' direction='row' display='flex' gap='4px'>
 					<D.DashboardHeader.SyncLabel>Last synced: </D.DashboardHeader.SyncLabel>
 					<D.DashboardHeader.SyncStatus isLoading={isLoading} $disabled={!!isEmpty}>
-						{isEmpty ? '\t$Never' : `\t${data}`}
+						{isEmpty ? '\tNever' : `\t${data}`}
 					</D.DashboardHeader.SyncStatus>
 				</Box>
 				<Button
