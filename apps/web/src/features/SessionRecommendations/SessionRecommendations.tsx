@@ -32,21 +32,18 @@ export const SessionRecommendations = ({ flex }: SessionRecommendationsProps) =>
 		setHasInteracted(false);
 	}, [activityId]);
 
-	const listRef = useCallback(
-		(node: HTMLDivElement | null) => {
-			setListElement(node);
-			if (!node) return;
+	const listRef = useCallback((node: HTMLDivElement | null) => {
+		setListElement(node);
+		if (!node) return;
 
-			const onInteract = () => {
-				setHasInteracted(true);
-				node.removeEventListener('scroll', onInteract);
-				node.removeEventListener('touchstart', onInteract);
-			};
-			node.addEventListener('scroll', onInteract, { once: true });
-			node.addEventListener('touchstart', onInteract, { once: true });
-		},
-		[activityId]
-	);
+		const onInteract = () => {
+			setHasInteracted(true);
+			node.removeEventListener('scroll', onInteract);
+			node.removeEventListener('touchstart', onInteract);
+		};
+		node.addEventListener('scroll', onInteract, { once: true });
+		node.addEventListener('touchstart', onInteract, { once: true });
+	}, []);
 
 	useEffect(() => {
 		if (!inView || !hasNextPage || isFetchingNextPage || !hasInteracted) {
