@@ -11,7 +11,7 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  ci:
+  lint-and-typecheck:
     name: Lint & Typecheck
     runs-on: ubuntu-latest
     steps:
@@ -29,3 +29,33 @@ jobs:
       - run: pnpm lint
 
       - run: pnpm check-types
+
+  lighthouse:
+    name: Lighthouse
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Wait for Cloudflare Pages deployment
+        uses: WalshyDev/cf-pages-await@v1
+        id: cf-pages
+        with:
+          apiToken: ${{ secrets.CF_API_TOKEN }}
+          accountId: ${{ secrets.CF_ACCOUNT_ID }}
+          project: tempo-sync
+          commitHash: ${{ github.event.pull_request.head.sha }}
+
+      - name: Lighthouse CI (Mobile)
+        uses: treosh/lighthouse-ci-action@12.6.1
+        with:
+          urls: ${{ steps.cf-pages.outputs.url }}
+
+      - name: Lighthouse CI (Desktop)
+        uses: treosh/lighthouse-ci-action@12.6.1
+        env:
+          LHCI_BUILD_CONTEXT__CURRENT_HASH: ${{ github.event.pull_request.head.sha }}
+        with:
+          urls: ${{ steps.cf-pages.outputs.url }}
+          configPath: lighthouserc.json
+          additionalLighthouseFlags: --preset=desktop
