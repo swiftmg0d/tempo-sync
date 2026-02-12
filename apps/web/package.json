@@ -27,7 +27,7 @@
 		"@vis.gl/react-maplibre": "^8.1.0",
 		"axios": "^1.13.2",
 		"date-fns": "^4.1.0",
-		"lucide-react": "^0.562.0",
+		"lucide-react": "^0.563.0",
 		"maplibre-gl": "^5.16.0",
 		"motion": "^12.24.7",
 		"pretty-ms": "^9.3.0",
