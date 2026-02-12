@@ -30,10 +30,28 @@ jobs:
 
       - run: pnpm check-types
 
+  changes:
+    name: Detect changes
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    outputs:
+      app: ${{ steps.filter.outputs.app }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            app:
+              - 'apps/**'
+              - 'packages/**'
+
   lighthouse:
     name: Lighthouse
     runs-on: ubuntu-latest
-    if: github.event_name == 'pull_request'
+    needs: changes
+    if: needs.changes.outputs.app == 'true'
     steps:
       - uses: actions/checkout@v4
 
