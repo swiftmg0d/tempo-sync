@@ -68,6 +68,7 @@ const Section = styled.div<{
 		${$overflow === 'show' &&
 		css`
 			overflow-y: auto;
+			touch-action: pan-y;
 			${scrollbar}
 		`}
 		${$overflow === 'hidden' && `overflow-y: hidden;`}

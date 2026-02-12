@@ -1,5 +1,5 @@
 import { Box, Text } from '@chakra-ui/react';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { useInView } from 'react-intersection-observer';
 import { useShallow } from 'zustand/shallow';
 
@@ -39,7 +39,8 @@ export const Sidebar = () => {
 	);
 
 	const isMobile = useMediaQuery(`(max-width: ${theme.breakpoints.md})`);
-	const { targetRef, y, syncPosition } = useSidebarDrag();
+	const scrollableRef = useRef<HTMLDivElement>(null);
+	const { targetRef, y, syncPosition } = useSidebarDrag(scrollableRef);
 
 	// Sync motion value when sidebar state changes externally (grab handle click, backdrop tap)
 	useEffect(() => {
@@ -112,6 +113,7 @@ export const Sidebar = () => {
 
 			{/* Content */}
 			<S.Sidebar.Section
+				ref={scrollableRef}
 				$flex={2}
 				$overflow={sidebarOpen ? 'show' : 'hidden'}
 				as='main'

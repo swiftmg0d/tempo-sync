@@ -1,5 +1,6 @@
 import { useDrag } from '@use-gesture/react';
 import { animate, useMotionValue } from 'motion/react';
+import type React from 'react';
 import { useCallback, useEffect, useRef } from 'react';
 
 import { useUIStore } from '@/store';
@@ -13,7 +14,7 @@ const closedOffset = () => (63 * window.innerHeight) / 100;
 
 const isOpen = () => useUIStore.getState().isSidebarOpen;
 
-export const useSidebarDrag = () => {
+export const useSidebarDrag = (scrollableRef: React.RefObject<HTMLElement | null>) => {
 	const isSidebarOpen = useUIStore((s) => s.isSidebarOpen);
 	const y = useMotionValue(0);
 	const targetRef = useRef<HTMLElement>(null);
@@ -36,8 +37,44 @@ export const useSidebarDrag = () => {
 	}, [isSidebarOpen, y]);
 
 	useDrag(
-		({ down, movement: [, my], last, velocity: [, vy], direction: [, dy], tap }) => {
-			if (tap) return;
+		({
+			down,
+			movement: [, my],
+			last,
+			velocity: [, vy],
+			direction: [, dy],
+			tap,
+			first,
+			cancel,
+			event,
+			memo: _memo
+		}) => {
+			interface DragMemo {
+				startedInScrollable: boolean;
+				isAtTop: boolean;
+			}
+			let memo = _memo as DragMemo | undefined;
+
+			if (tap) return memo;
+
+			if (first) {
+				const scrollable = scrollableRef.current;
+				const startedInScrollable =
+					scrollable && event.target instanceof Node && scrollable.contains(event.target);
+				const isAtTop = scrollable ? scrollable.scrollTop <= 0 : true;
+
+				memo = { startedInScrollable: !!startedInScrollable, isAtTop };
+
+				if (startedInScrollable && !isAtTop) {
+					cancel();
+					return memo;
+				}
+			}
+
+			if (memo?.startedInScrollable && memo.isAtTop && my < 0) {
+				cancel();
+				return memo;
+			}
 
 			const offset = closedOffset();
 			const startY = isOpen() ? 0 : offset;
@@ -56,6 +93,8 @@ export const useSidebarDrag = () => {
 				animate(y, shouldOpen ? 0 : offset, SPRING);
 				useUIStore.getState().setSidebarOpen(shouldOpen);
 			}
+
+			return memo;
 		},
 		{
 			axis: 'y',
