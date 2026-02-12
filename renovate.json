@@ -10,13 +10,13 @@
   "reviewers": ["swiftmg0d"],
   "rangeStrategy": "auto",
   "timezone": "Europe/Paris",
-  "schedule": ["before 9am on weekdays"],
+  "schedule": ["before 9:00am every weekday"],
   "prConcurrentLimit": 5,
   "prHourlyLimit": 3,
   "minimumReleaseAge": "3 days",
   "lockFileMaintenance": {
     "enabled": true,
-    "schedule": ["before 5am on monday"]
+    "schedule": ["before 5:00am on Monday"]
   },
   "vulnerabilityAlerts": {
     "enabled": true,
