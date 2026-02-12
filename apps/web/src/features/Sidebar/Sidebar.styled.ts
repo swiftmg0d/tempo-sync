@@ -32,7 +32,7 @@ const Aside = styled(motion.aside)`
 		width: ${SIDEBAR_OFFSET}px;
 		position: fixed;
 		height: 100dvh;
-		overflow-y: auto;
+		overflow: hidden;
 		touch-action: auto;
 
 		top: 0;
@@ -51,6 +51,11 @@ const Section = styled.div<{
 }>`
 	flex: ${(props) => props.$flex ?? 0};
 	padding: ${({ theme }) => theme.spacing.md} 0;
+
+	@media (min-width: ${({ theme }) => theme.breakpoints.md}) {
+		${(props) => props.$flex && `overflow-y: auto;`}
+		${scrollbar}
+	}
 
 	${({ $varient, theme, $border, $overflow, $disabled }) => css`
 		${$varient === 'footer' &&
