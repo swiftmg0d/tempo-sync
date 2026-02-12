@@ -8,8 +8,8 @@ const SPRING = { type: 'spring' as const, stiffness: 300, damping: 30 };
 const THRESHOLD = 0.3;
 const FLICK = 0.5;
 
-/** 60dvh - 7dvh = 53dvh in pixels */
-const closedOffset = () => (53 * window.innerHeight) / 100;
+/** 70dvh - 7dvh = 63dvh in pixels */
+const closedOffset = () => (63 * window.innerHeight) / 100;
 
 const isOpen = () => useUIStore.getState().isSidebarOpen;
 
@@ -36,11 +36,13 @@ export const useSidebarDrag = () => {
 	}, [isSidebarOpen, y]);
 
 	useDrag(
-		({ down, movement: [, my], last, velocity: [, vy], direction: [, dy] }) => {
+		({ down, movement: [, my], last, velocity: [, vy], direction: [, dy], tap }) => {
+			if (tap) return;
+
 			const offset = closedOffset();
 			const startY = isOpen() ? 0 : offset;
 
-			if (down) {
+			if (down && my !== 0) {
 				useUIStore.getState().setIsSidebarDragging(true);
 				y.set(Math.max(0, Math.min(offset, startY + my)));
 			}

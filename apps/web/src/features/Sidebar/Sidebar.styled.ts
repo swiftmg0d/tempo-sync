@@ -14,7 +14,7 @@ const Aside = styled(motion.aside)`
 	position: fixed;
 	bottom: 0;
 	width: 100%;
-	height: 60dvh;
+	height: 70dvh;
 	overflow: hidden;
 	touch-action: pan-x;
 

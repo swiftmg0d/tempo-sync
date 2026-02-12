@@ -16,6 +16,7 @@ const Main = styled.main<{ $isSidebarOpen: boolean }>`
 
 	${({ $isSidebarOpen }) => css`
 		filter: ${$isSidebarOpen ? 'blur(4px)' : 'none'};
+		pointer-events: ${$isSidebarOpen ? 'none' : 'auto'};
 	`}
 
 	scrollbar-width: none;
@@ -30,6 +31,7 @@ const Main = styled.main<{ $isSidebarOpen: boolean }>`
 		top: 0;
 		right: 0;
 		filter: none;
+		pointer-events: auto;
 		padding-bottom: 0;
 	}
 `;
