@@ -28,6 +28,7 @@ Tempo-Sync syncs your Strava activity data with your Spotify listening history t
 - **Track Leaderboard** — Ranks the music you listened to during a workout by efficiency correlation
 - **Session Recommendations** — Smart, personalized track suggestions for your next workout based on historical data
 - **Global Map** — Interactive map with route polylines and a heatmap mode for visualizing training intensity by location
+- **Hex Exploration Grid** — H3 hexagonal overlay on the map showing visited vs unvisited areas with a discovery percentage stat tracking how much of your local area you've explored
 - **Strava Sync** — OAuth integration with real-time webhook updates for automatic activity ingestion
 - **Spotify Sync** — OAuth integration to pull listening history and audio features for tracks played during workouts
 - **Dark Mode** — Light and dark themes with smooth View Transitions API animation, OS preference detection, and localStorage persistence
