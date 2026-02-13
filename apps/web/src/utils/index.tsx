@@ -1,5 +1,3 @@
-import { formatDistance } from 'date-fns/formatDistance';
-
 export function withSkeleton<T extends object>(
 	Component: React.ComponentType<T>,
 	SkeletonComponent: React.FC
@@ -45,16 +43,6 @@ export function normalizePolyline(
 		x: xOffset + (longitude - minLng) * scale,
 		y: height - (yOffset + (latitude - minLat) * scale)
 	}));
-}
-
-export function formatDateDistance(date: Date) {
-	const distance = formatDistance(date, new Date(), {
-		addSuffix: true
-	});
-
-	const regex = new RegExp('about |over |almost |less than ', 'g');
-
-	return distance.replace(regex, '');
 }
 
 export const pxToRem = (px: number) => `${px / 16}rem` as const;

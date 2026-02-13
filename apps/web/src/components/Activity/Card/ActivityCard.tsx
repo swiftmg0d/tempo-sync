@@ -7,9 +7,9 @@ import type { ActivityCardProps } from './types';
 
 import { PolylinePreview } from '@/components/PolylinePreview/PolylinePreview';
 import { Icons } from '@/components/icons';
+import { formatDateDistance } from '@/lib/date';
 import { theme } from '@/styles';
 import { Padded } from '@/styles/patterns';
-import { formatDateDistance } from '@/utils';
 
 export const ActivityCard = ({
 	active,
