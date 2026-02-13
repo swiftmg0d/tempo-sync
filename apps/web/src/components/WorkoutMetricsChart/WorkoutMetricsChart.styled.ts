@@ -21,7 +21,7 @@ const HeaderTitle = styled.h2`
 const HeaderSubtitle = styled.p`
 	${text({ size: 'sm', weight: 'medium', color: 'secondary' })}
 
-	text-wrap: balance;
+	overflow-wrap: break-word;
 	text-align: center;
 
 	@media (min-width: ${theme.breakpoints.md}) {
