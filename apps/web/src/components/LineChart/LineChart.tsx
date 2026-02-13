@@ -1,5 +1,5 @@
 import { Chart, useChart } from '@chakra-ui/charts';
-import { Box, Spinner, Text } from '@chakra-ui/react';
+import { Box, Flex, Spinner, Text } from '@chakra-ui/react';
 import {
 	CartesianGrid,
 	Legend,
@@ -15,6 +15,55 @@ import { series, tempData, tempSeries } from './constants';
 import type { BaseChartData, ChartSeriesItem, LineChartProps } from './types';
 
 import { theme } from '@/styles';
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+const CustomTooltip = ({ payload, label, chart }: any) => {
+	if (!payload?.length) return null;
+
+	return (
+		<Box
+			bg={theme.colors.bg.white(0.95)}
+			border={`1px solid ${theme.colors.border.primaryRgb(0.1)}`}
+			rounded='lg'
+			px='2.5'
+			py='1.5'
+			fontSize='xs'
+			shadow='sm'
+			minW='8rem'
+			backdropFilter='blur(8px)'
+		>
+			<Text fontWeight='medium' color={theme.colors.text.primary} mb='1'>
+				Minute of activity: {label}m
+			</Text>
+			{payload.map((item: any, index: number) => {
+				const config = chart.getSeries(item);
+				return (
+					<Flex key={index} gap='1.5' align='center'>
+						{config?.color && (
+							<Box
+								w='2'
+								h='2'
+								rounded='full'
+								bg={chart.color(config.color)}
+							/>
+						)}
+						<Text color={theme.colors.text.secondary} flex='1'>
+							{config?.label || item.name}
+						</Text>
+						<Text
+							fontFamily='mono'
+							fontWeight='medium'
+							color={theme.colors.text.primary}
+							fontVariantNumeric='tabular-nums'
+						>
+							{item.value?.toLocaleString()}
+						</Text>
+					</Flex>
+				);
+			})}
+		</Box>
+	);
+};
 
 export const LineChart = ({ data, isLoading, chartType }: LineChartProps) => {
 	const chartData = (data?.length === 0 ? tempData(chartType) : data) as unknown as BaseChartData[];
@@ -59,16 +108,7 @@ export const LineChart = ({ data, isLoading, chartType }: LineChartProps) => {
 				<Tooltip
 					animationDuration={100}
 					cursor={false}
-					contentStyle={{ backgroundColor: 'red' }}
-					content={<Chart.Tooltip />}
-					labelFormatter={(label) => {
-						return (
-							<Text color={theme.colors.text.white()}>
-								Minute of activity:{' '}
-								{label === 'cadence' || label === 'tempo' || label === 'heartrate' ? 0 : label}m
-							</Text>
-						);
-					}}
+					content={(props) => <CustomTooltip {...props} chart={chart} />}
 				/>
 				<ReferenceDot
 					x={latest?.minute}
