@@ -1,5 +1,5 @@
 export const baseColors = {
-	doveGray: '#666666',
+	doveGray: '#595959',
 	blackAlpha2: 'rgba(0,0,0,0.02)',
 	alabaster: (opacity = 1) => `rgba(249, 249, 249, ${opacity})`,
 	teal: (opacity = 1) => `rgba(0, 128, 128, ${opacity})`
@@ -23,7 +23,7 @@ export const colors = {
 		alabaster: baseColors.alabaster(),
 		teal: baseColors.teal(),
 		white: (opacity = 1) => `rgba(30, 30, 30, ${opacity})`,
-		muted: '#999999'
+		muted: '#767676'
 	} as const,
 
 	accent: {
@@ -49,7 +49,7 @@ export const colors = {
 // Dark mode
 
 export const darkBaseColors = {
-	doveGray: '#A0A0A0',
+	doveGray: '#B0B0B0',
 	blackAlpha2: 'rgba(255,255,255,0.02)',
 	alabaster: (opacity = 1) => `rgba(26, 26, 26, ${opacity})`,
 	teal: (opacity = 1) => `rgba(0, 179, 179, ${opacity})`
@@ -73,7 +73,7 @@ export const darkColors = {
 		alabaster: darkBaseColors.alabaster(),
 		teal: darkBaseColors.teal(),
 		white: (opacity = 1) => `rgba(255, 255, 255, ${opacity})`,
-		muted: '#787878'
+		muted: '#919191'
 	} as const,
 
 	accent: {
