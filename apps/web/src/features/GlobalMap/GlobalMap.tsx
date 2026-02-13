@@ -38,7 +38,7 @@ export const GlobalMap = () => {
 	const dataToShow = activityId ? activitiesFiltered : activities;
 
 	const allCoordinates = isHexOverlay
-		? activities?.flatMap((activity) => activity.polyline ?? [])
+		? dataToShow?.flatMap((activity) => activity.polyline ?? [])
 		: undefined;
 	const cells =
 		isHexOverlay && allCoordinates
