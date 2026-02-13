@@ -1,5 +1,6 @@
+import type { UseChartReturn } from '@chakra-ui/charts';
 import { Chart, useChart } from '@chakra-ui/charts';
-import { Box, Spinner, Text } from '@chakra-ui/react';
+import { Box, Flex, Spinner, Text } from '@chakra-ui/react';
 import {
 	CartesianGrid,
 	Legend,
@@ -10,11 +11,60 @@ import {
 	XAxis,
 	YAxis
 } from 'recharts';
+import type { NameType, ValueType } from 'recharts/types/component/DefaultTooltipContent';
+import type { TooltipContentProps } from 'recharts/types/component/Tooltip';
 
 import { series, tempData, tempSeries } from './constants';
 import type { BaseChartData, ChartSeriesItem, LineChartProps } from './types';
 
 import { theme } from '@/styles';
+
+interface CustomTooltipProps extends TooltipContentProps<ValueType, NameType> {
+	chart: UseChartReturn<BaseChartData>;
+}
+
+const CustomTooltip = ({ payload, label, chart }: CustomTooltipProps) => {
+	if (!payload.length) return null;
+
+	return (
+		<Box
+			bg={theme.colors.bg.white(0.95)}
+			border={`1px solid ${theme.colors.border.primaryRgb(0.1)}`}
+			rounded='lg'
+			px='2.5'
+			py='1.5'
+			fontSize='xs'
+			shadow='sm'
+			minW='8rem'
+			backdropFilter='blur(8px)'
+		>
+			<Text fontWeight='medium' color={theme.colors.text.primary} mb='1'>
+				Minute of activity: {label}m
+			</Text>
+			{payload.map((item) => {
+				const config = chart.getSeries(item);
+				return (
+					<Flex key={item.dataKey} gap='1.5' align='center'>
+						{config?.color ? (
+							<Box w='2' h='2' rounded='full' bg={chart.color(config.color)} />
+						) : null}
+						<Text color={theme.colors.text.secondary} flex='1'>
+							{config?.label ?? item.name}
+						</Text>
+						<Text
+							fontFamily='mono'
+							fontWeight='medium'
+							color={theme.colors.text.primary}
+							fontVariantNumeric='tabular-nums'
+						>
+							{item.value?.toLocaleString()}
+						</Text>
+					</Flex>
+				);
+			})}
+		</Box>
+	);
+};
 
 export const LineChart = ({ data, isLoading, chartType }: LineChartProps) => {
 	const chartData = (data?.length === 0 ? tempData(chartType) : data) as unknown as BaseChartData[];
@@ -59,16 +109,7 @@ export const LineChart = ({ data, isLoading, chartType }: LineChartProps) => {
 				<Tooltip
 					animationDuration={100}
 					cursor={false}
-					contentStyle={{ backgroundColor: 'red' }}
-					content={<Chart.Tooltip />}
-					labelFormatter={(label) => {
-						return (
-							<Text color={theme.colors.text.white()}>
-								Minute of activity:{' '}
-								{label === 'cadence' || label === 'tempo' || label === 'heartrate' ? 0 : label}m
-							</Text>
-						);
-					}}
+					content={(props) => <CustomTooltip {...props} chart={chart} />}
 				/>
 				<ReferenceDot
 					x={latest?.minute}
