@@ -14,7 +14,7 @@
     "@tempo-sync/db": "workspace:*",
     "@tempo-sync/llm": "workspace:*",
     "@tempo-sync/shared": "workspace:*",
-    "hono": "^4.11.4",
+    "hono": "^4.11.9",
     "zod": "^4.3.5"
   },
   "devDependencies": {
