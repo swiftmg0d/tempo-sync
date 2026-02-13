@@ -1,3 +1,4 @@
+import type { UseChartReturn } from '@chakra-ui/charts';
 import { Chart, useChart } from '@chakra-ui/charts';
 import { Box, Flex, Spinner, Text } from '@chakra-ui/react';
 import {
@@ -10,15 +11,20 @@ import {
 	XAxis,
 	YAxis
 } from 'recharts';
+import type { NameType, ValueType } from 'recharts/types/component/DefaultTooltipContent';
+import type { TooltipContentProps } from 'recharts/types/component/Tooltip';
 
 import { series, tempData, tempSeries } from './constants';
 import type { BaseChartData, ChartSeriesItem, LineChartProps } from './types';
 
 import { theme } from '@/styles';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-const CustomTooltip = ({ payload, label, chart }: any) => {
-	if (!payload?.length) return null;
+interface CustomTooltipProps extends TooltipContentProps<ValueType, NameType> {
+	chart: UseChartReturn<BaseChartData>;
+}
+
+const CustomTooltip = ({ payload, label, chart }: CustomTooltipProps) => {
+	if (!payload.length) return null;
 
 	return (
 		<Box
@@ -35,20 +41,15 @@ const CustomTooltip = ({ payload, label, chart }: any) => {
 			<Text fontWeight='medium' color={theme.colors.text.primary} mb='1'>
 				Minute of activity: {label}m
 			</Text>
-			{payload.map((item: any, index: number) => {
+			{payload.map((item) => {
 				const config = chart.getSeries(item);
 				return (
-					<Flex key={index} gap='1.5' align='center'>
-						{config?.color && (
-							<Box
-								w='2'
-								h='2'
-								rounded='full'
-								bg={chart.color(config.color)}
-							/>
-						)}
+					<Flex key={item.dataKey} gap='1.5' align='center'>
+						{config?.color ? (
+							<Box w='2' h='2' rounded='full' bg={chart.color(config.color)} />
+						) : null}
 						<Text color={theme.colors.text.secondary} flex='1'>
-							{config?.label || item.name}
+							{config?.label ?? item.name}
 						</Text>
 						<Text
 							fontFamily='mono'
