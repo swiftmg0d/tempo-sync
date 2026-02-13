@@ -1,5 +1,20 @@
 # @tempo-sync/web
 
+## 0.1.1
+
+### Patch Changes
+
+- [#21](https://github.com/swiftmg0d/tempo-sync/pull/21) [`b148228`](https://github.com/swiftmg0d/tempo-sync/commit/b148228d474e072a2ddec63f431f711b75de9195) Thanks [@swiftmg0d](https://github.com/swiftmg0d)! - chore: lighthouse performance, accessibility, and SEO improvements
+  - Improve color contrast ratios for WCAG AA compliance (light and dark mode)
+  - Replace `focus-within` reset with proper `focus-visible` outline styles
+  - Optimize font loading by importing explicit `wght.css` subset
+  - Add LightningCSS for CSS minification
+  - Code-split Chakra UI into separate cacheable chunk
+  - Enable terser 2-pass compression and disable modulePreload polyfill
+  - Allow search engine crawling in robots.txt
+  - Remove duplicate analysis-illustration.svg from src/assets
+  - Add per-app build CI jobs for API, integrations, and web with path-based filtering
+
 ## 0.1.0
 
 ### Minor Changes
