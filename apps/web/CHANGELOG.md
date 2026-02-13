@@ -1,5 +1,17 @@
 # @tempo-sync/web
 
+## 0.1.2
+
+### Patch Changes
+
+- [#24](https://github.com/swiftmg0d/tempo-sync/pull/24) [`fd797df`](https://github.com/swiftmg0d/tempo-sync/commit/fd797df207d1ae451b0c5bcbf205234a5cce6a87) Thanks [@swiftmg0d](https://github.com/swiftmg0d)! - feat: custom styled tooltip for LineChart component
+  - Replace default Chakra Chart.Tooltip with a custom `CustomTooltip` component
+  - Add themed background with backdrop blur and rounded corners
+  - Display color-coded series indicators with dot markers
+  - Use tabular-nums font variant for aligned numeric values
+  - Show "Minute of activity" label in tooltip header
+  - Apply theme-aware text colors for primary and secondary content
+
 ## 0.1.1
 
 ### Patch Changes
