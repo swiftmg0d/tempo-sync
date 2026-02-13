@@ -40,9 +40,9 @@ export const GlobalStyles = () => {
 				#root {
 					height: 100%;
 				}
-				*:focus-within {
-					outline: none;
-					box-shadow: none;
+				*:focus-visible {
+					outline: 2px solid ${theme.colors.accent.primary};
+					outline-offset: 2px;
 				}
 
 				&::selection {
