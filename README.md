@@ -17,6 +17,14 @@
 
 ---
 
+<p align="center">
+  <img src=".github/assets/showcase-desktop.png" alt="Tempo-Sync desktop and mobile dark mode" width="800" />
+</p>
+
+<p align="center">
+  <img src=".github/assets/showcase-mobile.png" alt="Tempo-Sync mobile light mode" width="800" />
+</p>
+
 ## About
 
 Tempo-Sync syncs your Strava activity data with your Spotify listening history to surface workout metrics, music-performance correlations, and AI-generated insights. It features interactive map visualization of all your routes, track leaderboards ranked by workout efficiency, and smart playlist recommendations for your next session.
