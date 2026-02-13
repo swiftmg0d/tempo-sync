@@ -24,5 +24,8 @@ export const queryKeys = {
 	},
 	profile: {
 		list: ['profiles'] as const
+	},
+	map: {
+		hexagons: () => ['map', 'hexagons'] as const
 	}
 } as const;

@@ -1,37 +1,49 @@
+import { Box } from '@chakra-ui/react';
 import { Map, type MapRef, NavigationControl, ScaleControl } from '@vis.gl/react-maplibre';
+import 'maplibre-gl/dist/maplibre-gl.css';
+import { latLngToCell } from 'h3-js';
+import { AnimatePresence } from 'motion/react';
 import { useEffect, useRef, useState } from 'react';
 
+import { HexOverlay } from './GlobalMap.lib';
 import { MapContainer } from './GlobalMap.styled';
 import { renderActivitiesByMapType } from './GlobalMap.utils';
 import { MapTypeControl } from './GlobalMapControls';
 import { GlobalMapLoading } from './GlobalMapLoading';
 
+import { DiscoveryStats } from '@/components/DiscoveryStats';
 import { Queries } from '@/hooks/quieries';
 import { useActivityCardsStore, useThemeStore } from '@/store';
-// Accessing the map key from environment variables
 
 const mapKey = import.meta.env.VITE_MAP_KEY;
 
 export const GlobalMap = () => {
 	const [isMapLoading, setIsMapLoading] = useState(true);
 	const [mapType, setMapType] = useState<'heat' | 'normal'>('normal');
-
-	useEffect(() => {
-		void import('maplibre-gl/dist/maplibre-gl.css');
-	}, []);
+	const [isHexOverlay, setIsHexOverlay] = useState(false);
+	const mapRef = useRef<MapRef>(null);
 
 	const activityId = useActivityCardsStore((state) => state.activityId);
 	const themeMode = useThemeStore((state) => state.mode);
-	const mapVariant = themeMode === 'dark' ? 'dataviz-v4-dark' : 'dataviz-v4-light';
 
 	const { data, isLoading } = Queries.useActivities();
+	const { data: mapHexagons, isLoading: isMapHexagonsLoading } = Queries.useMapHexagons()({
+		enabled: isHexOverlay
+	});
+
+	const mapVariant = themeMode === 'dark' ? 'dataviz-v4-dark' : 'dataviz-v4-light';
+
 	const activities = data?.pages.flatMap((page) => page.data.activities);
-
 	const activitiesFiltered = activities?.filter((activity) => activity.id === activityId);
-
 	const dataToShow = activityId ? activitiesFiltered : activities;
 
-	const mapRef = useRef<MapRef>(null);
+	const allCoordinates = isHexOverlay
+		? activities?.flatMap((activity) => activity.polyline ?? [])
+		: undefined;
+	const cells =
+		isHexOverlay && allCoordinates
+			? new Set(allCoordinates.map((coord) => latLngToCell(coord[1], coord[0], 9)))
+			: undefined;
 
 	useEffect(() => {
 		if (dataToShow && mapRef.current && !isMapLoading) {
@@ -79,13 +91,32 @@ export const GlobalMap = () => {
 			>
 				<NavigationControl position='top-right' />
 				<ScaleControl position='bottom-left' />
+
 				<MapTypeControl
 					type={mapType}
-					onChange={(type) => {
-						setMapType(type);
-					}}
+					showHex={isHexOverlay}
+					onHeatToggle={setMapType}
+					onHexToggle={setIsHexOverlay}
 				/>
 				{renderActivitiesByMapType(mapType, dataToShow ?? [])}
+
+				{isMapHexagonsLoading ? (
+					<Box position='absolute' top='50%' left='50%' transform='translate(-50%, -50%)'>
+						<GlobalMapLoading.LoadingCircle />
+					</Box>
+				) : null}
+
+				{isHexOverlay && !!mapHexagons && !!cells ? (
+					<>
+						<AnimatePresence>
+							<DiscoveryStats
+								isEmpty={cells.size === 0 || mapHexagons.size === 0}
+								value={(cells.size / mapHexagons.size) * 100}
+							/>
+						</AnimatePresence>
+						<HexOverlay mapHexagons={mapHexagons} cells={cells} mode={themeMode} />
+					</>
+				) : null}
 			</Map>
 
 			{isMapLoading || isLoading ? <GlobalMapLoading /> : null}

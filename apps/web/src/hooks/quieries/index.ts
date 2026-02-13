@@ -3,6 +3,7 @@ import { useInfiniteQuery } from '@tanstack/react-query';
 import { createQuery } from '../createQuery';
 
 import { apiService } from '@/api/services';
+import { fromPolygonToCells } from '@/lib/map';
 import { queryKeys } from '@/lib/queryKeys';
 
 export const useActivities = () =>
@@ -131,6 +132,15 @@ const useActivityHighlights = (id: string) =>
 		}
 	});
 
+const useMapHexagons = () =>
+	createQuery({
+		queryFn: () => apiService.map.getHexPolygons(),
+		queryKey: queryKeys.map.hexagons(),
+		options: {
+			select: (res) => new Set(fromPolygonToCells(res.features[0].geometry))
+		}
+	});
+
 export const Queries = {
 	useActivities,
 	useActivitySummary,
@@ -145,5 +155,6 @@ export const Queries = {
 	useActivityStreams,
 	useTrackLeaderboard,
 	useTrackRecommendations,
-	useActivityHighlights
+	useActivityHighlights,
+	useMapHexagons
 };

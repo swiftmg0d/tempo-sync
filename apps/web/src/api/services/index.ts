@@ -1,3 +1,4 @@
+import { http } from '@tempo-sync/shared';
 import type {
 	Activities,
 	ActivityHighlights,
@@ -55,5 +56,21 @@ export const apiService = {
 	},
 	strava: {
 		getAllActivitiesCount: () => api.get<ApiResponse<{ count: number }>>('/strava/activities/count')
+	},
+
+	map: {
+		getHexPolygons: () =>
+			http<{
+				type: 'FeatureCollection';
+				features: {
+					geometry: {
+						type: 'Polygon' | 'MultiPolygon';
+						coordinates: number[][][] | number[][][][];
+					};
+				}[];
+			}>(
+				'https://nominatim.openstreetmap.org/search?q=Скопје&format=geojson&polygon_geojson=1&limit=1',
+				{ headers: { 'User-Agent': 'tempo-sync' } }
+			)
 	}
 };

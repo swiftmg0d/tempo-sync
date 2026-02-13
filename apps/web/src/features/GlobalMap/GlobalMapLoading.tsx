@@ -29,12 +29,7 @@ export const GlobalMapLoading = () => {
 			flexDirection='column'
 			gap={theme.spacing.s}
 		>
-			<ProgressCircle.Root value={null} size='xs'>
-				<ProgressCircle.Circle>
-					<ProgressCircle.Track />
-					<ProgressCircle.Range stroke={theme.colors.accent.teal50} />
-				</ProgressCircle.Circle>
-			</ProgressCircle.Root>
+			<GlobalMapLoading.LoadingCircle />
 
 			<Text
 				fontSize={theme.fontSizes.xs}
@@ -48,5 +43,22 @@ export const GlobalMapLoading = () => {
 				{randomMessage}
 			</Text>
 		</Box>
+	);
+};
+
+GlobalMapLoading.LoadingCircle = () => {
+	return (
+		<ProgressCircle.Root
+			value={null}
+			size='xs'
+			display='flex'
+			alignItems='center'
+			justifyContent='center'
+		>
+			<ProgressCircle.Circle>
+				<ProgressCircle.Track />
+				<ProgressCircle.Range stroke={theme.colors.accent.teal50} />
+			</ProgressCircle.Circle>
+		</ProgressCircle.Root>
 	);
 };

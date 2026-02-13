@@ -1,36 +1,50 @@
 import { Box, IconButton } from '@chakra-ui/react';
-import { Flame, LineSquiggle } from 'lucide-react';
+import { Flame, Hexagon } from 'lucide-react';
 
 import { theme } from '@/styles';
 
 export const MapTypeControl = ({
-	onChange,
-	type
+	onHeatToggle,
+	onHexToggle,
+	type,
+	showHex
 }: {
-	type: 'normal' | 'heat';
-	onChange: (mapType: 'normal' | 'heat') => void;
+	type: 'normal' | 'heat' | boolean;
+	showHex: boolean;
+	onHeatToggle: (mapType: 'normal' | 'heat') => void;
+	onHexToggle: (showHex: boolean) => void;
 }) => {
-	const Icon =
-		type === 'normal' ? (
-			<Flame color='currentColor' size={16} />
-		) : (
-			<LineSquiggle color='currentColor' size={16} />
-		);
-
 	return (
-		<Box position='absolute' top={95} right={1.5} zIndex={1}>
-			<IconButton
-				aria-label='Toggle Map Type'
-				backgroundColor='transparent'
-				color={theme.colors.text.primary}
-				_hover={{ color: theme.colors.bg.teal }}
-				onClick={() => {
-					const newMapType = type === 'normal' ? 'heat' : 'normal';
-					onChange(newMapType);
-				}}
+		<Box position='absolute' top={100} right={0}>
+			<Box
+				marginRight='5px'
+				display='flex'
+				flexDirection='column'
+				justifyContent='center'
+				alignItems='center'
 			>
-				{Icon}
-			</IconButton>
+				<IconButton
+					aria-label='Toggle Map Type'
+					backgroundColor='transparent'
+					color={type === 'heat' ? theme.colors.bg.teal : theme.colors.text.primary}
+					_hover={{ color: theme.colors.bg.teal }}
+					onClick={() => {
+						onHeatToggle(type === 'normal' ? 'heat' : 'normal');
+					}}
+				>
+					<Flame color='currentColor' size={16} />
+				</IconButton>
+				<IconButton
+					color={showHex ? theme.colors.bg.teal : theme.colors.text.primary}
+					_hover={{ color: theme.colors.bg.teal }}
+					backgroundColor='transparent'
+					onClick={() => {
+						onHexToggle(!showHex);
+					}}
+				>
+					<Hexagon size={16} />
+				</IconButton>
+			</Box>
 		</Box>
 	);
 };

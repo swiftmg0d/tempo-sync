@@ -1,7 +1,7 @@
 import type { Activity } from '@tempo-sync/shared';
 import { Layer, Source } from '@vis.gl/react-maplibre';
 
-import { heatmapLayer } from './GlobalMap.const';
+import { heatmapLayer } from './constants';
 
 export const renderActivitiesByMapType = (mapType: 'normal' | 'heat', activities: Activity[]) => {
 	switch (mapType) {
