@@ -2,7 +2,7 @@
 '@tempo-sync/web': patch
 ---
 
-Lighthouse performance, accessibility, and SEO improvements.
+chore: lighthouse performance, accessibility, and SEO improvements
 
 - Improve color contrast ratios for WCAG AA compliance (light and dark mode)
 - Replace `focus-within` reset with proper `focus-visible` outline styles
@@ -12,3 +12,4 @@ Lighthouse performance, accessibility, and SEO improvements.
 - Enable terser 2-pass compression and disable modulePreload polyfill
 - Allow search engine crawling in robots.txt
 - Remove duplicate analysis-illustration.svg from src/assets
+- Add per-app build CI jobs for API, integrations, and web with path-based filtering

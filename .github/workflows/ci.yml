@@ -35,7 +35,9 @@ jobs:
     runs-on: ubuntu-latest
     if: github.event_name == 'pull_request'
     outputs:
-      app: ${{ steps.filter.outputs.app }}
+      api: ${{ steps.filter.outputs.api }}
+      integrations: ${{ steps.filter.outputs.integrations }}
+      web: ${{ steps.filter.outputs.web }}
     steps:
       - uses: actions/checkout@v4
 
@@ -43,9 +45,73 @@ jobs:
         id: filter
         with:
           filters: |
-            app:
-              - 'apps/**'
+            api:
+              - 'apps/api/**'
               - 'packages/**'
+            integrations:
+              - 'apps/integrations/**'
+              - 'packages/**'
+            web:
+              - 'apps/web/**'
+              - 'packages/**'
+
+  build-api:
+    name: Build API
+    needs: changes
+    if: needs.changes.outputs.api == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - run: pnpm --filter @tempo-sync/api build
+
+  build-integrations:
+    name: Build Integrations
+    needs: changes
+    if: needs.changes.outputs.integrations == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - run: pnpm --filter @tempo-sync/integrations build
+
+  build-web:
+    name: Build Web
+    needs: changes
+    if: needs.changes.outputs.web == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - run: pnpm --filter @tempo-sync/web build
+
   lighthouse-production:
     name: Lighthouse (Production)
     runs-on: ubuntu-latest
