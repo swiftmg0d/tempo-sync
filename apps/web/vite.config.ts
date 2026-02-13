@@ -32,14 +32,22 @@ export default defineConfig(({ mode }) => ({
 		sourcemap: true,
 		minify: 'terser',
 		cssCodeSplit: true,
+		cssMinify: 'lightningcss',
+		modulePreload: { polyfill: false },
 		rollupOptions: {
 			output: {
 				manualChunks: {
 					query: ['@tanstack/react-query'],
 					'react-vendor': ['react', 'react-dom'],
 					motion: ['motion'],
-					emotion: ['@emotion/react', '@emotion/styled']
+					emotion: ['@emotion/react', '@emotion/styled'],
+					chakra: ['@chakra-ui/react']
 				}
+			}
+		},
+		terserOptions: {
+			compress: {
+				passes: 2
 			}
 		}
 	},
