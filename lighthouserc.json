@@ -1,7 +1,7 @@
 {
   "ci": {
     "collect": {
-      "url": ["https://tempo-sync.pages.dev"],
+      "url": ["https://tempo-sync-2ba.pages.dev"],
       "numberOfRuns": 3
     },
     "assert": {
