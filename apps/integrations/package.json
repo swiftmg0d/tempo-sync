@@ -18,8 +18,8 @@
     "@tempo-sync/shared": "workspace:*"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20260115.0",
+    "@cloudflare/workers-types": "^4.20260207.0",
     "@tempo-sync/config": "workspace:*",
-    "wrangler": "^4.59.1"
+    "wrangler": "^4.63.0"
   }
 }
