@@ -1,5 +1,5 @@
 import { CheckCircle2, ChevronsDown, Loader2, Sparkles } from 'lucide-react';
-import { useCallback, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useInView } from 'react-intersection-observer';
 
 import { RecommendationCard } from './RecommendationCard';
@@ -20,7 +20,8 @@ export const SessionRecommendations = ({ flex }: SessionRecommendationsProps) =>
 	const recommendations = data?.pages.flatMap((page) => page.data.recommendations) ?? [];
 
 	const [listElement, setListElement] = useState<HTMLDivElement | null>(null);
-	const [hasInteracted, setHasInteracted] = useState(false);
+	const [hasScrolled, setHasScrolled] = useState(false);
+
 	const { ref, inView } = useInView({
 		root: listElement,
 		rootMargin: '0px 0px 80px 0px',
@@ -29,29 +30,25 @@ export const SessionRecommendations = ({ flex }: SessionRecommendationsProps) =>
 	});
 
 	useEffect(() => {
-		setHasInteracted(false);
+		setHasScrolled(false);
 	}, [activityId]);
 
-	const listRef = useCallback((node: HTMLDivElement | null) => {
-		setListElement(node);
-		if (!node) return;
-
-		const onInteract = () => {
-			setHasInteracted(true);
-			node.removeEventListener('scroll', onInteract);
-			node.removeEventListener('touchstart', onInteract);
+	useEffect(() => {
+		if (!listElement) return;
+		const onInteract = () => setHasScrolled(true);
+		listElement.addEventListener('wheel', onInteract, { once: true, passive: true });
+		listElement.addEventListener('touchmove', onInteract, { once: true, passive: true });
+		return () => {
+			listElement.removeEventListener('wheel', onInteract);
+			listElement.removeEventListener('touchmove', onInteract);
 		};
-		node.addEventListener('scroll', onInteract, { once: true });
-		node.addEventListener('touchstart', onInteract, { once: true });
-	}, []);
+	}, [listElement, activityId]);
 
 	useEffect(() => {
-		if (!inView || !hasNextPage || isFetchingNextPage || !hasInteracted) {
-			return;
-		}
+		if (!inView || !hasNextPage || isFetchingNextPage || !hasScrolled) return;
 
 		void fetchNextPage();
-	}, [inView, hasNextPage, isFetchingNextPage, fetchNextPage, hasInteracted]);
+	}, [inView, hasNextPage, isFetchingNextPage, fetchNextPage, hasScrolled]);
 
 	return (
 		<S.Container $flex={flex}>
@@ -62,7 +59,7 @@ export const SessionRecommendations = ({ flex }: SessionRecommendationsProps) =>
 			{isLoading ? (
 				<SessionRecommendationsSkeleton />
 			) : recommendations.length > 0 ? (
-				<S.TrackList ref={listRef}>
+				<S.TrackList ref={setListElement}>
 					{recommendations.map((track) => (
 						<RecommendationCard key={track.id} {...track} />
 					))}
