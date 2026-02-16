@@ -35,7 +35,9 @@ export const SessionRecommendations = ({ flex }: SessionRecommendationsProps) =>
 
 	useEffect(() => {
 		if (!listElement) return;
-		const onInteract = () => setHasScrolled(true);
+		const onInteract = () => {
+			setHasScrolled(true);
+		};
 		listElement.addEventListener('wheel', onInteract, { once: true, passive: true });
 		listElement.addEventListener('touchmove', onInteract, { once: true, passive: true });
 		return () => {

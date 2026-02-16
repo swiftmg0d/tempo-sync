@@ -1,9 +1,6 @@
 {
   "$schema": "https://unpkg.com/@changesets/config@3.1.2/schema.json",
-  "changelog": [
-    "@changesets/changelog-github",
-    { "repo": "swiftmg0d/tempo-sync" }
-  ],
+  "changelog": ["@changesets/changelog-github", { "repo": "swiftmg0d/tempo-sync" }],
   "commit": false,
   "fixed": [],
   "linked": [],
