@@ -1,5 +1,11 @@
 # @tempo-sync/web
 
+## 0.1.3
+
+### Patch Changes
+
+- [#26](https://github.com/swiftmg0d/tempo-sync/pull/26) [`c6ca427`](https://github.com/swiftmg0d/tempo-sync/commit/c6ca4273ca691c8fbc5feb5fd63ff2ecbf887134) Thanks [@swiftmg0d](https://github.com/swiftmg0d)! - Fix infinite scroll pagination in session recommendations - replaced scroll-based interaction detection with wheel/touchmove events that fire even when content doesn't overflow the container
+
 ## 0.1.2
 
 ### Patch Changes
