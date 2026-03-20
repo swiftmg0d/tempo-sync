@@ -1,5 +1,12 @@
 # @tempo-sync/integrations
 
+## 0.1.1
+
+### Patch Changes
+
+- Updated dependencies [[`618bab8`](https://github.com/swiftmg0d/tempo-sync/commit/618bab8df005d7be2dadb2b5394b162bb8e49a64)]:
+  - @tempo-sync/llm@0.1.1
+
 ## 0.1.0
 
 ### Minor Changes
