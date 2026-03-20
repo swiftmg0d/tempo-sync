@@ -18,7 +18,7 @@ export type OpenRouterModel =
   | 'arcee-ai/arcee-trinity-large-preview:free'
   | 'deepseek/deepseek-chat-v3-0324:free';
 
-export type CerebrasModel = 'llama-3.3-70b' | 'qwen-3-32b';
+export type CerebrasModel = 'gpt-oss-120b' | 'qwen-3-235b-a22b-instruct-2507';
 
 export type SambanovaModel = 'Meta-Llama-3.3-70B-Instruct' | 'DeepSeek-R1-0528';
 
