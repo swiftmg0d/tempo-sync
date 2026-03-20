@@ -35,7 +35,8 @@ export const getProviderModels = (env: LLMEnv) => {
 
 export const llmPipeline: LLMPipeline = {
   processing: [
-    { provider: 'cerebras', model: 'gpt-oss-120b' },
+    { provider: 'cerebras', model: 'qwen-3-235b-a22b-instruct-2507' },
+    { provider: 'cerebras', model: 'llama3.1-8b' },
     { provider: 'groq', model: 'llama-3.3-70b-versatile' },
     { provider: 'openrouter', model: 'qwen/qwen3-coder:free' },
     { provider: 'sambanova', model: 'Meta-Llama-3.3-70B-Instruct' },
@@ -43,7 +44,8 @@ export const llmPipeline: LLMPipeline = {
     { provider: 'openrouter', model: 'google/gemma-3-27b-it:free' },
   ],
   analysis: [
-    { provider: 'cerebras', model: 'gpt-oss-120b' },
+    { provider: 'cerebras', model: 'qwen-3-235b-a22b-instruct-2507' },
+    { provider: 'cerebras', model: 'llama3.1-8b' },
     { provider: 'sambanova', model: 'DeepSeek-R1-0528' },
     { provider: 'openrouter', model: 'deepseek/deepseek-r1-0528:free' },
     { provider: 'openrouter', model: 'deepseek/deepseek-chat-v3-0324:free' },
@@ -51,7 +53,8 @@ export const llmPipeline: LLMPipeline = {
     { provider: 'openrouter', model: 'tngtech/deepseek-r1t2-chimera:free' },
   ],
   formatting: [
-    { provider: 'cerebras', model: 'gpt-oss-120b' },
+    { provider: 'cerebras', model: 'qwen-3-235b-a22b-instruct-2507' },
+    { provider: 'cerebras', model: 'llama3.1-8b' },
     { provider: 'groq', model: 'llama-3.3-70b-versatile' },
     { provider: 'openrouter', model: 'google/gemma-3-27b-it:free' },
     { provider: 'openrouter', model: 'meta-llama/llama-3.3-70b-instruct:free' },

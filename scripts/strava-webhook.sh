@@ -43,10 +43,15 @@ case "${1:-}" in
     resp=$(curl -s -X POST "$API" \
       -F "client_id=$STRAVA_CLIENT_ID" -F "client_secret=$STRAVA_CLIENT_SECRET" \
       -F "callback_url=$url" -F "verify_token=$VERIFY_TOKEN") || {
-      echo "Error: Failed to create subscription. Is your server running at $url?"
+      echo "Error: Failed to reach Strava API. Is your server running at $url?"
       exit 1
     }
-    echo "Created subscription $(echo "$resp" | jq -r '.id') → $url"
+    id=$(echo "$resp" | jq -r '.id // empty')
+    if [[ -z "$id" ]]; then
+      echo "Error: Strava rejected the subscription: $(echo "$resp" | jq -r '.message // .errors // .')"
+      exit 1
+    fi
+    echo "Created subscription $id → $url"
     ;;
 
   switch)

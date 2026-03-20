@@ -26,27 +26,27 @@ export const createChatCompletion = async ({
     if (isApiError(error)) {
       if (error.status === 429) {
         console.warn(
-          `Provider: ${llmProvider} Rate limit exceeded... trying next provider if available.`
+          `Provider: ${llmProvider} - ${model} Rate limit exceeded... trying next provider if available.`
         );
         return ChatCompletionResponse.RATE_LIMITED;
       } else if (error.status === 413) {
         console.warn(
-          `Provider: ${llmProvider} Request payload too large... trying next provider if available.`
+          `Provider: ${llmProvider} - ${model} Request payload too large... trying next provider if available.`
         );
         return ChatCompletionResponse.PAYLOAD_TOO_LARGE;
       } else if (error.status === 404) {
         console.error(
-          `Provider: ${llmProvider} Model not found... trying next provider if available.`
+          `Provider: ${llmProvider} - ${model}   Model not found... trying next provider if available.`
         );
         return ChatCompletionResponse.MODEL_NOT_FOUND;
       } else if (error.status === 401 || error.status === 403) {
         console.error(
-          `Provider: ${llmProvider} Authentication failed... trying next provider if available.`
+          `Provider: ${llmProvider} - ${model} Authentication failed... trying next provider if available.`
         );
         return ChatCompletionResponse.AUTH_FAILED;
       } else if (error.status >= 500) {
         console.error(
-          `Provider: ${llmProvider} Server error... trying next provider if available.`
+          `Provider: ${llmProvider} - ${model} Server error... trying next provider if available.`
         );
         return ChatCompletionResponse.SERVER_ERROR;
       }
