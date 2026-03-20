@@ -10,6 +10,7 @@ export const createDb = (databaseUrl: string) => {
 };
 
 export const createPoolDb = (databaseUrl: string) => {
+  // @ts-expect-error CF Workers WebSocket satisfies the interface at runtime
   neonConfig.webSocketConstructor = WebSocket;
   return drizzlePool({ client: new Pool({ connectionString: databaseUrl }), relations });
 };
