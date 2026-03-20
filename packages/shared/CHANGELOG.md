@@ -1,5 +1,12 @@
 # @tempo-sync/shared
 
+## 0.1.1
+
+### Patch Changes
+
+- Updated dependencies [[`24fa845`](https://github.com/swiftmg0d/tempo-sync/commit/24fa8451a6c043748c9a390bbc9c1db9690b16ff)]:
+  - @tempo-sync/db@0.1.1
+
 ## 0.1.0
 
 ### Minor Changes
