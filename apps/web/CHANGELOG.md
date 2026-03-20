@@ -1,5 +1,12 @@
 # @tempo-sync/web
 
+## 0.1.4
+
+### Patch Changes
+
+- Updated dependencies []:
+  - @tempo-sync/shared@0.1.1
+
 ## 0.1.3
 
 ### Patch Changes
