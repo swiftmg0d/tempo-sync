@@ -28,6 +28,7 @@ export interface Bindings {
 
   ALLOWED_ORIGINS: string;
   RATE_LIMITER: RateLimit;
+  ACTIVITY_QUEUE: Queue;
 }
 
 export interface Variables {
