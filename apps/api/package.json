@@ -16,7 +16,7 @@
     "@tempo-sync/llm": "workspace:*",
     "@tempo-sync/shared": "workspace:*",
     "hono": "^4.11.4",
-    "zod": "^4.3.5"
+    "zod": "^4.4.3"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20260115.0",
